@@ -10,40 +10,37 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
     }
 
     body {
-      background-color: #121212;
+      background-color: #ffffff;
       background-image:
-        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        linear-gradient(rgba(128, 128, 128, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(128, 128, 128, 0.1) 1px, transparent 1px);
       background-size: 20px 20px;
-      color: #ffffff;
+      color: #000000;
       min-height: 100vh;
-      padding: 20px;
+      padding: 20px 20px 80px 20px; /* отступ снизу под панель */
     }
 
     .search-bar {
       margin: 15px 0;
-      text-align: center;
     }
 
     #searchInput {
       width: 90%;
       max-width: 400px;
       padding: 12px 16px;
-      border: none;
+      border: 1px solid #ccc;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
+      background: #f8f8f8;
+      color: #000;
       font-size: 14px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     #searchInput::placeholder {
-      color: rgba(255, 255, 255, 0.5);
+      color: #888;
     }
 
     .grid-container {
@@ -54,33 +51,33 @@
     }
 
     .card {
-      background: rgba(20, 20, 20, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #f0f0f0;
+      border: 1px solid #ddd;
       border-radius: 16px;
       padding: 16px;
       cursor: pointer;
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-      border-color: #9C1A1A;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     }
 
     .card-icon {
       width: 40px;
       height: 40px;
       margin-bottom: 10px;
-      background-color: #9C1A1A;
+      background-color: #333;
       border-radius: 8px;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 4px;
+    }
+
+    .card-icon svg {
+      width: 70%;
+      height: 70%;
     }
 
     .card h3 {
@@ -89,12 +86,11 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin-bottom: 6px;
-      color: #ffffff;
     }
 
     .card p {
       font-size: 12px;
-      color: #cccccc;
+      color: #555;
     }
 
     .material-list {
@@ -106,31 +102,142 @@
 
     .material-item {
       padding: 10px;
-      background: rgba(255, 255, 255, 0.05);
+      background: #f9f9f9;
       border-radius: 8px;
       font-size: 13px;
       margin-bottom: 6px;
       cursor: pointer;
-      border-left: 3px solid #9C1A1A;
+      border-left: 3px solid #333;
     }
 
     .material-item:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: #eee;
+    }
+
+    /* Нижняя панель */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: #fff;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-btn {
+      text-align: center;
+      font-size: 12px;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .nav-btn.active {
+      color: #333;
+      font-weight: 600;
+    }
+
+    .nav-btn i {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+
+    /* Страницы */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .chat-list {
+      margin-top: 20px;
+    }
+
+    .chat-btn {
+      display: block;
+      width: 90%;
+      max-width: 300px;
+      margin: 10px auto;
+      padding: 12px 16px;
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 14px;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .chat-btn:hover {
+      background: #e0e0e0;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 20px 0 10px 20px;
+      color: #333;
     }
   </style>
 </head>
 <body>
 
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Поиск по темам и материалам..." />
+  <!-- Страница: Домой -->
+  <div id="page-home" class="page active">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Поиск по темам и материалам..." />
+    </div>
+    <div class="grid-container" id="gridContainer"></div>
   </div>
 
-  <div class="grid-container" id="gridContainer">
-    <!-- Карточки будут добавлены через JS -->
+  <!-- Страница: О сообществе -->
+  <div id="page-about" class="page">
+    <h2 class="section-title">О сообществе</h2>
+    <p style="margin: 20px; line-height: 1.6; color: #444;">
+      Меня зовут Виталий Юхневич, и я — предприниматель с 20-летним опытом в строительной отрасли,
+      основатель проектно-строительной компании, генеральный директор компании по контролю за строительством,
+      эксперт в проектировании, реставрации и управлении сложными объектами.
+    </p>
+    <p style="margin: 20px; line-height: 1.6; color: #444;">
+      В этом канале я делюсь реальной практикой, разбираю кейсы, показываю, как устроена отрасль изнутри,
+      и рассказываю о возможностях для молодых специалистов, студентов и тех, кто хочет строить карьеру в строительстве.
+    </p>
+  </div>
+
+  <!-- Страница: Чаты -->
+  <div id="page-chats" class="page">
+    <h2 class="section-title">Чаты сообщества</h2>
+    <div class="chat-list">
+      <div class="chat-btn" onclick="openChat('https://t.me/chat1')">Чат 1: Название</div>
+      <div class="chat-btn" onclick="openChat('https://t.me/chat2')">Чат 2: Название</div>
+      <div class="chat-btn" onclick="openChat('https://t.me/chat3')">Чат 3: Название</div>
+      <div class="chat-btn" onclick="openChat('https://t.me/chat4')">Чат 4: Название</div>
+    </div>
+  </div>
+
+  <!-- Нижняя панель -->
+  <div class="bottom-nav">
+    <div class="nav-btn active" data-page="home" onclick="switchPage('home')">
+      <i>🏠</i> Домой
+    </div>
+    <div class="nav-btn" data-page="about" onclick="switchPage('about')">
+      <i>ℹ️</i> О сообществе
+    </div>
+    <div class="nav-btn" data-page="chats" onclick="switchPage('chats')">
+      <i>💬</i> Чаты
+    </div>
   </div>
 
   <script>
-    // Данные категории (можно расширять)
+    // Данные категорий
     const categories = [
       {
         id: "construction",
@@ -138,9 +245,9 @@
         icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21H21M5 21V9L12 5L19 9V21M9 21V12H15V21" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
         count: 12,
         materials: [
-          { id: 1, title: "Промышленные здания", post_id: 45 },
-          { id: 2, title: "Здания соц. назначения", post_id: 52 },
-     
+          { id: 1, title: "Фундамент: как сделать правильно", post_id: 45 },
+          { id: 2, title: "Кладка стен из газобетона", post_id: 52 },
+          { id: 3, title: "Крыша: выбор кровли", post_id: 58 }
         ]
       },
       {
@@ -149,8 +256,8 @@
         icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="1.5"/><path d="M2 17L12 22L22 17" stroke="white" stroke-width="1.5"/><path d="M2 12L12 17L22 12" stroke="white" stroke-width="1.5"/></svg>`,
         count: 8,
         materials: [
-          { id: 1, title: "Промышленные здания", post_id: 33 },
-          { id: 2, title: "Здания соц. назначения", post_id: 39 }
+          { id: 1, title: "Планировка дома мечты", post_id: 33 },
+          { id: 2, title: "3D-визуализация интерьера", post_id: 39 }
         ]
       },
       {
@@ -159,8 +266,8 @@
         icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="white" stroke-width="1.5"/><path d="M7 3V21" stroke="white" stroke-width="1.5"/><path d="M17 3V21" stroke="white" stroke-width="1.5"/></svg>`,
         count: 5,
         materials: [
-          { id: 1, title: "Услуги по реставрации", post_id: 61 },
-          { id: 2, title: "Услуги по реконструкции", post_id: 65 }
+          { id: 1, title: "Реставрация старинного дома", post_id: 61 },
+          { id: 2, title: "Сохранение исторического фасада", post_id: 65 }
         ]
       },
       {
@@ -179,8 +286,8 @@
         icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17 21V19C17 16.7909 15.2091 15 13 15H5C2.79086 15 1 16.7909 1 19V21M23 21V19C22.9981 17.1703 21.7585 15.5852 20 15.13M16 3.13C17.7592 3.58456 19 5.1703 19 7V9H15M15 3H9V9H15V3Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
         count: 6,
         materials: [
-          { id: 1, title: "Список проверенных подрядчиков", post_id: 80 },
-          { id: 2, title: "Консультация по подбору", post_id: 83 }
+          { id: 1, title: "Топ-5 строительных компаний", post_id: 80 },
+          { id: 2, title: "Как не попасться на мошенников", post_id: 83 }
         ]
       },
       {
@@ -189,7 +296,7 @@
         icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 10H8.01M12 10H12.01M16 10H16.01M9 16H15M8 6H16C17.1046 6 18 6.89543 18 8V16C18 17.1046 17.1046 18 16 18H8C6.89543 18 6 17.1046 6 16V8C6 6.89543 6.89543 6 8 6Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
         count: 9,
         materials: [
-          { id: 1, title: "Бесплатная консультация специалиста", post_id: 90 },
+          { id: 1, title: "Бесплатная консультация архитектора", post_id: 90 },
           { id: 2, title: "Задай вопрос эксперту", post_id: 95 }
         ]
       }
@@ -211,17 +318,11 @@
         <div class="material-list" id="list-${cat.id}"></div>
       `;
 
-      // Открываем/закрываем список
       card.addEventListener('click', () => {
         const list = document.getElementById(`list-${cat.id}`);
-        if (list.style.maxHeight) {
-          list.style.maxHeight = '0';
-        } else {
-          list.style.maxHeight = '300px';
-        }
+        list.style.maxHeight = list.style.maxHeight ? '' : '300px';
       });
 
-      // Заполняем список материалов
       const list = card.querySelector('.material-list');
       cat.materials.forEach(mat => {
         const item = document.createElement('div');
@@ -230,7 +331,7 @@
         item.dataset.search = mat.title;
         item.addEventListener('click', (e) => {
           e.stopPropagation();
-          const chatId = "-1001234567890"; // ⚠️ Замените на ID вашего канала
+          const chatId = "-1001234567890"; // Заменить на ваш ID
           Telegram.WebApp.openTelegramLink(`https://t.me/c/${chatId.substring(4)}/${mat.post_id}`);
         });
         list.appendChild(item);
@@ -264,6 +365,19 @@
         }
       });
     });
+
+    // Переключение страниц
+    function switchPage(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(`page-${page}`).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.nav-btn[data-page="${page}"]`).classList.add('active');
+    }
+
+    // Открытие чата
+    function openChat(url) {
+      Telegram.WebApp.openTelegramLink(url);
+    }
   </script>
 </body>
 </html>
