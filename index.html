@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Архитектура и Строительство</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #121212;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: #ffffff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .search-bar {
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    #searchInput {
+      width: 90%;
+      max-width: 400px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 14px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #searchInput::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .card {
+      background: rgba(20, 20, 20, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+      border-color: #9C1A1A;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+      background-color: #9C1A1A;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 4px;
+    }
+
+    .card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      color: #ffffff;
+    }
+
+    .card p {
+      font-size: 12px;
+      color: #cccccc;
+    }
+
+    .material-list {
+      margin-top: 12px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+
+    .material-item {
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      border-left: 3px solid #9C1A1A;
+    }
+
+    .material-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Поиск по темам и материалам..." />
+  </div>
+
+  <div class="grid-container" id="gridContainer">
+    <!-- Карточки будут добавлены через JS -->
+  </div>
+
+  <script>
+    // Данные категории (можно расширять)
+    const categories = [
+      {
+        id: "construction",
+        title: "Строительство",
+        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21H21M5 21V9L12 5L19 9V21M9 21V12H15V21" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        count: 12,
+        materials: [
+          { id: 1, title: "Фундамент: как сделать правильно", post_id: 45 },
+          { id: 2, title: "Кладка стен из газобетона", post_id: 52 },
+          { id: 3, title: "Крыша: выбор кровли", post_id: 58 }
+        ]
+      },
+      {
+        id: "design",
+        title: "Проектирование",
+        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="1.5"/><path d="M2 17L12 22L22 17" stroke="white" stroke-width="1.5"/><path d="M2 12L12 17L22 12" stroke="white" stroke-width="1.5"/></svg>`,
+        count: 8,
+        materials: [
+          { id: 1, title: "Планировка дома мечты", post_id: 33 },
+          { id: 2, title: "3D-визуализация интерьера", post_id: 39 }
+        ]
+      },
+      {
+        id: "restoration",
+        title: "Реставрация",
+        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="white" stroke-width="1.5"/><path d="M7 3V21" stroke="white" stroke-width="1.5"/><path d="M17 3V21" stroke="white" stroke-width="1.5"/></svg>`,
+        count: 5,
+        materials: [
+          { id: 1, title: "Реставрация старинного дома", post_id: 61 },
+          { id: 2, title: "Сохранение исторического фасада", post_id: 65 }
+        ]
+      },
+      {
+        id: "control",
+        title: "Контроль за строительством",
+        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 12L11 14L15 10M12 3L20 7V17L12 21L4 17V7L12 3Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        count: 7,
+        materials: [
+          { id: 1, title: "Чек-лист на стройке", post_id: 70 },
+          { id: 2, title: "Как проверить бригаду", post_id: 73 }
+        ]
+      },
+      {
+        id: "contractors",
+        title: "Подбор подрядчиков",
+        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17 21V19C17 16.7909 15.2091 15 13 15H5C2.79086 15 1 16.7909 1 19V21M23 21V19C22.9981 17.1703 21.7585 15.5852 20 15.13M16 3.13C17.7592 3.58456 19 5.1703 19 7V9H15M15 3H9V9H15V3Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        count: 6,
+        materials: [
+          { id: 1, title: "Топ-5 строительных компаний", post_id: 80 },
+          { id: 2, title: "Как не попасться на мошенников", post_id: 83 }
+        ]
+      },
+      {
+        id: "consultation",
+        title: "Консультации",
+        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 10H8.01M12 10H12.01M16 10H16.01M9 16H15M8 6H16C17.1046 6 18 6.89543 18 8V16C18 17.1046 17.1046 18 16 18H8C6.89543 18 6 17.1046 6 16V8C6 6.89543 6.89543 6 8 6Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+        count: 9,
+        materials: [
+          { id: 1, title: "Бесплатная консультация архитектора", post_id: 90 },
+          { id: 2, title: "Задай вопрос эксперту", post_id: 95 }
+        ]
+      }
+    ];
+
+    const gridContainer = document.getElementById('gridContainer');
+    const searchInput = document.getElementById('searchInput');
+
+    // Генерация карточек
+    categories.forEach(cat => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.dataset.title = cat.title;
+
+      card.innerHTML = `
+        <div class="card-icon">${cat.icon}</div>
+        <h3>${cat.title}</h3>
+        <p>${cat.count} материалов</p>
+        <div class="material-list" id="list-${cat.id}"></div>
+      `;
+
+      // Открываем/закрываем список
+      card.addEventListener('click', () => {
+        const list = document.getElementById(`list-${cat.id}`);
+        if (list.style.maxHeight) {
+          list.style.maxHeight = '0';
+        } else {
+          list.style.maxHeight = '300px';
+        }
+      });
+
+      // Заполняем список материалов
+      const list = card.querySelector('.material-list');
+      cat.materials.forEach(mat => {
+        const item = document.createElement('div');
+        item.className = 'material-item';
+        item.textContent = mat.title;
+        item.dataset.search = mat.title;
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const chatId = "-1001234567890"; // ⚠️ Замените на ID вашего канала
+          Telegram.WebApp.openTelegramLink(`https://t.me/c/${chatId.substring(4)}/${mat.post_id}`);
+        });
+        list.appendChild(item);
+      });
+
+      gridContainer.appendChild(card);
+    });
+
+    // Поиск
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
+        const title = card.dataset.title.toLowerCase();
+        const items = card.querySelectorAll('.material-item');
+        let visibleItems = 0;
+
+        items.forEach(item => {
+          const text = item.dataset.search.toLowerCase();
+          if (text.includes(query)) {
+            item.style.display = 'block';
+            visibleItems++;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        if (title.includes(query) || visibleItems > 0) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
