@@ -49,7 +49,7 @@
         z-index: 2000;
         opacity: 1;
         visibility: visible;
-        /* transition: opacity 0.5s ease, visibility 0.5s ease; */ /* Анимация убрана */
+        /* transition: opacity 0.5s ease, visibility 0.5s ease; */ 
         overflow: hidden;
     }
 
@@ -722,6 +722,14 @@
     // Переключение страниц
     function switchPage(page) {
       if (page === 'contractors') {
+          // Получаем элемент видео
+          const video = document.querySelector('.loader-video');
+          if (video) {
+              // Сбрасываем видео на начало и запускаем его
+              video.currentTime = 0;
+              video.play();
+          }
+
           loaderScreen.classList.remove('hidden');
           document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
@@ -734,8 +742,14 @@
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
                 document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
               }, 500);
-          }, 2000);
+          }, 2000); 
       } else {
+          // На других страницах видео не нужно, поэтому его можно остановить
+          const video = document.querySelector('.loader-video');
+          if (video) {
+            video.pause();
+          }
+
           document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
           document.getElementById(`page-${page}`).classList.add('active');
           document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
