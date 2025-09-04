@@ -63,7 +63,7 @@
 
     .loader-background-wrapper {
         position: absolute;
-        top: 0; 
+        top: 0;
         left: 0;
         right: 0;
         bottom: 0;
@@ -78,7 +78,7 @@
         position: relative;
         z-index: 2001;
         text-align: center;
-        margin-right: 0; 
+        margin-right: 0;
         margin-bottom: 0;
         display: flex; /* Добавлено для центрирования текста */
         justify-content: center; /* Добавлено для центрирования текста */
@@ -90,8 +90,8 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         font-size: 1.5em; /* Уменьшен размер шрифта */
         font-weight: 700;
-        color: white; 
-        text-shadow: none; 
+        color: white;
+        text-shadow: none;
         opacity: 0;
         animation: fadeInText 1s ease forwards;
         animation-delay: 0.5s;
@@ -110,7 +110,7 @@
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
-    
+
     /* Стили для жидкого стекла */
     .glass-effect {
         backdrop-filter: blur(10px);
@@ -121,7 +121,7 @@
     .search-bar {
       margin: 15px 0;
     }
-    
+
     #searchInput {
       width: 100%;
       padding: 14px 20px;
@@ -354,7 +354,7 @@
         color: var(--text-secondary);
         margin: 0 0 15px 0;
     }
-    
+
     /* Стили для страницы "Подрядчики" (Оставлены без изменений) */
     #page-contractors {
         padding-top: 10px; /* Уменьшено пустое пространство */
@@ -441,7 +441,7 @@
         background-position: right 10px center;
         text-align-last: center;
     }
-    
+
     .filter-group select:focus {
         border-color: var(--primary-blue);
         outline: none;
@@ -452,8 +452,8 @@
 <body>
 
   <div id="loader-screen" class="loader-screen hidden">
-      <div class="loader-background-wrapper"></div> 
-      <div class="loader-content"> 
+      <div class="loader-background-wrapper"></div>
+      <div class="loader-content">
           <h1 class="loader-text">ПРОРАБ</h1>
           </div>
   </div>
@@ -648,7 +648,7 @@
             siteUrl: "https://bs98.ru/"
         }
     ];
-    
+
     // Получение уникальных специальностей для фильтра
     const allSpecialties = Array.from(new Set(contractors.flatMap(c => c.specialty)));
 
@@ -716,7 +716,7 @@
         button.textContent = specialty.charAt(0).toUpperCase() + specialty.slice(1);
         button.dataset.specialty = specialty;
         specialtyFilterContainer.appendChild(button);
-        
+
         button.addEventListener('click', () => {
             button.classList.toggle('selected');
             renderContractors();
@@ -758,7 +758,7 @@
           setTimeout(() => {
               renderContractors();
               loaderScreen.classList.add('hidden');
-              
+
               setTimeout(() => {
                 contractorPage.classList.add('active');
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -783,18 +783,18 @@
         contractorList.innerHTML = '';
         const experience = experienceFilter.value;
         const type = typeFilter.value;
-        
+
         // Получаем все выбранные специализации
         const selectedSpecialties = Array.from(specialtyFilterContainer.querySelectorAll('.filter-button.selected'))
                                        .map(btn => btn.dataset.specialty);
 
         const filteredContractors = contractors.filter(c => {
-            const matchesExperience = experience === 'all' || 
+            const matchesExperience = experience === 'all' ||
                                       (experience === '1' && c.experience >= 1) ||
                                       (experience === '5' && c.experience >= 5) ||
                                       (experience === '10' && c.experience >= 10);
             const matchesType = type === 'all' || c.type === type;
-            
+
             // Проверяем, что подрядчик имеет ВСЕ выбранные специализации
             const matchesSpecialty = selectedSpecialties.length === 0 ||
                                      selectedSpecialties.every(specialty => c.specialty.includes(specialty));
@@ -826,7 +826,7 @@
     // Listen for filter changes
     experienceFilter.addEventListener('change', renderContractors);
     typeFilter.addEventListener('change', renderContractors);
-    
+
     // Initial render
     document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('page-contractors').classList.contains('active')) {
