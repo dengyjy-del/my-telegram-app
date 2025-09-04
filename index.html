@@ -321,89 +321,18 @@
     /* Стили для фильтров */
     .filter-group {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         gap: 10px;
         margin-bottom: 20px;
     }
     .filter-group select {
-        flex: 1;
+        width: 100%;
         padding: 10px;
         border: 1px solid var(--border-color);
         border-radius: 8px;
         background-color: var(--background-secondary);
         color: var(--text-primary);
         font-size: 14px;
-    }
-
-    /* Стили для детальной страницы подрядчика */
-    .contractor-detail-card {
-        background: var(--background-secondary);
-        border-radius: 20px;
-        padding: 20px;
-        margin-top: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    }
-    .contractor-detail-card h2 {
-        font-size: 22px;
-        margin-bottom: 10px;
-        color: var(--primary-green);
-    }
-    .contractor-detail-card p {
-        font-size: 16px;
-        line-height: 1.6;
-        margin-bottom: 15px;
-    }
-    .photo-gallery {
-        position: relative;
-        overflow: hidden;
-        border-radius: 15px;
-        margin-bottom: 20px;
-    }
-    .photo-gallery-inner {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-    }
-    .photo-gallery-inner img {
-        width: 100%;
-        height: auto;
-        display: block;
-        border-radius: 15px;
-    }
-    .gallery-nav {
-        position: absolute;
-        top: 50%;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        transform: translateY(-50%);
-        padding: 0 10px;
-    }
-    .gallery-nav button {
-        background: rgba(0,0,0,0.5);
-        border: none;
-        color: white;
-        font-size: 24px;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-    }
-    .gallery-nav button:hover {
-        background: rgba(0,0,0,0.8);
-    }
-
-    .back-btn {
-        margin-bottom: 15px;
-        display: inline-block;
-        font-size: 16px;
-        color: var(--text-secondary);
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-    }
-    .back-btn svg {
-        margin-right: 5px;
     }
 
   </style>
@@ -466,11 +395,6 @@
           </select>
       </div>
       <div id="contractorList"></div>
-  </div>
-
-  <div id="page-contractor-detail" class="page">
-    <a href="#" class="back-btn" onclick="goBack()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Назад</a>
-    <div id="contractorDetail"></div>
   </div>
 
   <div class="bottom-nav">
@@ -581,12 +505,7 @@
             experience: 12,
             objects: 30,
             contact: "your_telegram_contact",
-            description: "Надёжная бригада с многолетним опытом в строительстве. Мы специализируемся на возведении домов «под ключ» от фундамента до кровли. Гарантируем качество и соблюдение сроков. Работаем как с частными, так и с коммерческими объектами.",
-            photos: [
-                "https://i.ibb.co/L5hY59c/photo1.jpg",
-                "https://i.ibb.co/d7zM7sQ/photo2.jpg",
-                "https://i.ibb.co/3k5fTz7/photo3.jpg"
-            ]
+            siteUrl: "https://bs98.ru/"
         },
         {
             id: 2,
@@ -596,12 +515,7 @@
             experience: 8,
             objects: 15,
             contact: "your_telegram_contact_2",
-            description: "Компания 'ПроектСтрой' предлагает полный спектр услуг от архитектурного проектирования до финальной отделки. Наши специалисты обладают высокой квалификацией в монолитном строительстве, что позволяет нам реализовывать самые сложные и амбициозные проекты.",
-            photos: [
-                "https://i.ibb.co/P4y4W9z/photo4.jpg",
-                "https://i.ibb.co/VMyk4L6/photo5.jpg",
-                "https://i.ibb.co/q71T3vF/photo6.jpg"
-            ]
+            siteUrl: "https://bs98.ru/"
         },
         {
             id: 3,
@@ -611,19 +525,13 @@
             experience: 6,
             objects: 25,
             contact: "your_telegram_contact_3",
-            description: "Специализируемся на внутренних и наружных отделочных работах. Предлагаем полный комплекс услуг: от черновой до финишной отделки. Работаем быстро, качественно и с гарантией. Мы ценим ваше время и бюджет.",
-            photos: [
-                "https://i.ibb.co/p3tD58c/photo7.jpg",
-                "https://i.ibb.co/fQzS3gZ/photo8.jpg",
-                "https://i.ibb.co/JnH6t8R/photo9.jpg"
-            ]
+            siteUrl: "https://bs98.ru/"
         }
     ];
 
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
     const contractorList = document.getElementById('contractorList');
-    const contractorDetail = document.getElementById('contractorDetail');
     const experienceFilter = document.getElementById('experienceFilter');
     const typeFilter = document.getElementById('typeFilter');
     const specialtyFilter = document.getElementById('specialtyFilter');
@@ -747,68 +655,12 @@
                     <p><strong>Объекты:</strong> ${c.objects}+ выполненных</p>
                     <div class="btn-group">
                         <a href="https://t.me/${c.contact}" class="contact-btn">Написать</a>
-                        <a href="#" class="learn-more-btn" onclick="showContractorDetail(${c.id})">Узнать больше</a>
+                        <a href="#" class="learn-more-btn" onclick="Telegram.WebApp.openTelegramLink('${c.siteUrl}');">Узнать больше</a>
                     </div>
                 `;
                 contractorList.appendChild(card);
             });
         }
-    }
-
-    // Логика детальной страницы подрядчика
-    let currentPage = 'home';
-    let lastPage = 'home';
-
-    function showContractorDetail(id) {
-        lastPage = currentPage;
-        switchPage('contractor-detail');
-        const contractor = contractors.find(c => c.id === id);
-
-        if (!contractor) {
-            contractorDetail.innerHTML = `<p style="text-align:center; color: var(--text-secondary);">Информация о подрядчике не найдена.</p>`;
-            return;
-        }
-
-        contractorDetail.innerHTML = `
-            <h2>${contractor.name}</h2>
-            <div class="photo-gallery">
-                <div class="photo-gallery-inner">
-                    ${contractor.photos.map(photo => `<img src="${photo}" alt="Пример работы">`).join('')}
-                </div>
-                <div class="gallery-nav">
-                    <button class="prev-btn" onclick="prevSlide()">&lt;</button>
-                    <button class="next-btn" onclick="nextSlide()">&gt;</button>
-                </div>
-            </div>
-            <p><strong>Сфера:</strong> ${contractor.specialty.join(', ')}</p>
-            <p><strong>Опыт:</strong> ${contractor.experience} лет на рынке</p>
-            <p><strong>Количество объектов:</strong> ${contractor.objects}+ выполненных</p>
-            <p><strong>О компании:</strong> ${contractor.description}</p>
-            <a href="https://t.me/${contractor.contact}" class="contact-btn" style="display:block; text-align:center;">Написать в Telegram</a>
-        `;
-
-        let slideIndex = 0;
-        const slides = document.querySelectorAll('#contractorDetail .photo-gallery-inner img');
-        const totalSlides = slides.length;
-
-        window.prevSlide = function() {
-            slideIndex = (slideIndex - 1 + totalSlides) % totalSlides;
-            updateGallery();
-        }
-
-        window.nextSlide = function() {
-            slideIndex = (slideIndex + 1) % totalSlides;
-            updateGallery();
-        }
-
-        function updateGallery() {
-            const galleryInner = document.querySelector('#contractorDetail .photo-gallery-inner');
-            galleryInner.style.transform = `translateX(${-slideIndex * 100}%)`;
-        }
-    }
-
-    function goBack() {
-        switchPage(lastPage);
     }
 
     // Listen for filter changes
