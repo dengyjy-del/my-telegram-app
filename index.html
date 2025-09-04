@@ -341,6 +341,7 @@
     #page-contractors .section-title {
         text-align: center;
         margin-top: 0;
+        color: var(--primary-green);
     }
     .contractor-card {
         background: var(--background-secondary);
@@ -414,8 +415,8 @@
     }
     .favorite-toggle.is-favorite {
         opacity: 1;
-        stroke: var(--primary-blue);
-        fill: var(--primary-blue);
+        stroke: var(--primary-green);
+        fill: var(--primary-green);
     }
     .favorite-toggle svg {
         width: 100%;
@@ -425,8 +426,8 @@
         stroke-width: 1.8;
     }
     .favorite-toggle.is-favorite svg {
-        fill: var(--primary-blue);
-        stroke: var(--primary-blue);
+        fill: var(--primary-green);
+        stroke: var(--primary-green);
     }
 
     /* Стили для верхней панели на странице подрядчиков */
@@ -436,7 +437,7 @@
       align-items: center;
       margin: 15px 0;
     }
-    .region-selector, .favorites-btn {
+    .filter-selector, .favorites-btn {
         display: flex;
         align-items: center;
         gap: 8px;
@@ -449,66 +450,38 @@
         border-radius: 10px;
         transition: all 0.3s ease;
     }
-    .region-selector:hover, .favorites-btn:hover {
+    .filter-selector:hover, .favorites-btn:hover {
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
-    .region-selector svg, .favorites-btn svg {
+    .filter-selector svg, .favorites-btn svg {
       width: 18px;
       height: 18px;
       stroke: var(--text-primary);
       stroke-width: 1.8;
     }
-    .region-selector .dropdown-arrow svg {
+    .filter-selector.region-selector .dropdown-arrow svg {
       width: 14px;
       height: 14px;
       stroke: var(--text-secondary);
     }
     .favorites-btn.active {
-      color: var(--primary-blue);
+      color: var(--primary-green);
     }
     .favorites-btn.active svg {
-      stroke: var(--primary-blue);
-      fill: var(--primary-blue);
+      stroke: var(--primary-green);
+      fill: var(--primary-green);
     }
     
-    /* Стили для горизонтальных фильтров */
-    .filter-group-scroller {
+    .filters-row {
       display: flex;
-      overflow-x: auto;
+      justify-content: space-between;
       gap: 10px;
       margin-bottom: 20px;
-      padding-bottom: 10px; /* Для видимости тени скроллбара */
-      -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
-      scroll-snap-type: x mandatory;
+      flex-wrap: wrap;
     }
-    .filter-group-scroller::-webkit-scrollbar {
-        height: 5px;
-    }
-    .filter-group-scroller::-webkit-scrollbar-track {
-        background: var(--background-secondary);
-        border-radius: 10px;
-    }
-    .filter-group-scroller::-webkit-scrollbar-thumb {
-        background: var(--text-secondary);
-        border-radius: 10px;
-    }
-    .filter-button {
-      flex-shrink: 0;
-      padding: 10px 15px;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      background: var(--background-light);
-      color: var(--text-secondary);
-      font-size: 14px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.3s ease;
-      scroll-snap-align: start;
-    }
-    .filter-button.active {
-        background: var(--primary-blue);
-        color: white;
-        border-color: var(--primary-blue);
+    .filter-selector {
+        flex-grow: 1;
+        justify-content: center;
     }
 
     /* Стили для модального окна */
@@ -521,7 +494,7 @@
         background-color: rgba(0, 0, 0, 0.5);
         display: none;
         justify-content: center;
-        align-items: flex-end;
+        align-items: center; /* Центрируем по вертикали */
         z-index: 3000;
         opacity: 0;
         transition: opacity 0.3s ease;
@@ -532,15 +505,17 @@
     }
     .modal-content {
         background-color: var(--background-light);
-        border-radius: 20px 20px 0 0;
-        padding: 20px;
-        width: 100%;
-        max-width: 500px;
-        transform: translateY(100%);
-        transition: transform 0.3s ease;
+        border-radius: 20px;
+        padding: 25px;
+        width: 90%;
+        max-width: 400px;
+        transform: translateY(20px);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        opacity: 0;
     }
     .modal-overlay.active .modal-content {
         transform: translateY(0);
+        opacity: 1;
     }
     .modal-header {
       font-size: 18px;
@@ -559,6 +534,15 @@
         -webkit-appearance: none;
         text-align-last: center;
         margin-bottom: 20px;
+        -moz-appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%236E6E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+    }
+    .modal-body select[multiple] {
+      height: 200px;
+      text-align-last: start;
+      background-image: none;
     }
     .modal-footer {
         display: flex;
@@ -568,7 +552,7 @@
         width: 100%;
         padding: 14px;
         border-radius: 12px;
-        background-color: var(--primary-blue);
+        background-color: var(--primary-green);
         color: white;
         border: none;
         font-size: 16px;
@@ -577,7 +561,7 @@
         transition: background-color 0.3s ease;
     }
     .modal-apply-btn:hover {
-        background-color: #006ae6;
+        background-color: #2b9d4a;
     }
 
   </style>
@@ -625,7 +609,7 @@
   <div id="page-contractors" class="page">
       <h2 class="section-title">Подбор подрядчика</h2>
       <div class="contractors-header">
-          <div class="region-selector" onclick="toggleRegionModal(true)">
+          <div class="filter-selector region-selector" onclick="showFilterModal('region')">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><path d="M1 6v15m0 0l7-4V3m0 18l7-4m0 4l7-4V3m0 0l-7 4m0-4l-7 4m7 0v18"></path></svg>
               <span id="selectedRegionText">Санкт-Петербург и Ленинг...</span>
               <span class="dropdown-arrow">
@@ -638,55 +622,29 @@
           </div>
       </div>
       
-      <div class="filter-group-scroller" id="filterScroller">
-          <div class="filter-group-item">
-              <span class="filter-label">Опыт:</span>
-              <div class="filter-options" id="experienceFilter">
-                  <button class="filter-button active" data-value="all">Все</button>
-                  <button class="filter-button" data-value="1">от 1 года</button>
-                  <button class="filter-button" data-value="5">от 5 лет</button>
-                  <button class="filter-button" data-value="10">от 10 лет</button>
-              </div>
+      <div class="filters-row">
+          <div class="filter-selector" id="experienceSelector" onclick="showFilterModal('experience')">
+              Опыт: <span class="filter-value-text" id="experienceValue">Все</span>
           </div>
-          <div class="filter-group-item">
-              <span class="filter-label">Форма:</span>
-              <div class="filter-options" id="typeFilter">
-                  <button class="filter-button active" data-value="all">Все</button>
-                  <button class="filter-button" data-value="бригада">Бригада</button>
-                  <button class="filter-button" data-value="ООО">ООО</button>
-              </div>
+          <div class="filter-selector" id="typeSelector" onclick="showFilterModal('type')">
+              Форма: <span class="filter-value-text" id="typeValue">Все</span>
           </div>
-          <div class="filter-group-item">
-              <span class="filter-label">Сфера:</span>
-              <div class="filter-options" id="specialtyFilter">
-                  <button class="filter-button active" data-value="all">Все</button>
-                  <button class="filter-button" data-value="монолитные работы">Монолитные работы</button>
-                  <button class="filter-button" data-value="кирпичная кладка">Кирпичная кладка</button>
-                  <button class="filter-button" data-value="кровля">Кровля</button>
-                  <button class="filter-button" data-value="окна">Окна</button>
-                  <button class="filter-button" data-value="отделочные работы">Отделочные работы</button>
-                  <button class="filter-button" data-value="сантехника">Сантехника</button>
-                  <button class="filter-button" data-value="электричество">Электричество</button>
-              </div>
+          <div class="filter-selector" id="specialtySelector" onclick="showFilterModal('specialty')">
+              Сфера: <span class="filter-value-text" id="specialtyValue">Все</span>
           </div>
       </div>
       
       <div id="contractorList"></div>
   </div>
 
-  <div id="regionModal" class="modal-overlay" onclick="toggleRegionModal(false)">
+  <div id="mainModal" class="modal-overlay" onclick="hideModal()">
       <div class="modal-content" onclick="event.stopPropagation()">
-          <div class="modal-header">Выберите регион</div>
+          <div class="modal-header" id="modalHeader"></div>
           <div class="modal-body">
-              <select id="regionSelect">
-                  <option value="all">Все регионы</option>
-                  <option value="s-pb">Санкт-Петербург и Ленинградская область</option>
-                  <option value="msk">Москва и Московская область</option>
-                  <option value="krasnodar">Краснодар и Краснодарский край</option>
-              </select>
+              <select id="modalSelect"></select>
           </div>
           <div class="modal-footer">
-              <button class="modal-apply-btn" onclick="applyRegion()">Применить</button>
+              <button class="modal-apply-btn" id="modalApplyBtn"></button>
           </div>
       </div>
   </div>
@@ -834,21 +792,49 @@
 
     const regions = {
       'all': 'Все регионы',
-      's-pb': 'Санкт-Петербург и Ленинг...',
+      's-pb': 'Санкт-Петербург и Ленинградская область',
       'msk': 'Москва и Московская область',
       'krasnodar': 'Краснодар и Краснодарский край'
     };
 
     const filters = {
-        experience: ['all', '1', '5', '10'],
-        type: ['all', 'бригада', 'ООО'],
-        specialty: ['all', 'монолитные работы', 'кирпичная кладка', 'кровля', 'окна', 'отделочные работы', 'сантехника', 'электричество']
+        experience: {
+            title: 'Выберите опыт',
+            options: {
+                'all': 'Все',
+                '1': 'от 1 года',
+                '5': 'от 5 лет',
+                '10': 'от 10 лет'
+            }
+        },
+        type: {
+            title: 'Выберите форму',
+            options: {
+                'all': 'Все',
+                'бригада': 'Бригада',
+                'ООО': 'ООО'
+            }
+        },
+        specialty: {
+            title: 'Выберите сферу',
+            options: {
+                'all': 'Все',
+                'монолитные работы': 'Монолитные работы',
+                'кирпичная кладка': 'Кирпичная кладка',
+                'кровля': 'Кровля',
+                'окна': 'Окна',
+                'отделочные работы': 'Отделочные работы',
+                'сантехника': 'Сантехника',
+                'электричество': 'Электричество'
+            }
+        }
     };
 
     let activeFilters = {
+        region: 's-pb',
         experience: 'all',
         type: 'all',
-        specialty: 'all',
+        specialty: ['all'],
         isFavorites: false
     };
 
@@ -859,8 +845,10 @@
     const contractorList = document.getElementById('contractorList');
     const loaderScreen = document.getElementById('loader-screen');
     const contractorPage = document.getElementById('page-contractors');
-    const regionModal = document.getElementById('regionModal');
-    const regionSelect = document.getElementById('regionSelect');
+    const mainModal = document.getElementById('mainModal');
+    const modalHeader = document.getElementById('modalHeader');
+    const modalSelect = document.getElementById('modalSelect');
+    const modalApplyBtn = document.getElementById('modalApplyBtn');
     const selectedRegionText = document.getElementById('selectedRegionText');
     const favoritesBtn = document.getElementById('favoritesBtn');
 
@@ -981,10 +969,29 @@
       Telegram.WebApp.openTelegramLink(url);
     }
 
+    function updateRegionText() {
+        let text = regions[activeFilters.region];
+        if (text.length > 25) {
+            text = text.substring(0, 22) + '...';
+        }
+        selectedRegionText.textContent = text;
+    }
+
+    function updateFilterText() {
+        document.getElementById('experienceValue').textContent = filters.experience.options[activeFilters.experience];
+        document.getElementById('typeValue').textContent = filters.type.options[activeFilters.type];
+
+        if (activeFilters.specialty.includes('all') || activeFilters.specialty.length === 0) {
+             document.getElementById('specialtyValue').textContent = 'Все';
+        } else {
+             document.getElementById('specialtyValue').textContent = activeFilters.specialty.length > 1 ? `Выбрано ${activeFilters.specialty.length}` : filters.specialty.options[activeFilters.specialty[0]];
+        }
+    }
+
     // Логика страницы "Подрядчики"
     function renderContractors() {
         contractorList.innerHTML = '';
-        const { experience, type, specialty, isFavorites } = activeFilters;
+        const { region, experience, type, specialty, isFavorites } = activeFilters;
         
         let filteredContractors = contractors;
 
@@ -998,7 +1005,7 @@
                                       (experience === '5' && c.experience >= 5) ||
                                       (experience === '10' && c.experience >= 10);
             const matchesType = type === 'all' || c.type === type;
-            const matchesSpecialty = specialty === 'all' || c.specialty.includes(specialty);
+            const matchesSpecialty = specialty.includes('all') || specialty.some(s => c.specialty.includes(s));
 
             return matchesExperience && matchesType && matchesSpecialty;
         });
@@ -1011,7 +1018,7 @@
                 const card = document.createElement('div');
                 card.className = 'contractor-card';
                 card.innerHTML = `
-                    <div class="favorite-toggle" data-id="${c.id}" ${isFavorite ? 'class="favorite-toggle is-favorite"' : ''}>
+                    <div class="favorite-toggle ${isFavorite ? 'is-favorite' : ''}" data-id="${c.id}">
                         <svg viewBox="0 0 24 24" fill="${isFavorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                         </svg>
@@ -1043,26 +1050,9 @@
                 });
             });
         }
+        
+        updateFilterText();
     }
-
-    // Логика фильтров-кнопок
-    document.querySelectorAll('.filter-options').forEach(group => {
-        group.addEventListener('click', (e) => {
-            if (e.target.classList.contains('filter-button')) {
-                const filterType = group.id.replace('Filter', '');
-                const value = e.target.dataset.value;
-                
-                // Снимаем активность со всех кнопок в группе
-                group.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
-                
-                // Устанавливаем активность для нажатой кнопки
-                e.target.classList.add('active');
-
-                activeFilters[filterType] = value;
-                renderContractors();
-            }
-        });
-    });
 
     // Логика кнопки "Избранное"
     favoritesBtn.addEventListener('click', () => {
@@ -1071,30 +1061,77 @@
         renderContractors();
     });
 
-    // Модальное окно региона
-    function toggleRegionModal(show) {
-      if (show) {
-        regionModal.classList.add('active');
-        // Запрещаем скролл фона
+    // Модальное окно для региона и фильтров
+    let currentFilterType = null;
+    
+    function showFilterModal(filterType) {
+        currentFilterType = filterType;
+        modalSelect.innerHTML = '';
+        modalSelect.multiple = false;
+
+        let options = {};
+        let headerText = '';
+
+        if (filterType === 'region') {
+            options = regions;
+            headerText = 'Выберите регион';
+            modalSelect.multiple = false;
+        } else {
+            options = filters[filterType].options;
+            headerText = filters[filterType].title;
+            if (filterType === 'specialty') {
+                modalSelect.multiple = true;
+            }
+        }
+
+        for (const [key, value] of Object.entries(options)) {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = value;
+            if (filterType === 'region' && key === activeFilters.region) {
+                option.selected = true;
+            } else if (filterType !== 'region' && activeFilters[filterType].includes(key)) {
+                option.selected = true;
+            }
+            modalSelect.appendChild(option);
+        }
+
+        modalHeader.textContent = headerText;
+        modalApplyBtn.textContent = 'Применить';
+        modalApplyBtn.onclick = applyModalSelection;
+        
+        mainModal.classList.add('active');
         document.body.style.overflow = 'hidden';
-      } else {
-        regionModal.classList.remove('active');
-        // Возвращаем скролл
-        document.body.style.overflow = '';
-      }
     }
 
-    function applyRegion() {
-      const selectedValue = regionSelect.value;
-      const selectedText = regions[selectedValue];
-      selectedRegionText.textContent = selectedText.length > 25 ? selectedText.substring(0, 25) + '...' : selectedText;
-      toggleRegionModal(false);
-      // Здесь можно добавить логику фильтрации по региону, если будут данные
-      renderContractors();
+    function hideModal() {
+        mainModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function applyModalSelection() {
+        if (!currentFilterType) return;
+
+        if (currentFilterType === 'region') {
+            activeFilters.region = modalSelect.value;
+            updateRegionText();
+        } else if (currentFilterType === 'specialty') {
+            activeFilters.specialty = Array.from(modalSelect.selectedOptions).map(opt => opt.value);
+            if (activeFilters.specialty.length === 0) {
+                 activeFilters.specialty = ['all'];
+            }
+        } else {
+            activeFilters[currentFilterType] = modalSelect.value;
+        }
+
+        hideModal();
+        renderContractors();
     }
     
     // Initial render
     document.addEventListener('DOMContentLoaded', () => {
+        updateRegionText();
+        updateFilterText();
         if (document.getElementById('page-contractors').classList.contains('active')) {
             renderContractors();
         }
