@@ -1079,47 +1079,34 @@
       });
     });
 
-    // Переключение страниц
+    // Переключение страниц с унифицированным загрузочным экраном
     function switchPage(page) {
-        if (page === 'contractors' || page === 'project-control') {
-            const videoSrc = (page === 'project-control') ? "https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon2.mp4" : "https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.mp4";
-            const textContent = (page === 'project-control') ? "Контроль Ваших проектов" : "ПРОРАБ";
-            const subtitleContent = (page === 'project-control') ? "" : "Цифровой сервис подбора проверенных подрядчиков";
-            
-            loaderVideo.src = videoSrc;
-            loaderText.textContent = textContent;
-            loaderSubtitle.textContent = subtitleContent;
-            loaderSubtitle.style.display = (page === 'project-control') ? 'none' : 'block';
-            
-            loaderVideo.currentTime = 0;
-            loaderVideo.play();
-            loaderScreen.classList.remove('hidden');
-            
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        loaderVideo.src = "https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.mp4";
+        loaderText.textContent = "ПРОРАБ";
+        loaderSubtitle.textContent = "Цифровой сервис подбора проверенных подрядчиков";
+        loaderSubtitle.style.display = 'block';
+        
+        loaderVideo.currentTime = 0;
+        loaderVideo.play();
+        loaderScreen.classList.remove('hidden');
+        
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
-            setTimeout(() => {
+        setTimeout(() => {
+            if (page === 'contractors' || page === 'project-control') {
                 renderContractors(page);
-                loaderScreen.classList.add('hidden');
-                
-                setTimeout(() => {
-                    document.getElementById(`page-${page}`).classList.add('active');
-                    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-                    const navBtn = document.querySelector(`.nav-btn[data-page=\"${page}\"]`);
-                    if (navBtn) {
-                        navBtn.classList.add('active');
-                    }
-                }, 500);
-            }, 2000); 
-        } else {
-            const video = document.querySelector('.loader-video');
-            if (video) {
-                video.pause();
             }
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(`page-${page}`).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
-        }
+            loaderScreen.classList.add('hidden');
+            
+            setTimeout(() => {
+                document.getElementById(`page-${page}`).classList.add('active');
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                const navBtn = document.querySelector(`.nav-btn[data-page=\"${page}\"]`);
+                if (navBtn) {
+                    navBtn.classList.add('active');
+                }
+            }, 500);
+        }, 2500); 
     }
 
     // Открытие чата
