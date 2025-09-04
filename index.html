@@ -1056,7 +1056,7 @@
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
                 document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
               }, 500);
-          }, 2000); 
+          }, 2500); 
       } else {
           // На других страницах видео не нужно, поэтому его можно остановить
           const video = document.querySelector('.loader-video');
