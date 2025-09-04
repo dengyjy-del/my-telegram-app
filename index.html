@@ -17,6 +17,7 @@
       --border-color: #E5E5E5;
       --shadow-color: rgba(0, 122, 255, 0.1);
       --green-shadow-color: rgba(52, 199, 89, 0.2);
+      --bottom-nav-height: 85px; /* Высота нижней панели */
     }
 
     * {
@@ -31,6 +32,8 @@
       color: var(--text-primary);
       min-height: 100vh;
       padding: 20px;
+      /* Добавляем отступ снизу, чтобы нижняя навигация не перекрывала контент */
+      padding-bottom: calc(var(--bottom-nav-height) + 20px + env(safe-area-inset-bottom));
     }
 
     /* Стили для загрузочного экрана */
@@ -40,11 +43,6 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: #000;
-        /* Убедитесь, что fon.jpg находится в той же папке, что и HTML-файл */
-        background-image: url('fon.jpg');
-        background-size: cover;
-        background-position: center;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -53,6 +51,7 @@
         opacity: 1;
         visibility: visible;
         transition: opacity 0.5s ease, visibility 0.5s ease;
+        overflow: hidden; /* Чтобы блюр не выходил за границы */
     }
 
     .loader-screen.hidden {
@@ -60,15 +59,45 @@
         visibility: hidden;
     }
 
+    /* Оболочка для фона с блюром */
+    .loader-background-wrapper {
+        position: absolute;
+        top: -20px; /* Увеличиваем, чтобы блюр был по краям */
+        left: -20px;
+        right: -20px;
+        bottom: -20px;
+        /* Зеленый абстрактный цифровой градиентный фон */
+        background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%); /* Зеленый градиент */
+        filter: blur(8px); /* Эффект боке */
+        z-index: -1; /* Поместить под контент загрузочного экрана */
+    }
+
+    .loader-content {
+        position: relative; /* Чтобы текст был поверх фона */
+        z-index: 2001;
+        text-align: center;
+    }
+
     .loader-text {
-        font-family: 'Georgia', serif; /* Замените на любой красивый шрифт */
-        font-size: 4em;
-        font-weight: bold;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* Как в главном меню */
+        font-size: 3em; /* Чуть поменьше */
+        font-weight: 700; /* Жирный */
         color: white;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.6); /* Более выраженная тень */
         opacity: 0;
         animation: fadeInText 1s ease forwards;
         animation-delay: 0.5s;
+        margin-bottom: 10px; /* Отступ от подзаголовка */
+    }
+
+    .loader-subtitle {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 1.2em; /* Меньшим шрифтом */
+        color: rgba(255, 255, 255, 0.8);
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        opacity: 0;
+        animation: fadeInText 1s ease forwards;
+        animation-delay: 1s; /* Задержка, чтобы появился после заголовка */
     }
 
     @keyframes fadeInText {
@@ -189,7 +218,7 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 85px;
+      height: var(--bottom-nav-height); /* Используем переменную */
       background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
@@ -253,7 +282,14 @@
       display: none;
       opacity: 0;
       transition: opacity 0.5s ease;
+      /* Добавляем отступ для всех страниц, чтобы не перекрывались нижней навигацией */
+      min-height: calc(100vh - var(--bottom-nav-height) - 40px - env(safe-area-inset-bottom));
     }
+    /* Дополнительный отступ для главной и подрядчиков, если нужен еще больше пространства */
+    #page-home, #page-contractors {
+        padding-bottom: calc(var(--bottom-nav-height) + 20px); /* Увеличиваем отступ, если контент длинный */
+    }
+
 
     .page.active {
       display: block;
@@ -386,7 +422,9 @@
 <body>
 
   <div id="loader-screen" class="loader-screen hidden">
-      <h1 class="loader-text">ПРОРАБ</h1>
+      <div class="loader-background-wrapper"></div> <div class="loader-content"> <h1 class="loader-text">ПРОРАБ</h1>
+          <p class="loader-subtitle">Цифровой сервис подбора проверенных подрядчиков</p>
+      </div>
   </div>
 
   <div id="page-home" class="page active">
@@ -664,22 +702,22 @@
     // Переключение страниц
     function switchPage(page) {
       if (page === 'contractors') {
-          // Показываем загрузочный экран и запускаем анимацию
+          // Показываем загрузочный экран
           loaderScreen.classList.remove('hidden');
           // Скрываем все страницы, кроме загрузочной
           document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
           setTimeout(() => {
               renderContractors();
-              loaderScreen.classList.add('hidden');
+              loaderScreen.classList.add('hidden'); // Скрываем загрузочный экран
 
-              // Через 0.5 секунды после начала скрытия загрузочного экрана показываем страницу с подрядчиками
+              // Через 0.5 секунды (длительность перехода opacity) показываем страницу с подрядчиками
               setTimeout(() => {
                 contractorPage.classList.add('active');
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
                 document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
-              }, 500);
-          }, 1500); // Задержка в 1.5 секунды для демонстрации загрузочного экрана
+              }, 500); // Соответствует transition-duration загрузочного экрана
+          }, 2000); // Задержка в 2 секунды для демонстрации загрузочного экрана (1s анимация текста + 1s задержка)
       } else {
           document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
           document.getElementById(`page-${page}`).classList.add('active');
@@ -740,7 +778,7 @@
     // ДОПОЛНИТЕЛЬНОЕ ИЗМЕНЕНИЕ: ВЫЗОВ ФУНКЦИИ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
     document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('page-contractors').classList.contains('active')) {
-            renderContractors();
+            switchPage('contractors'); // Используем switchPage для активации загрузочного экрана
         }
     });
 
