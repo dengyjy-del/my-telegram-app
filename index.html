@@ -9,12 +9,14 @@
     /* Глобальные стили и переменные */
     :root {
       --primary-blue: #007AFF;
+      --primary-green: #34C759;
       --background-light: #FFFFFF;
       --background-secondary: #F5F5F7;
       --text-primary: #1D1D1F;
       --text-secondary: #6E6E73;
       --border-color: #E5E5E5;
       --shadow-color: rgba(0, 122, 255, 0.1);
+      --green-shadow-color: rgba(52, 199, 89, 0.2);
     }
 
     * {
@@ -254,7 +256,13 @@
         margin: 0 0 15px 0;
     }
 
-    /* Стили для карточек подрядчиков */
+    /* Стили для страницы "Подрядчики" */
+    #page-contractors {
+        padding-top: 50px;
+    }
+    #page-contractors .section-title {
+        text-align: center;
+    }
     .contractor-card {
         background: var(--background-secondary);
         border: 1px solid var(--border-color);
@@ -270,7 +278,7 @@
         font-size: 18px;
         font-weight: 600;
         margin-bottom: 8px;
-        color: var(--primary-blue);
+        color: var(--primary-green);
     }
     .contractor-card p {
         font-size: 14px;
@@ -278,19 +286,124 @@
         color: var(--text-secondary);
         margin-bottom: 5px;
     }
-    .contractor-card .contact-btn {
-        display: inline-block;
-        background-color: var(--primary-blue);
-        color: white;
-        padding: 10px 20px;
+    .contractor-card .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    .contractor-card .contact-btn, .contractor-card .learn-more-btn {
+        flex: 1;
+        display: block;
+        padding: 12px 10px;
         border-radius: 10px;
+        text-align: center;
         text-decoration: none;
         font-weight: 500;
-        margin-top: 10px;
+        font-size: 14px;
         transition: background-color 0.3s ease;
     }
+    .contractor-card .contact-btn {
+        background-color: var(--primary-green);
+        color: white;
+    }
     .contractor-card .contact-btn:hover {
-        background-color: #0069d9;
+        background-color: #2b9d4a;
+    }
+    .contractor-card .learn-more-btn {
+        background-color: var(--background-light);
+        color: var(--primary-green);
+        border: 1px solid var(--primary-green);
+    }
+    .contractor-card .learn-more-btn:hover {
+        background-color: rgba(52, 199, 89, 0.1);
+    }
+
+    /* Стили для фильтров */
+    .filter-group {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .filter-group select {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--background-secondary);
+        color: var(--text-primary);
+        font-size: 14px;
+    }
+
+    /* Стили для детальной страницы подрядчика */
+    .contractor-detail-card {
+        background: var(--background-secondary);
+        border-radius: 20px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    .contractor-detail-card h2 {
+        font-size: 22px;
+        margin-bottom: 10px;
+        color: var(--primary-green);
+    }
+    .contractor-detail-card p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+    .photo-gallery {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        margin-bottom: 20px;
+    }
+    .photo-gallery-inner {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+    .photo-gallery-inner img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 15px;
+    }
+    .gallery-nav {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+        padding: 0 10px;
+    }
+    .gallery-nav button {
+        background: rgba(0,0,0,0.5);
+        border: none;
+        color: white;
+        font-size: 24px;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    .gallery-nav button:hover {
+        background: rgba(0,0,0,0.8);
+    }
+
+    .back-btn {
+        margin-bottom: 15px;
+        display: inline-block;
+        font-size: 16px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+    .back-btn svg {
+        margin-right: 5px;
     }
 
   </style>
@@ -310,7 +423,7 @@
       Меня зовут <strong>Виталий Юхневич</strong> — предприниматель с 20-летним опытом в строительной отрасли».
     </p>
     <p>
-     Я — основатель проектно-строительной компании и генеральный директор компании по контролю за строительством.За карьеру реализовано более <strong>100 объектов</strong>, построено и отремонтировано свыше <strong>150 000 м2</strong>
+      Я — основатель проектно-строительной компании и генеральный директор компании по контролю за строительством. За карьеру реализовано более <strong>100 объектов</strong>, построено и отремонтировано свыше <strong>150 000 м?</strong>.
     </p>
     <p>
       В этом канале делюсь практикой, кейсами и возможностями для студентов, молодых специалистов и тех, кто хочет строить карьеру в строительстве. Здесь — только реальные знания, без воды.
@@ -329,22 +442,35 @@
 
   <div id="page-contractors" class="page">
       <h2 class="section-title">Подбор подрядчика</h2>
-      <div class="contractor-list">
-          <div class="contractor-card">
-              <h4>Бригада "Дом-Строй"</h4>
-              <p><strong>Сфера:</strong> Кирпичная кладка, фундамент, кровля</p>
-              <p><strong>Опыт:</strong> 12 лет на рынке</p>
-              <p><strong>Объекты:</strong> 30+ выполненных</p>
-              <a href="https://t.me/" class="contact-btn">Написать</a>
-          </div>
-          <div class="contractor-card">
-              <h4>ООО "ПроектСтрой"</h4>
-              <p><strong>Сфера:</strong> Монолитные работы, проектирование</p>
-              <p><strong>Опыт:</strong> 8 лет на рынке</p>
-              <p><strong>Объекты:</strong> 15+ выполненных</p>
-              <a href="https://t.me/" class="contact-btn">Написать</a>
-          </div>
+      <div class="filter-group">
+          <select id="experienceFilter">
+              <option value="all">Опыт: Все</option>
+              <option value="1">от 1 года</option>
+              <option value="5">от 5 лет</option>
+              <option value="10">от 10 лет</option>
+          </select>
+          <select id="typeFilter">
+              <option value="all">Форма: Все</option>
+              <option value="бригада">Только бригады</option>
+              <option value="ООО">Только ООО</option>
+          </select>
+          <select id="specialtyFilter">
+              <option value="all">Сфера: Все</option>
+              <option value="монолитные работы">Монолитные работы</option>
+              <option value="кирпичная кладка">Кирпичная кладка</option>
+              <option value="кровля">Кровля</option>
+              <option value="окна">Окна</option>
+              <option value="отделочные работы">Отделочные работы</option>
+              <option value="сантехника">Сантехника</option>
+              <option value="электричество">Электричество</option>
+          </select>
       </div>
+      <div id="contractorList"></div>
+  </div>
+
+  <div id="page-contractor-detail" class="page">
+    <a href="#" class="back-btn" onclick="goBack()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> Назад</a>
+    <div id="contractorDetail"></div>
   </div>
 
   <div class="bottom-nav">
@@ -429,8 +555,9 @@
         icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M17 21V19C17 16.7909 15.2091 15 13 15H5C2.79086 15 1 16.7909 1 19V21M23 21V19C22.9981 17.1703 21.7585 15.5852 20 15.13M16 3.13C17.7592 3.58456 19 5.1703 19 7V9H15M15 3H9V9H15V3Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
         count: 6,
         materials: [
-          { id: 1, title: "Как не попасться на мошенников", post_id: 83 },
-          { id: 2, title: "Подбор подрядчика", post_id: 85 }
+          { id: 1, title: "Топ-5 строительных компаний", post_id: 80 },
+          { id: 2, title: "Как не попасться на мошенников", post_id: 83 },
+          { id: 3, title: "Подбор подрядчика", post_id: 85 }
         ]
       },
       {
@@ -444,8 +571,62 @@
         ]
       }
     ];
+
+    const contractors = [
+        {
+            id: 1,
+            name: "Бригада 'Дом-Строй'",
+            type: "бригада",
+            specialty: ["кирпичная кладка", "фундамент", "кровля"],
+            experience: 12,
+            objects: 30,
+            contact: "your_telegram_contact",
+            description: "Надёжная бригада с многолетним опытом в строительстве. Мы специализируемся на возведении домов «под ключ» от фундамента до кровли. Гарантируем качество и соблюдение сроков. Работаем как с частными, так и с коммерческими объектами.",
+            photos: [
+                "https://i.ibb.co/L5hY59c/photo1.jpg",
+                "https://i.ibb.co/d7zM7sQ/photo2.jpg",
+                "https://i.ibb.co/3k5fTz7/photo3.jpg"
+            ]
+        },
+        {
+            id: 2,
+            name: "ООО 'ПроектСтрой'",
+            type: "ООО",
+            specialty: ["монолитные работы", "проектирование", "отделочные работы"],
+            experience: 8,
+            objects: 15,
+            contact: "your_telegram_contact_2",
+            description: "Компания 'ПроектСтрой' предлагает полный спектр услуг от архитектурного проектирования до финальной отделки. Наши специалисты обладают высокой квалификацией в монолитном строительстве, что позволяет нам реализовывать самые сложные и амбициозные проекты.",
+            photos: [
+                "https://i.ibb.co/P4y4W9z/photo4.jpg",
+                "https://i.ibb.co/VMyk4L6/photo5.jpg",
+                "https://i.ibb.co/q71T3vF/photo6.jpg"
+            ]
+        },
+        {
+            id: 3,
+            name: "Бригада 'Мастер-Отделка'",
+            type: "бригада",
+            specialty: ["отделочные работы", "сантехника", "электричество"],
+            experience: 6,
+            objects: 25,
+            contact: "your_telegram_contact_3",
+            description: "Специализируемся на внутренних и наружных отделочных работах. Предлагаем полный комплекс услуг: от черновой до финишной отделки. Работаем быстро, качественно и с гарантией. Мы ценим ваше время и бюджет.",
+            photos: [
+                "https://i.ibb.co/p3tD58c/photo7.jpg",
+                "https://i.ibb.co/fQzS3gZ/photo8.jpg",
+                "https://i.ibb.co/JnH6t8R/photo9.jpg"
+            ]
+        }
+    ];
+
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
+    const contractorList = document.getElementById('contractorList');
+    const contractorDetail = document.getElementById('contractorDetail');
+    const experienceFilter = document.getElementById('experienceFilter');
+    const typeFilter = document.getElementById('typeFilter');
+    const specialtyFilter = document.getElementById('specialtyFilter');
 
     // Генерация карточек
     categories.forEach(cat => {
@@ -483,6 +664,7 @@
           e.stopPropagation();
           if (mat.title === "Подбор подрядчика") {
             switchPage('contractors');
+            renderContractors();
             return;
           }
           const channelId = "-1001234567890";
@@ -533,6 +715,114 @@
     function openChat(url) {
       Telegram.WebApp.openTelegramLink(url);
     }
+
+    // Логика страницы "Подрядчики"
+    function renderContractors() {
+        contractorList.innerHTML = '';
+        const experience = experienceFilter.value;
+        const type = typeFilter.value;
+        const specialty = specialtyFilter.value;
+
+        const filteredContractors = contractors.filter(c => {
+            const matchesExperience = experience === 'all' ||
+                                      (experience === '1' && c.experience >= 1) ||
+                                      (experience === '5' && c.experience >= 5) ||
+                                      (experience === '10' && c.experience >= 10);
+            const matchesType = type === 'all' || c.type === type;
+            const matchesSpecialty = specialty === 'all' || c.specialty.includes(specialty);
+
+            return matchesExperience && matchesType && matchesSpecialty;
+        });
+
+        if (filteredContractors.length === 0) {
+            contractorList.innerHTML = `<p style="text-align:center; color: var(--text-secondary); margin-top: 20px;">По вашему запросу ничего не найдено.</p>`;
+        } else {
+            filteredContractors.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'contractor-card';
+                card.innerHTML = `
+                    <h4>${c.name}</h4>
+                    <p><strong>Сфера:</strong> ${c.specialty.join(', ')}</p>
+                    <p><strong>Опыт:</strong> ${c.experience} лет на рынке</p>
+                    <p><strong>Объекты:</strong> ${c.objects}+ выполненных</p>
+                    <div class="btn-group">
+                        <a href="https://t.me/${c.contact}" class="contact-btn">Написать</a>
+                        <a href="#" class="learn-more-btn" onclick="showContractorDetail(${c.id})">Узнать больше</a>
+                    </div>
+                `;
+                contractorList.appendChild(card);
+            });
+        }
+    }
+
+    // Логика детальной страницы подрядчика
+    let currentPage = 'home';
+    let lastPage = 'home';
+
+    function showContractorDetail(id) {
+        lastPage = currentPage;
+        switchPage('contractor-detail');
+        const contractor = contractors.find(c => c.id === id);
+
+        if (!contractor) {
+            contractorDetail.innerHTML = `<p style="text-align:center; color: var(--text-secondary);">Информация о подрядчике не найдена.</p>`;
+            return;
+        }
+
+        contractorDetail.innerHTML = `
+            <h2>${contractor.name}</h2>
+            <div class="photo-gallery">
+                <div class="photo-gallery-inner">
+                    ${contractor.photos.map(photo => `<img src="${photo}" alt="Пример работы">`).join('')}
+                </div>
+                <div class="gallery-nav">
+                    <button class="prev-btn" onclick="prevSlide()">&lt;</button>
+                    <button class="next-btn" onclick="nextSlide()">&gt;</button>
+                </div>
+            </div>
+            <p><strong>Сфера:</strong> ${contractor.specialty.join(', ')}</p>
+            <p><strong>Опыт:</strong> ${contractor.experience} лет на рынке</p>
+            <p><strong>Количество объектов:</strong> ${contractor.objects}+ выполненных</p>
+            <p><strong>О компании:</strong> ${contractor.description}</p>
+            <a href="https://t.me/${contractor.contact}" class="contact-btn" style="display:block; text-align:center;">Написать в Telegram</a>
+        `;
+
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('#contractorDetail .photo-gallery-inner img');
+        const totalSlides = slides.length;
+
+        window.prevSlide = function() {
+            slideIndex = (slideIndex - 1 + totalSlides) % totalSlides;
+            updateGallery();
+        }
+
+        window.nextSlide = function() {
+            slideIndex = (slideIndex + 1) % totalSlides;
+            updateGallery();
+        }
+
+        function updateGallery() {
+            const galleryInner = document.querySelector('#contractorDetail .photo-gallery-inner');
+            galleryInner.style.transform = `translateX(${-slideIndex * 100}%)`;
+        }
+    }
+
+    function goBack() {
+        switchPage(lastPage);
+    }
+
+    // Listen for filter changes
+    experienceFilter.addEventListener('change', renderContractors);
+    typeFilter.addEventListener('change', renderContractors);
+    specialtyFilter.addEventListener('change', renderContractors);
+
+    // Initial render of contractors on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('page-contractors').classList.contains('active')) {
+            renderContractors();
+        }
+    });
+
   </script>
 </body>
 </html>
