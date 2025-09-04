@@ -412,7 +412,7 @@
         border: 1px solid var(--border-color);
         border-radius: 8px;
         background-color: var(--background-secondary);
-        color: var(--text-primary);
+        color: var(--text-secondary); /* Цвет текста в фильтре */
         font-size: 14px;
         transition: all 0.3s ease;
         appearance: none;
@@ -420,34 +420,12 @@
         background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%236E6E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
         background-repeat: no-repeat;
         background-position: right 10px center;
+        text-align-last: center; /* Центрирование текста */
     }
     
     .filter-group select:focus {
         border-color: var(--primary-blue);
         outline: none;
-    }
-    
-    .filter-group .filter-buttons-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-    
-    .filter-group .filter-button {
-        padding: 10px 16px;
-        border-radius: 20px;
-        border: 1px solid var(--border-color);
-        background-color: var(--background-secondary);
-        color: var(--text-secondary);
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .filter-group .filter-button.selected {
-        background-color: var(--primary-blue);
-        color: white;
-        border-color: var(--primary-blue);
     }
 
   </style>
@@ -506,8 +484,16 @@
               <option value="бригада">Только бригады</option>
               <option value="ООО">Только ООО</option>
           </select>
-          <div id="specialtyFilter" class="filter-buttons-container">
-          </div>
+          <select id="specialtyFilter" multiple size="4">
+              <option value="all">Сфера: Все</option>
+              <option value="монолитные работы">Монолитные работы</option>
+              <option value="кирпичная кладка">Кирпичная кладка</option>
+              <option value="кровля">Кровля</option>
+              <option value="окна">Окна</option>
+              <option value="отделочные работы">Отделочные работы</option>
+              <option value="сантехника">Сантехника</option>
+              <option value="электричество">Электричество</option>
+          </select>
       </div>
       <div id="contractorList"></div>
   </div>
@@ -652,16 +638,13 @@
             siteUrl: "https://bs98.ru/"
         }
     ];
-    
-    // Получение уникальных специальностей для фильтра
-    const allSpecialties = Array.from(new Set(contractors.flatMap(c => c.specialty)));
 
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
     const contractorList = document.getElementById('contractorList');
     const experienceFilter = document.getElementById('experienceFilter');
     const typeFilter = document.getElementById('typeFilter');
-    const specialtyFilterContainer = document.getElementById('specialtyFilter');
+    const specialtyFilter = document.getElementById('specialtyFilter');
     const loaderScreen = document.getElementById('loader-screen');
     const contractorPage = document.getElementById('page-contractors');
 
@@ -711,20 +694,6 @@
       });
 
       gridContainer.appendChild(card);
-    });
-
-    // Генерация кнопок-фильтров для специализаций
-    allSpecialties.forEach(specialty => {
-        const button = document.createElement('button');
-        button.className = 'filter-button';
-        button.textContent = specialty.charAt(0).toUpperCase() + specialty.slice(1);
-        button.dataset.specialty = specialty;
-        specialtyFilterContainer.appendChild(button);
-        
-        button.addEventListener('click', () => {
-            button.classList.toggle('selected');
-            renderContractors();
-        });
     });
 
     // Поиск
@@ -787,10 +756,15 @@
         contractorList.innerHTML = '';
         const experience = experienceFilter.value;
         const type = typeFilter.value;
-        
-        // Получаем все выбранные специализации
-        const selectedSpecialties = Array.from(specialtyFilterContainer.querySelectorAll('.filter-button.selected'))
-                                       .map(btn => btn.dataset.specialty);
+
+        const selectedSpecialties = Array.from(specialtyFilter.options)
+                                       .filter(option => option.selected)
+                                       .map(option => option.value);
+
+        // Убираем "all" из списка, если выбраны другие опции
+        if (selectedSpecialties.length > 1 && selectedSpecialties.includes('all')) {
+            selectedSpecialties.splice(selectedSpecialties.indexOf('all'), 1);
+        }
 
         const filteredContractors = contractors.filter(c => {
             const matchesExperience = experience === 'all' || 
@@ -799,8 +773,9 @@
                                       (experience === '10' && c.experience >= 10);
             const matchesType = type === 'all' || c.type === type;
             
-            // Проверяем, что подрядчик имеет ВСЕ выбранные специализации
-            const matchesSpecialty = selectedSpecialties.length === 0 ||
+            // Проверяем, что подрядчик имеет ВСЕ выбранные специализации.
+            const matchesSpecialty = selectedSpecialties.length === 0 || 
+                                     selectedSpecialties[0] === 'all' || 
                                      selectedSpecialties.every(specialty => c.specialty.includes(specialty));
 
             return matchesExperience && matchesType && matchesSpecialty;
@@ -830,7 +805,8 @@
     // Listen for filter changes
     experienceFilter.addEventListener('change', renderContractors);
     typeFilter.addEventListener('change', renderContractors);
-    
+    specialtyFilter.addEventListener('change', renderContractors);
+
     // Initial render
     document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('page-contractors').classList.contains('active')) {
