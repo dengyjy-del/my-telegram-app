@@ -286,7 +286,7 @@
       min-height: calc(100vh - var(--bottom-nav-height) - 40px - env(safe-area-inset-bottom));
     }
     /* Дополнительный отступ для главной и подрядчиков, если нужен еще больше пространства */
-    #page-home, #page-contractors {
+    #page-home {
         padding-bottom: calc(var(--bottom-nav-height) + 20px); /* Увеличиваем отступ, если контент длинный */
     }
 
@@ -337,10 +337,11 @@
         color: var(--text-secondary);
         margin: 0 0 15px 0;
     }
-
+    
     /* Стили для страницы "Подрядчики" */
     #page-contractors {
-        padding-top: 50px;
+        padding-top: 20px;
+        padding-bottom: calc(var(--bottom-nav-height) + 20px);
     }
     #page-contractors .section-title {
         text-align: center;
@@ -422,7 +423,11 @@
 <body>
 
   <div id="loader-screen" class="loader-screen hidden">
-      <div class="loader-background-wrapper"></div> <div class="loader-content"> <h1 class="loader-text">ПРОРАБ</h1>
+      <div class="loader-background-wrapper"></div> 
+
+<div class="loader-content"> 
+
+<h1 class="loader-text">ПРОРАБ</h1>
           <p class="loader-subtitle">Цифровой сервис подбора проверенных подрядчиков</p>
       </div>
   </div>
@@ -615,7 +620,7 @@
             siteUrl: "https://bs98.ru/"
         }
     ];
-
+    
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
     const contractorList = document.getElementById('contractorList');
@@ -710,7 +715,7 @@
           setTimeout(() => {
               renderContractors();
               loaderScreen.classList.add('hidden'); // Скрываем загрузочный экран
-
+              
               // Через 0.5 секунды (длительность перехода opacity) показываем страницу с подрядчиками
               setTimeout(() => {
                 contractorPage.classList.add('active');
@@ -739,7 +744,7 @@
         const specialty = specialtyFilter.value;
 
         const filteredContractors = contractors.filter(c => {
-            const matchesExperience = experience === 'all' ||
+            const matchesExperience = experience === 'all' || 
                                       (experience === '1' && c.experience >= 1) ||
                                       (experience === '5' && c.experience >= 5) ||
                                       (experience === '10' && c.experience >= 10);
@@ -774,7 +779,7 @@
     experienceFilter.addEventListener('change', renderContractors);
     typeFilter.addEventListener('change', renderContractors);
     specialtyFilter.addEventListener('change', renderContractors);
-
+    
     // ДОПОЛНИТЕЛЬНОЕ ИЗМЕНЕНИЕ: ВЫЗОВ ФУНКЦИИ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
     document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('page-contractors').classList.contains('active')) {
