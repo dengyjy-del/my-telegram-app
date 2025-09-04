@@ -6,24 +6,34 @@
   <title>Архитектура и Строительство</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    /* NEW DESIGN: Liquid Glass (Glassmorphism)
-      This style uses blurred, semi-transparent backgrounds to create a sense of depth.
+    /* ==================================================================
+      НОВЫЙ ДИЗАЙН: LIQUID GLASS (ДЛЯ ВСЕХ СТРАНИЦ, КРОМЕ ПОДРЯДЧИКОВ)
+      ==================================================================
     */
 
     /* Глобальные переменные и стили */
     :root {
       --primary-accent: #007AFF;
-      --primary-green: #34C759;
-      --text-primary: #000000;
-      --text-secondary: #3c3c4399; /* Semi-transparent black */
+      --text-primary-glass: #000000;
+      --text-secondary-glass: #3c3c43bb;
 
-      /* Glassmorphism styles */
-      --glass-bg: rgba(255, 255, 255, 0.45);
+      /* MORE INTENSE Glassmorphism styles */
+      --glass-bg: rgba(255, 255, 255, 0.3); /* More transparent */
       --glass-border: rgba(255, 255, 255, 0.7);
-      --glass-shadow: rgba(0, 0, 0, 0.1);
-      --glass-blur: 15px;
+      --glass-shadow: rgba(0, 0, 0, 0.08);
+      --glass-blur: 22px; /* Increased blur */
 
       --bottom-nav-height: 85px;
+
+      /* ORIGINAL STYLES (ДЛЯ СТРАНИЦЫ ПОДРЯДЧИКОВ) */
+      --primary-blue: #007AFF;
+      --primary-green: #34C759;
+      --background-light: #FFFFFF;
+      --background-secondary: #F5F5F7;
+      --text-primary: #1D1D1F;
+      --text-secondary: #6E6E73;
+      --border-color: #E5E5E5;
+      --shadow-color: rgba(0, 122, 255, 0.1);
     }
 
     * {
@@ -34,7 +44,7 @@
     }
 
     body {
-      color: var(--text-primary);
+      color: var(--text-primary-glass);
       min-height: 100vh;
       padding: 20px;
       padding-bottom: calc(var(--bottom-nav-height) + 20px + env(safe-area-inset-bottom));
@@ -43,17 +53,15 @@
       background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
-      overflow-x: hidden; /* Hide horizontal overflow from blobs */
     }
 
-    /* Keyframes for the background animation */
     @keyframes gradientBG {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
     }
 
-    /* Стили для загрузочного экрана (unchanged as it's a separate aesthetic) */
+    /* ЗАГРУЗОЧНЫЙ ЭКРАН (ИСПОЛЬЗУЕТСЯ ТОЛЬКО ДЛЯ ПОДРЯДЧИКОВ) */
     .loader-screen {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         display: flex; justify-content: center; align-items: center; flex-direction: column;
@@ -72,8 +80,6 @@
     @keyframes fadeInText { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     /* --- LIQUID GLASS COMPONENTS --- */
-
-    /* Generic glass style to be applied to multiple elements */
     .glass-effect {
         background: var(--glass-bg);
         backdrop-filter: blur(var(--glass-blur));
@@ -82,176 +88,148 @@
         box-shadow: 0 8px 24px var(--glass-shadow);
     }
 
-    /* Поисковая строка */
-    .search-bar {
-      margin: 15px 0;
-      position: relative;
-    }
     #searchInput {
-      width: 100%;
-      padding: 16px 20px;
-      border-radius: 18px;
-      font-size: 16px;
-      color: var(--text-primary);
-      transition: all 0.3s ease;
-      border: none; /* Removed default border */
+      width: 100%; padding: 16px 20px; border-radius: 18px; font-size: 16px;
+      color: var(--text-primary-glass); transition: all 0.3s ease; border: none;
     }
-    #searchInput::placeholder { color: var(--text-secondary); }
-    #searchInput:focus {
-        outline: none;
-        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.25);
-    }
+    #searchInput::placeholder { color: var(--text-secondary-glass); }
+    #searchInput:focus { outline: none; box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.25); }
 
-    /* Сетка карточек */
-    .grid-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 20px;
-    }
+    .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
 
-    /* Карточки категорий */
     .card {
-      border-radius: 24px;
-      padding: 20px;
-      cursor: pointer;
+      border-radius: 24px; padding: 20px; cursor: pointer;
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    .card:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
-    }
+    .card:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15); }
     .card-icon {
       width: 48px; height: 48px; margin-bottom: 12px;
       background: linear-gradient(45deg, var(--primary-accent), #00AFFF);
-      border-radius: 16px; /* Softened radius */
-      display: flex; justify-content: center; align-items: center;
+      border-radius: 16px; display: flex; justify-content: center; align-items: center;
       box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
     }
     .card-icon svg { width: 28px; height: 28px; stroke: white; stroke-width: 1.8; }
     .card h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-    .card p { font-size: 13px; color: var(--text-secondary); }
+    .card p { font-size: 13px; color: var(--text-secondary-glass); }
 
-    /* Список материалов */
-    .material-list {
-      margin-top: 16px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease-in-out;
-    }
+    .material-list { margin-top: 16px; max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
     .material-item {
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.5); /* Lighter background inside card */
-      border-radius: 12px;
-      font-size: 14px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      border-left: 3px solid var(--primary-accent);
-      transition: background 0.3s ease, transform 0.2s ease;
+      padding: 12px; background: rgba(255, 255, 255, 0.6); border-radius: 12px;
+      font-size: 14px; margin-bottom: 8px; cursor: pointer;
+      border-left: 3px solid var(--primary-accent); transition: background 0.3s ease, transform 0.2s ease;
     }
-    .material-item:hover {
-      background: rgba(255, 255, 255, 0.8);
-      transform: translateX(4px);
-    }
+    .material-item:hover { background: rgba(255, 255, 255, 0.9); transform: translateX(4px); }
     .material-item:last-child { margin-bottom: 0; }
 
-    /* Нижняя навигация */
     .bottom-nav {
-      position: fixed; bottom: 0; left: 0; width: 100%;
-      height: var(--bottom-nav-height);
-      background: rgba(255, 255, 255, 0.3); /* More transparent */
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid var(--glass-border);
-      display: flex; justify-content: space-around;
-      align-items: flex-start; padding-top: 10px; z-index: 1000;
-      padding-bottom: env(safe-area-inset-bottom);
+      position: fixed; bottom: 0; left: 0; width: 100%; height: var(--bottom-nav-height);
+      background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      border-top: 1px solid var(--glass-border); display: flex; justify-content: space-around;
+      align-items: flex-start; padding-top: 10px; z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
     }
     .nav-btn {
-      text-align: center; font-size: 12px; color: var(--text-secondary);
-      cursor: pointer; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      text-align: center; font-size: 12px; color: var(--text-secondary-glass); cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       width: 70px; height: 60px; transition: all 0.3s ease;
     }
     .nav-btn.active { color: var(--primary-accent); font-weight: 600; }
     .nav-icon {
-      width: 40px; height: 40px; background-color: transparent;
-      border-radius: 12px; display: flex; justify-content: center;
-      align-items: center; margin-bottom: 4px; transition: all 0.3s ease;
+      width: 40px; height: 40px; background-color: transparent; border-radius: 12px;
+      display: flex; justify-content: center; align-items: center; margin-bottom: 4px; transition: all 0.3s ease;
     }
     .nav-btn.active .nav-icon { background-color: var(--primary-accent); }
     .nav-icon svg { width: 24px; height: 24px; stroke: #3c3c43; stroke-width: 1.8; transition: stroke 0.3s ease; }
     .nav-btn.active .nav-icon svg { stroke: white; }
 
-    /* Страницы */
-    .page {
-      display: none; opacity: 0; transition: opacity 0.5s ease;
-      min-height: calc(100vh - var(--bottom-nav-height) - 40px - env(safe-area-inset-bottom));
-    }
+    .page { display: none; opacity: 0; transition: opacity 0.5s ease; }
     .page.active { display: block; animation: fadeIn 0.5s ease; opacity: 1; }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Заголовки и кнопки чатов */
-    .section-title {
-      font-size: 28px; font-weight: 700;
-      margin: 20px 0 20px 0; color: var(--text-primary);
-    }
+    .section-title { font-size: 28px; font-weight: 700; margin: 20px 0; color: var(--text-primary-glass); }
     .chat-btn {
-      display: block; width: 100%; margin: 12px 0; padding: 18px 20px;
-      border-radius: 18px; text-align: left; font-size: 16px;
-      color: var(--text-primary); cursor: pointer; font-weight: 500;
-      transition: all 0.3s ease;
+      display: block; width: 100%; margin: 12px 0; padding: 18px 20px; border-radius: 18px;
+      text-align: left; font-size: 16px; color: var(--text-primary-glass);
+      cursor: pointer; font-weight: 500; transition: all 0.3s ease;
     }
-    .chat-btn:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    }
+    .chat-btn:hover { transform: scale(1.02); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
     #page-about p { font-size: 16px; line-height: 1.6; color: #3c3c43; margin-bottom: 15px; }
 
-    /* Страница "Подрядчики" */
-    #page-contractors { padding-bottom: calc(var(--bottom-nav-height) + 20px); }
-    #page-contractors .section-title { text-align: center; }
+    /* ==================================================================
+      ИСХОДНЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ ПОДРЯДЧИКОВ (НЕ ТРОГАТЬ)
+      ==================================================================
+    */
+    #page-contractors {
+      background: var(--background-light); /* Блокируем градиент белым фоном */
+    }
+    #page-contractors .section-title {
+        text-align: center;
+        color: var(--text-primary);
+    }
     .contractor-card {
-        border-radius: 20px; padding: 20px;
-        margin-bottom: 15px; transition: all 0.3s ease;
+        background: var(--background-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
     }
-    .contractor-card:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
-    .contractor-card h4 { font-size: 18px; font-weight: 600; margin-bottom: 8px; color: var(--primary-green); }
-    .contractor-card p { font-size: 14px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 5px; }
-    .contractor-card .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+    .contractor-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    .contractor-card h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--primary-green);
+    }
+    .contractor-card p {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--text-secondary);
+        margin-bottom: 5px;
+    }
+    .contractor-card .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
     .contractor-card .contact-btn, .contractor-card .learn-more-btn {
-        flex: 1; display: block; padding: 12px 10px; border-radius: 12px;
-        text-align: center; text-decoration: none; font-weight: 600; /* Bolded text */
-        font-size: 14px; transition: all 0.3s ease;
+        flex: 1; display: block; padding: 12px 10px; border-radius: 10px;
+        text-align: center; text-decoration: none; font-weight: 500;
+        font-size: 14px; transition: background-color 0.3s ease;
     }
-    .contractor-card .contact-btn { background-color: var(--primary-green); color: white; border: 1px solid transparent; }
-    .contractor-card .contact-btn:hover { background-color: #2aa84a; transform: scale(1.05); }
+    .contractor-card .contact-btn {
+        background-color: var(--primary-green);
+        color: white;
+    }
+    .contractor-card .contact-btn:hover {
+        background-color: #2b9d4a;
+    }
     .contractor-card .learn-more-btn {
-        background: rgba(255, 255, 255, 0.5); color: var(--primary-green);
+        background-color: var(--background-light);
+        color: var(--primary-green);
         border: 1px solid var(--primary-green);
     }
     .contractor-card .learn-more-btn:hover {
-        background-color: var(--primary-green); color: white; transform: scale(1.05);
+        background-color: rgba(52, 199, 89, 0.1);
     }
 
-    /* Фильтры */
-    .filter-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-    .filter-group select {
-        width: 100%; padding: 14px; border-radius: 14px;
-        font-size: 14px; color: var(--text-primary);
+    #page-contractors .filter-group {
+        display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;
+    }
+    #page-contractors .filter-group select {
+        width: 100%; padding: 10px; border: 1px solid var(--border-color);
+        border-radius: 8px; background-color: var(--background-secondary);
+        color: var(--text-secondary); font-size: 14px; transition: all 0.3s ease;
         appearance: none; -webkit-appearance: none;
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%233c3c43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-        background-repeat: no-repeat; background-position: right 15px center;
-        text-align-last: left; padding-left: 20px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%236E6E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+        background-repeat: no-repeat; background-position: right 10px center;
+        text-align-last: center;
     }
-    .filter-group select:focus {
-        outline: none;
-        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.25);
+    #page-contractors .filter-group select:focus {
+        border-color: var(--primary-blue); outline: none;
+        box-shadow: 0 0 0 3px var(--shadow-color);
     }
-
   </style>
 </head>
 <body>
@@ -291,18 +269,18 @@
   <div id="page-contractors" class="page">
       <h2 class="section-title">Подбор подрядчика</h2>
       <div class="filter-group">
-          <select id="experienceFilter" class="glass-effect">
+          <select id="experienceFilter">
               <option value="all">Опыт: Все</option>
               <option value="1">от 1 года</option>
               <option value="5">от 5 лет</option>
               <option value="10">от 10 лет</option>
           </select>
-          <select id="typeFilter" class="glass-effect">
+          <select id="typeFilter">
               <option value="all">Форма: Все</option>
               <option value="бригада">Только бригады</option>
               <option value="ООО">Только ООО</option>
           </select>
-          <select id="specialtyFilter" class="glass-effect" multiple size="4">
+          <select id="specialtyFilter" multiple size="4">
               <option value="all">Сфера: Все</option>
               <option value="монолитные работы">Монолитные работы</option>
               <option value="кирпичная кладка">Кирпичная кладка</option>
@@ -318,41 +296,20 @@
 
   <div class="bottom-nav">
     <div class="nav-btn active" data-page="home" onclick="switchPage('home')">
-      <div class="nav-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-      </div>
-      Домой
+      <div class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div>Домой
     </div>
     <div class="nav-btn" data-page="about" onclick="switchPage('about')">
-      <div class="nav-icon">
-         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-      </div>
-      О канале
+      <div class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>О канале
     </div>
     <div class="nav-btn" data-page="chats" onclick="switchPage('chats')">
-      <div class="nav-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      </div>
-      Чаты
+      <div class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>Чаты
     </div>
   </div>
 
   <script>
-    // --- JAVASCRIPT IS UNCHANGED ---
-    const categories = [
-      { id: "construction", title: "Строительство", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M5 21V9L12 5L19 9V21M9 21V12H15V21" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 12, materials: [ { id: 1, title: "Фундамент: как сделать правильно", post_id: 45 }, { id: 2, title: "Кладка стен из газобетона", post_id: 52 }, { id: 3, title: "Крыша: выбор кровли", post_id: 58 } ] },
-      { id: "design", title: "Проектирование", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="1.8"/><path d="M2 17L12 22L22 17" stroke="white" stroke-width="1.8"/><path d="M2 12L12 17L22 12" stroke="white" stroke-width="1.8"/></svg>`, count: 8, materials: [ { id: 1, title: "Планировка дома мечты", post_id: 33 }, { id: 2, title: "3D-визуализация интерьера", post_id: 39 } ] },
-      { id: "restoration", title: "Реставрация", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="white" stroke-width="1.8"/><path d="M7 3V21" stroke="white" stroke-width="1.8"/><path d="M17 3V21" stroke="white" stroke-width="1.8"/></svg>`, count: 5, materials: [ { id: 1, title: "Реставрация старинного дома", post_id: 61 }, { id: 2, title: "Сохранение исторического фасада", post_id: 65 } ] },
-      { id: "control", title: "Контроль", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M12 3L20 7V17L12 21L4 17V7L12 3Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 7, materials: [ { id: 1, title: "Чек-лист на стройке", post_id: 70 }, { id: 2, title: "Как проверить бригаду", post_id: 73 } ] },
-      { id: "contractors", title: "Подрядчики", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M17 21V19C17 16.7909 15.2091 15 13 15H5C2.79086 15 1 16.7909 1 19V21M23 21V19C22.9981 17.1703 21.7585 15.5852 20 15.13M16 3.13C17.7592 3.58456 19 5.1703 19 7V9H15M15 3H9V9H15V3Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 6, materials: [ { id: 1, title: "Топ-5 строительных компаний", post_id: 80 }, { id: 2, title: "Как не попасться на мошенников", post_id: 83 }, { id: 3, title: "Подбор подрядчика", post_id: 85 } ] },
-      { id: "consultation", title: "Консультации", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M8 10H8.01M12 10H12.01M16 10H16.01M9 16H15M8 6H16C17.1046 6 18 6.89543 18 8V16C18 17.1046 17.1046 18 16 18H8C6.89543 18 6 17.1046 6 16V8C6 6.89543 6.89543 6 8 6Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 9, materials: [ { id: 1, title: "Бесплатная консультация архитектора", post_id: 90 }, { id: 2, title: "Задай вопрос эксперту", post_id: 95 } ] }
-    ];
-    const contractors = [
-        { id: 1, name: "Бригада 'Дом-Строй'", type: "бригада", specialty: ["кирпичная кладка", "фундамент", "кровля"], experience: 12, objects: 30, contact: "your_telegram_contact", siteUrl: "https://bs98.ru/" },
-        { id: 2, name: "ООО 'ПроектСтрой'", type: "ООО", specialty: ["монолитные работы", "проектирование", "отделочные работы"], experience: 8, objects: 15, contact: "your_telegram_contact_2", siteUrl: "https://bs98.ru/" },
-        { id: 3, name: "Бригада 'Мастер-Отделка'", type: "бригада", specialty: ["отделочные работы", "сантехника", "электричество"], experience: 6, objects: 25, contact: "your_telegram_contact_3", siteUrl: "https://bs98.ru/" },
-        { id: 4, name: "Спецмонтаж", type: "ООО", specialty: ["сантехника", "электричество"], experience: 9, objects: 18, contact: "your_telegram_contact_4", siteUrl: "https://bs98.ru/" }
-    ];
+    const categories = [ { id: "construction", title: "Строительство", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M5 21V9L12 5L19 9V21M9 21V12H15V21" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 12, materials: [ { id: 1, title: "Фундамент: как сделать правильно", post_id: 45 }, { id: 2, title: "Кладка стен из газобетона", post_id: 52 }, { id: 3, title: "Крыша: выбор кровли", post_id: 58 } ] }, { id: "design", title: "Проектирование", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="1.8"/><path d="M2 17L12 22L22 17" stroke="white" stroke-width="1.8"/><path d="M2 12L12 17L22 12" stroke="white" stroke-width="1.8"/></svg>`, count: 8, materials: [ { id: 1, title: "Планировка дома мечты", post_id: 33 }, { id: 2, title: "3D-визуализация интерьера", post_id: 39 } ] }, { id: "restoration", title: "Реставрация", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="white" stroke-width="1.8"/><path d="M7 3V21" stroke="white" stroke-width="1.8"/><path d="M17 3V21" stroke="white" stroke-width="1.8"/></svg>`, count: 5, materials: [ { id: 1, title: "Реставрация старинного дома", post_id: 61 }, { id: 2, title: "Сохранение исторического фасада", post_id: 65 } ] }, { id: "control", title: "Контроль", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M12 3L20 7V17L12 21L4 17V7L12 3Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 7, materials: [ { id: 1, title: "Чек-лист на стройке", post_id: 70 }, { id: 2, title: "Как проверить бригаду", post_id: 73 } ] }, { id: "contractors", title: "Подрядчики", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M17 21V19C17 16.7909 15.2091 15 13 15H5C2.79086 15 1 16.7909 1 19V21M23 21V19C22.9981 17.1703 21.7585 15.5852 20 15.13M16 3.13C17.7592 3.58456 19 5.1703 19 7V9H15M15 3H9V9H15V3Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 6, materials: [ { id: 1, title: "Топ-5 строительных компаний", post_id: 80 }, { id: 2, title: "Как не попасться на мошенников", post_id: 83 }, { id: 3, title: "Подбор подрядчика", post_id: 85 } ] }, { id: "consultation", title: "Консультации", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M8 10H8.01M12 10H12.01M16 10H16.01M9 16H15M8 6H16C17.1046 6 18 6.89543 18 8V16C18 17.1046 17.1046 18 16 18H8C6.89543 18 6 17.1046 6 16V8C6 6.89543 6.89543 6 8 6Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 9, materials: [ { id: 1, title: "Бесплатная консультация архитектора", post_id: 90 }, { id: 2, title: "Задай вопрос эксперту", post_id: 95 } ] } ];
+    const contractors = [ { id: 1, name: "Бригада 'Дом-Строй'", type: "бригада", specialty: ["кирпичная кладка", "фундамент", "кровля"], experience: 12, objects: 30, contact: "your_telegram_contact", siteUrl: "https://bs98.ru/" }, { id: 2, name: "ООО 'ПроектСтрой'", type: "ООО", specialty: ["монолитные работы", "проектирование", "отделочные работы"], experience: 8, objects: 15, contact: "your_telegram_contact_2", siteUrl: "https://bs98.ru/" }, { id: 3, name: "Бригада 'Мастер-Отделка'", type: "бригада", specialty: ["отделочные работы", "сантехника", "электричество"], experience: 6, objects: 25, contact: "your_telegram_contact_3", siteUrl: "https://bs98.ru/" }, { id: 4, name: "Спецмонтаж", type: "ООО", specialty: ["сантехника", "электричество"], experience: 9, objects: 18, contact: "your_telegram_contact_4", siteUrl: "https://bs98.ru/" } ];
+
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
     const contractorList = document.getElementById('contractorList');
@@ -364,7 +321,7 @@
 
     categories.forEach(cat => {
       const card = document.createElement('div');
-      card.className = 'card glass-effect'; // Applied glass effect class
+      card.className = 'card glass-effect';
       card.dataset.title = cat.title;
       card.innerHTML = `<div class="card-icon">${cat.icon}</div><h3>${cat.title}</h3><p>${cat.count} материалов</p><div class="material-list" id="list-${cat.id}"></div>`;
       card.addEventListener('click', () => {
@@ -402,16 +359,26 @@
       });
     });
 
+    // ИСХОДНАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ СТРАНИЦ
     function switchPage(page) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(`page-${page}`).classList.add('active');
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector(`.nav-btn[data-page="${page}"]`).classList.add('active');
-
-        // Added special handling for contractors page to render on switch
-        if (page === 'contractors') {
-            renderContractors();
-        }
+      if (page === 'contractors') {
+          loaderScreen.classList.remove('hidden');
+          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+          setTimeout(() => {
+              renderContractors();
+              loaderScreen.classList.add('hidden');
+              setTimeout(() => {
+                contractorPage.classList.add('active');
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector(`.nav-btn[data-page="${page}"]`).classList.add('active');
+              }, 500);
+          }, 2000);
+      } else {
+          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+          document.getElementById(`page-${page}`).classList.add('active');
+          document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+          document.querySelector(`.nav-btn[data-page="${page}"]`).classList.add('active');
+      }
     }
 
     function openChat(url) { Telegram.WebApp.openTelegramLink(url); }
@@ -433,7 +400,7 @@
         } else {
             filteredContractors.forEach(c => {
                 const card = document.createElement('div');
-                card.className = 'contractor-card glass-effect'; // Applied glass effect
+                card.className = 'contractor-card';
                 card.innerHTML = `<h4>${c.name}</h4><p><strong>Сфера:</strong> ${c.specialty.join(', ')}</p><p><strong>Опыт:</strong> ${c.experience} лет на рынке</p><p><strong>Объекты:</strong> ${c.objects}+ выполненных</p><div class="btn-group"><a href="https://t.me/${c.contact}" class="contact-btn">Написать</a><a href="#" class="learn-more-btn" onclick="Telegram.WebApp.openLink('${c.siteUrl}');">Узнать больше</a></div>`;
                 contractorList.appendChild(card);
             });
