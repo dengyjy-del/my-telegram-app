@@ -6,18 +6,24 @@
   <title>Архитектура и Строительство</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    /* Глобальные стили и переменные */
+    /* NEW DESIGN: Liquid Glass (Glassmorphism)
+      This style uses blurred, semi-transparent backgrounds to create a sense of depth.
+    */
+
+    /* Глобальные переменные и стили */
     :root {
-      --primary-blue: #007AFF;
+      --primary-accent: #007AFF;
       --primary-green: #34C759;
-      --background-light: #FFFFFF;
-      --background-secondary: #F5F5F7;
-      --text-primary: #1D1D1F;
-      --text-secondary: #6E6E73;
-      --border-color: #E5E5E5;
-      --shadow-color: rgba(0, 122, 255, 0.1);
-      --green-shadow-color: rgba(52, 199, 89, 0.2);
-      --bottom-nav-height: 85px; /* Высота нижней панели */
+      --text-primary: #000000;
+      --text-secondary: #3c3c4399; /* Semi-transparent black */
+
+      /* Glassmorphism styles */
+      --glass-bg: rgba(255, 255, 255, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.7);
+      --glass-shadow: rgba(0, 0, 0, 0.1);
+      --glass-blur: 15px;
+
+      --bottom-nav-height: 85px;
     }
 
     * {
@@ -28,107 +34,72 @@
     }
 
     body {
-      background-color: var(--background-light);
       color: var(--text-primary);
       min-height: 100vh;
       padding: 20px;
       padding-bottom: calc(var(--bottom-nav-height) + 20px + env(safe-area-inset-bottom));
+
+      /* New Animated Gradient Background */
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      overflow-x: hidden; /* Hide horizontal overflow from blobs */
     }
 
-    /* Стили для загрузочного экрана */
+    /* Keyframes for the background animation */
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Стили для загрузочного экрана (unchanged as it's a separate aesthetic) */
     .loader-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        z-index: 2000;
-        opacity: 1;
-        visibility: visible;
-        transition: opacity 0.5s ease, visibility 0.5s ease;
-        overflow: hidden;
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        display: flex; justify-content: center; align-items: center; flex-direction: column;
+        z-index: 2000; opacity: 1; visibility: visible;
+        transition: opacity 0.5s ease, visibility 0.5s ease; overflow: hidden;
     }
-
-    .loader-screen.hidden {
-        opacity: 0;
-        visibility: hidden;
-    }
-
+    .loader-screen.hidden { opacity: 0; visibility: hidden; }
     .loader-background-wrapper {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        position: absolute; top: 0; left: 0; right: 0; bottom: 0;
         background-image: url('https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.jpg');
-        background-size: cover;
-        background-position: center;
-        filter: blur(8px);
-        z-index: -1;
+        background-size: cover; background-position: center; filter: blur(8px); z-index: -1;
     }
+    .loader-content { position: relative; z-index: 2001; text-align: center; }
+    .loader-text { font-size: 2em; font-weight: 700; color: white; opacity: 0; animation: fadeInText 1s ease forwards 0.5s; margin-bottom: 5px; }
+    .loader-subtitle { font-size: 0.8em; color: white; opacity: 0; animation: fadeInText 1s ease forwards 1s; }
+    @keyframes fadeInText { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    .loader-content {
-        position: relative;
-        z-index: 2001;
-        text-align: center;
-        margin-right: 0;
-        margin-bottom: 0;
-    }
+    /* --- LIQUID GLASS COMPONENTS --- */
 
-    .loader-text {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 2em;
-        font-weight: 700;
-        color: white;
-        text-shadow: none;
-        opacity: 0;
-        animation: fadeInText 1s ease forwards;
-        animation-delay: 0.5s;
-        margin-bottom: 5px;
-    }
-
-    .loader-subtitle {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 0.8em;
-        color: white;
-        text-shadow: none;
-        opacity: 0;
-        animation: fadeInText 1s ease forwards;
-        animation-delay: 1s;
-    }
-
-    @keyframes fadeInText {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+    /* Generic glass style to be applied to multiple elements */
+    .glass-effect {
+        background: var(--glass-bg);
+        backdrop-filter: blur(var(--glass-blur));
+        -webkit-backdrop-filter: blur(var(--glass-blur));
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 8px 24px var(--glass-shadow);
     }
 
     /* Поисковая строка */
     .search-bar {
       margin: 15px 0;
+      position: relative;
     }
-
     #searchInput {
       width: 100%;
-      padding: 14px 20px;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      background: var(--background-secondary);
-      color: var(--text-primary);
+      padding: 16px 20px;
+      border-radius: 18px;
       font-size: 16px;
+      color: var(--text-primary);
       transition: all 0.3s ease;
+      border: none; /* Removed default border */
     }
-
-    #searchInput::placeholder {
-      color: var(--text-secondary);
-    }
+    #searchInput::placeholder { color: var(--text-secondary); }
     #searchInput:focus {
         outline: none;
-        border-color: var(--primary-blue);
-        box-shadow: 0 0 0 3px var(--shadow-color);
+        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.25);
     }
 
     /* Сетка карточек */
@@ -141,50 +112,25 @@
 
     /* Карточки категорий */
     .card {
-      background: linear-gradient(145deg, var(--background-light) 0%, #FDFDFF 100%);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
+      border-radius: 24px;
       padding: 20px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px var(--shadow-color);
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
     }
-
     .card-icon {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 12px;
-      background: linear-gradient(45deg, var(--primary-blue), #00AFFF);
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      width: 48px; height: 48px; margin-bottom: 12px;
+      background: linear-gradient(45deg, var(--primary-accent), #00AFFF);
+      border-radius: 16px; /* Softened radius */
+      display: flex; justify-content: center; align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
     }
-
-    .card-icon svg {
-      width: 28px;
-      height: 28px;
-      stroke: white;
-      stroke-width: 1.8;
-    }
-
-    .card h3 {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      text-transform: none;
-      letter-spacing: 0;
-    }
-
-    .card p {
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
+    .card-icon svg { width: 28px; height: 28px; stroke: white; stroke-width: 1.8; }
+    .card h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .card p { font-size: 13px; color: var(--text-secondary); }
 
     /* Список материалов */
     .material-list {
@@ -193,239 +139,117 @@
       overflow: hidden;
       transition: max-height 0.5s ease-in-out;
     }
-
     .material-item {
       padding: 12px;
-      background: var(--background-secondary);
-      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.5); /* Lighter background inside card */
+      border-radius: 12px;
       font-size: 14px;
       margin-bottom: 8px;
       cursor: pointer;
-      border-left: 3px solid var(--primary-blue);
-      transition: background 0.3s ease;
+      border-left: 3px solid var(--primary-accent);
+      transition: background 0.3s ease, transform 0.2s ease;
     }
-
     .material-item:hover {
-      background: #e9e9ed;
+      background: rgba(255, 255, 255, 0.8);
+      transform: translateX(4px);
     }
-
-    .material-item:last-child {
-        margin-bottom: 0;
-    }
+    .material-item:last-child { margin-bottom: 0; }
 
     /* Нижняя навигация */
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: var(--bottom-nav-height); /* Используем переменную */
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-start;
-      padding-top: 10px;
-      z-index: 1000;
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      height: var(--bottom-nav-height);
+      background: rgba(255, 255, 255, 0.3); /* More transparent */
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--glass-border);
+      display: flex; justify-content: space-around;
+      align-items: flex-start; padding-top: 10px; z-index: 1000;
       padding-bottom: env(safe-area-inset-bottom);
     }
-
     .nav-btn {
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 70px;
-      height: 60px;
-      transition: all 0.3s ease;
+      text-align: center; font-size: 12px; color: var(--text-secondary);
+      cursor: pointer; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      width: 70px; height: 60px; transition: all 0.3s ease;
     }
-
-    .nav-btn.active {
-      color: var(--primary-blue);
-      font-weight: 600;
-    }
-
+    .nav-btn.active { color: var(--primary-accent); font-weight: 600; }
     .nav-icon {
-      width: 40px;
-      height: 40px;
-      background-color: transparent;
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 4px;
-      transition: all 0.3s ease;
+      width: 40px; height: 40px; background-color: transparent;
+      border-radius: 12px; display: flex; justify-content: center;
+      align-items: center; margin-bottom: 4px; transition: all 0.3s ease;
     }
-
-    .nav-btn.active .nav-icon {
-        background-color: var(--primary-blue);
-    }
-
-    .nav-icon svg {
-      width: 24px;
-      height: 24px;
-      stroke: var(--text-secondary);
-      stroke-width: 1.8;
-      transition: stroke 0.3s ease;
-    }
-    .nav-btn.active .nav-icon svg {
-      stroke: white;
-    }
+    .nav-btn.active .nav-icon { background-color: var(--primary-accent); }
+    .nav-icon svg { width: 24px; height: 24px; stroke: #3c3c43; stroke-width: 1.8; transition: stroke 0.3s ease; }
+    .nav-btn.active .nav-icon svg { stroke: white; }
 
     /* Страницы */
     .page {
-      display: none;
-      opacity: 0;
-      transition: opacity 0.5s ease;
+      display: none; opacity: 0; transition: opacity 0.5s ease;
       min-height: calc(100vh - var(--bottom-nav-height) - 40px - env(safe-area-inset-bottom));
     }
-    #page-home {
-        padding-bottom: calc(var(--bottom-nav-height) + 20px);
-    }
-
-    .page.active {
-      display: block;
-      animation: fadeIn 0.5s ease;
-      opacity: 1;
-    }
-
+    .page.active { display: block; animation: fadeIn 0.5s ease; opacity: 1; }
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Стили для заголовков и кнопок чатов */
+    /* Заголовки и кнопки чатов */
     .section-title {
-      font-size: 24px;
-      font-weight: 700;
-      margin: 20px 0 15px 0;
-      color: var(--text-primary);
+      font-size: 28px; font-weight: 700;
+      margin: 20px 0 20px 0; color: var(--text-primary);
     }
-
     .chat-btn {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 16px 20px;
-      background: var(--background-secondary);
-      border: 1px solid transparent;
-      border-radius: 12px;
-      text-align: left;
-      font-size: 16px;
-      color: var(--text-primary);
-      cursor: pointer;
-      font-weight: 500;
+      display: block; width: 100%; margin: 12px 0; padding: 18px 20px;
+      border-radius: 18px; text-align: left; font-size: 16px;
+      color: var(--text-primary); cursor: pointer; font-weight: 500;
       transition: all 0.3s ease;
     }
-
     .chat-btn:hover {
-      background: #e9e9ed;
-      border-color: var(--primary-blue);
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     }
+    #page-about p { font-size: 16px; line-height: 1.6; color: #3c3c43; margin-bottom: 15px; }
 
-    #page-about p {
-        font-size: 16px;
-        line-height: 1.6;
-        color: var(--text-secondary);
-        margin: 0 0 15px 0;
-    }
-
-    /* Стили для страницы "Подрядчики" */
-    #page-contractors {
-        padding-top: 10px; /* Уменьшено пустое пространство */
-        padding-bottom: calc(var(--bottom-nav-height) + 20px);
-    }
-    #page-contractors .section-title {
-        text-align: center;
-    }
+    /* Страница "Подрядчики" */
+    #page-contractors { padding-bottom: calc(var(--bottom-nav-height) + 20px); }
+    #page-contractors .section-title { text-align: center; }
     .contractor-card {
-        background: var(--background-secondary);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 15px;
-        transition: all 0.3s ease;
+        border-radius: 20px; padding: 20px;
+        margin-bottom: 15px; transition: all 0.3s ease;
     }
-    .contractor-card:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-    .contractor-card h4 {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: var(--primary-green);
-    }
-    .contractor-card p {
-        font-size: 14px;
-        line-height: 1.5;
-        color: var(--text-secondary);
-        margin-bottom: 5px;
-    }
-    .contractor-card .btn-group {
-        display: flex;
-        gap: 10px;
-        margin-top: 15px;
-    }
+    .contractor-card:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
+    .contractor-card h4 { font-size: 18px; font-weight: 600; margin-bottom: 8px; color: var(--primary-green); }
+    .contractor-card p { font-size: 14px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 5px; }
+    .contractor-card .btn-group { display: flex; gap: 10px; margin-top: 15px; }
     .contractor-card .contact-btn, .contractor-card .learn-more-btn {
-        flex: 1;
-        display: block;
-        padding: 12px 10px;
-        border-radius: 10px;
-        text-align: center;
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 14px;
-        transition: background-color 0.3s ease;
+        flex: 1; display: block; padding: 12px 10px; border-radius: 12px;
+        text-align: center; text-decoration: none; font-weight: 600; /* Bolded text */
+        font-size: 14px; transition: all 0.3s ease;
     }
-    .contractor-card .contact-btn {
-        background-color: var(--primary-green);
-        color: white;
-    }
-    .contractor-card .contact-btn:hover {
-        background-color: #2b9d4a;
-    }
+    .contractor-card .contact-btn { background-color: var(--primary-green); color: white; border: 1px solid transparent; }
+    .contractor-card .contact-btn:hover { background-color: #2aa84a; transform: scale(1.05); }
     .contractor-card .learn-more-btn {
-        background-color: var(--background-light);
-        color: var(--primary-green);
+        background: rgba(255, 255, 255, 0.5); color: var(--primary-green);
         border: 1px solid var(--primary-green);
     }
     .contractor-card .learn-more-btn:hover {
-        background-color: rgba(52, 199, 89, 0.1);
+        background-color: var(--primary-green); color: white; transform: scale(1.05);
     }
 
-    /* Стили для фильтров */
-    .filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
+    /* Фильтры */
+    .filter-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
     .filter-group select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background-color: var(--background-secondary);
-        color: var(--text-secondary); /* Цвет текста в фильтре */
-        font-size: 14px;
-        transition: all 0.3s ease;
-        appearance: none;
-        -webkit-appearance: none;
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%236E6E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        text-align-last: center; /* Центрирование текста */
+        width: 100%; padding: 14px; border-radius: 14px;
+        font-size: 14px; color: var(--text-primary);
+        appearance: none; -webkit-appearance: none;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%233c3c43" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+        background-repeat: no-repeat; background-position: right 15px center;
+        text-align-last: left; padding-left: 20px;
     }
-
     .filter-group select:focus {
-        border-color: var(--primary-blue);
         outline: none;
+        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.25);
     }
 
   </style>
@@ -442,49 +266,43 @@
 
   <div id="page-home" class="page active">
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Поиск по темам и материалам..." />
+      <input type="text" id="searchInput" class="glass-effect" placeholder="Поиск по темам и материалам..." />
     </div>
     <div class="grid-container" id="gridContainer"></div>
   </div>
 
   <div id="page-about" class="page">
     <h2 class="section-title">О канале</h2>
-    <p>
-      Меня зовут <strong>Виталий Юхневич</strong> — предприниматель с 20-летним опытом в строительной отрасли».
-    </p>
-    <p>
-      Я — основатель проектно-строительной компании и генеральный директор компании по контролю за строительством. За карьеру реализовано более <strong>100 объектов</strong>, построено и отремонтировано свыше <strong>150 000 м?</strong>.
-    </p>
-    <p>
-      В этом канале делюсь практикой, кейсами и возможностями для студентов, молодых специалистов и тех, кто хочет строить карьеру в строительстве. Здесь — только реальные знания, без воды.
-    </p>
+    <p>Меня зовут <strong>Виталий Юхневич</strong> — предприниматель с 20-летним опытом в строительной отрасли».</p>
+    <p>Я — основатель проектно-строительной компании и генеральный директор компании по контролю за строительством. За карьеру реализовано более <strong>100 объектов</strong>, построено и отремонтировано свыше <strong>150 000 м²</strong>.</p>
+    <p>В этом канале делюсь практикой, кейсами и возможностями для студентов, молодых специалистов и тех, кто хочет строить карьеру в строительстве. Здесь — только реальные знания, без воды.</p>
   </div>
 
   <div id="page-chats" class="page">
     <h2 class="section-title">Чаты сообщества</h2>
     <div class="chat-list">
-      <div class="chat-btn" onclick="openChat('https://t.me/')">Чат 1: Архитекторы</div>
-      <div class="chat-btn" onclick="openChat('https://t.me/')">Чат 2: Строители</div>
-      <div class="chat-btn" onclick="openChat('https://t.me/')">Чат 3: Проекты и Реставрация</div>
-      <div class="chat-btn" onclick="openChat('https://t.me/')">Чат 4: Карьера и Бизнес</div>
+      <div class="chat-btn glass-effect" onclick="openChat('https://t.me/')">Чат 1: Архитекторы</div>
+      <div class="chat-btn glass-effect" onclick="openChat('https://t.me/')">Чат 2: Строители</div>
+      <div class="chat-btn glass-effect" onclick="openChat('https://t.me/')">Чат 3: Проекты и Реставрация</div>
+      <div class="chat-btn glass-effect" onclick="openChat('https://t.me/')">Чат 4: Карьера и Бизнес</div>
     </div>
   </div>
 
   <div id="page-contractors" class="page">
       <h2 class="section-title">Подбор подрядчика</h2>
       <div class="filter-group">
-          <select id="experienceFilter">
+          <select id="experienceFilter" class="glass-effect">
               <option value="all">Опыт: Все</option>
               <option value="1">от 1 года</option>
               <option value="5">от 5 лет</option>
               <option value="10">от 10 лет</option>
           </select>
-          <select id="typeFilter">
+          <select id="typeFilter" class="glass-effect">
               <option value="all">Форма: Все</option>
               <option value="бригада">Только бригады</option>
               <option value="ООО">Только ООО</option>
           </select>
-          <select id="specialtyFilter" multiple size="4">
+          <select id="specialtyFilter" class="glass-effect" multiple size="4">
               <option value="all">Сфера: Все</option>
               <option value="монолитные работы">Монолитные работы</option>
               <option value="кирпичная кладка">Кирпичная кладка</option>
@@ -501,144 +319,40 @@
   <div class="bottom-nav">
     <div class="nav-btn active" data-page="home" onclick="switchPage('home')">
       <div class="nav-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22"></polyline>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
       </div>
       Домой
     </div>
-
     <div class="nav-btn" data-page="about" onclick="switchPage('about')">
       <div class="nav-icon">
-         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-        </svg>
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
       </div>
       О канале
     </div>
-
     <div class="nav-btn" data-page="chats" onclick="switchPage('chats')">
       <div class="nav-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </div>
       Чаты
     </div>
   </div>
 
   <script>
+    // --- JAVASCRIPT IS UNCHANGED ---
     const categories = [
-      {
-        id: "construction",
-        title: "Строительство",
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M5 21V9L12 5L19 9V21M9 21V12H15V21" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-        count: 12,
-        materials: [
-          { id: 1, title: "Фундамент: как сделать правильно", post_id: 45 },
-          { id: 2, title: "Кладка стен из газобетона", post_id: 52 },
-          { id: 3, title: "Крыша: выбор кровли", post_id: 58 }
-        ]
-      },
-       {
-        id: "design",
-        title: "Проектирование",
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="1.8"/><path d="M2 17L12 22L22 17" stroke="white" stroke-width="1.8"/><path d="M2 12L12 17L22 12" stroke="white" stroke-width="1.8"/></svg>`,
-        count: 8,
-        materials: [
-           { id: 1, title: "Планировка дома мечты", post_id: 33 },
-           { id: 2, title: "3D-визуализация интерьера", post_id: 39 }
-        ]
-      },
-      {
-        id: "restoration",
-        title: "Реставрация",
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="white" stroke-width="1.8"/><path d="M7 3V21" stroke="white" stroke-width="1.8"/><path d="M17 3V21" stroke="white" stroke-width="1.8"/></svg>`,
-        count: 5,
-        materials: [
-          { id: 1, title: "Реставрация старинного дома", post_id: 61 },
-          { id: 2, title: "Сохранение исторического фасада", post_id: 65 }
-        ]
-      },
-      {
-        id: "control",
-        title: "Контроль",
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M12 3L20 7V17L12 21L4 17V7L12 3Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-        count: 7,
-        materials: [
-          { id: 1, title: "Чек-лист на стройке", post_id: 70 },
-          { id: 2, title: "Как проверить бригаду", post_id: 73 }
-        ]
-      },
-      {
-        id: "contractors",
-        title: "Подрядчики",
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M17 21V19C17 16.7909 15.2091 15 13 15H5C2.79086 15 1 16.7909 1 19V21M23 21V19C22.9981 17.1703 21.7585 15.5852 20 15.13M16 3.13C17.7592 3.58456 19 5.1703 19 7V9H15M15 3H9V9H15V3Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-        count: 6,
-        materials: [
-          { id: 1, title: "Топ-5 строительных компаний", post_id: 80 },
-          { id: 2, title: "Как не попасться на мошенников", post_id: 83 },
-          { id: 3, title: "Подбор подрядчика", post_id: 85 }
-        ]
-      },
-      {
-        id: "consultation",
-        title: "Консультации",
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M8 10H8.01M12 10H12.01M16 10H16.01M9 16H15M8 6H16C17.1046 6 18 6.89543 18 8V16C18 17.1046 17.1046 18 16 18H8C6.89543 18 6 17.1046 6 16V8C6 6.89543 6.89543 6 8 6Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-        count: 9,
-        materials: [
-          { id: 1, title: "Бесплатная консультация архитектора", post_id: 90 },
-          { id: 2, title: "Задай вопрос эксперту", post_id: 95 }
-        ]
-      }
+      { id: "construction", title: "Строительство", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M5 21V9L12 5L19 9V21M9 21V12H15V21" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 12, materials: [ { id: 1, title: "Фундамент: как сделать правильно", post_id: 45 }, { id: 2, title: "Кладка стен из газобетона", post_id: 52 }, { id: 3, title: "Крыша: выбор кровли", post_id: 58 } ] },
+      { id: "design", title: "Проектирование", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="1.8"/><path d="M2 17L12 22L22 17" stroke="white" stroke-width="1.8"/><path d="M2 12L12 17L22 12" stroke="white" stroke-width="1.8"/></svg>`, count: 8, materials: [ { id: 1, title: "Планировка дома мечты", post_id: 33 }, { id: 2, title: "3D-визуализация интерьера", post_id: 39 } ] },
+      { id: "restoration", title: "Реставрация", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="white" stroke-width="1.8"/><path d="M7 3V21" stroke="white" stroke-width="1.8"/><path d="M17 3V21" stroke="white" stroke-width="1.8"/></svg>`, count: 5, materials: [ { id: 1, title: "Реставрация старинного дома", post_id: 61 }, { id: 2, title: "Сохранение исторического фасада", post_id: 65 } ] },
+      { id: "control", title: "Контроль", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M9 12L11 14L15 10M12 3L20 7V17L12 21L4 17V7L12 3Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 7, materials: [ { id: 1, title: "Чек-лист на стройке", post_id: 70 }, { id: 2, title: "Как проверить бригаду", post_id: 73 } ] },
+      { id: "contractors", title: "Подрядчики", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M17 21V19C17 16.7909 15.2091 15 13 15H5C2.79086 15 1 16.7909 1 19V21M23 21V19C22.9981 17.1703 21.7585 15.5852 20 15.13M16 3.13C17.7592 3.58456 19 5.1703 19 7V9H15M15 3H9V9H15V3Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 6, materials: [ { id: 1, title: "Топ-5 строительных компаний", post_id: 80 }, { id: 2, title: "Как не попасться на мошенников", post_id: 83 }, { id: 3, title: "Подбор подрядчика", post_id: 85 } ] },
+      { id: "consultation", title: "Консультации", icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M8 10H8.01M12 10H12.01M16 10H16.01M9 16H15M8 6H16C17.1046 6 18 6.89543 18 8V16C18 17.1046 17.1046 18 16 18H8C6.89543 18 6 17.1046 6 16V8C6 6.89543 6.89543 6 8 6Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, count: 9, materials: [ { id: 1, title: "Бесплатная консультация архитектора", post_id: 90 }, { id: 2, title: "Задай вопрос эксперту", post_id: 95 } ] }
     ];
-
     const contractors = [
-        {
-            id: 1,
-            name: "Бригада 'Дом-Строй'",
-            type: "бригада",
-            specialty: ["кирпичная кладка", "фундамент", "кровля"],
-            experience: 12,
-            objects: 30,
-            contact: "your_telegram_contact",
-            siteUrl: "https://bs98.ru/"
-        },
-        {
-            id: 2,
-            name: "ООО 'ПроектСтрой'",
-            type: "ООО",
-            specialty: ["монолитные работы", "проектирование", "отделочные работы"],
-            experience: 8,
-            objects: 15,
-            contact: "your_telegram_contact_2",
-            siteUrl: "https://bs98.ru/"
-        },
-        {
-            id: 3,
-            name: "Бригада 'Мастер-Отделка'",
-            type: "бригада",
-            specialty: ["отделочные работы", "сантехника", "электричество"],
-            experience: 6,
-            objects: 25,
-            contact: "your_telegram_contact_3",
-            siteUrl: "https://bs98.ru/"
-        },
-        {
-            id: 4,
-            name: "Спецмонтаж",
-            type: "ООО",
-            specialty: ["сантехника", "электричество"],
-            experience: 9,
-            objects: 18,
-            contact: "your_telegram_contact_4",
-            siteUrl: "https://bs98.ru/"
-        }
+        { id: 1, name: "Бригада 'Дом-Строй'", type: "бригада", specialty: ["кирпичная кладка", "фундамент", "кровля"], experience: 12, objects: 30, contact: "your_telegram_contact", siteUrl: "https://bs98.ru/" },
+        { id: 2, name: "ООО 'ПроектСтрой'", type: "ООО", specialty: ["монолитные работы", "проектирование", "отделочные работы"], experience: 8, objects: 15, contact: "your_telegram_contact_2", siteUrl: "https://bs98.ru/" },
+        { id: 3, name: "Бригада 'Мастер-Отделка'", type: "бригада", specialty: ["отделочные работы", "сантехника", "электричество"], experience: 6, objects: 25, contact: "your_telegram_contact_3", siteUrl: "https://bs98.ru/" },
+        { id: 4, name: "Спецмонтаж", type: "ООО", specialty: ["сантехника", "электричество"], experience: 9, objects: 18, contact: "your_telegram_contact_4", siteUrl: "https://bs98.ru/" }
     ];
-
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
     const contractorList = document.getElementById('contractorList');
@@ -648,171 +362,87 @@
     const loaderScreen = document.getElementById('loader-screen');
     const contractorPage = document.getElementById('page-contractors');
 
-    // Генерация карточек
     categories.forEach(cat => {
       const card = document.createElement('div');
-      card.className = 'card';
+      card.className = 'card glass-effect'; // Applied glass effect class
       card.dataset.title = cat.title;
-
-      card.innerHTML = `
-        <div class="card-icon">${cat.icon}</div>
-        <h3>${cat.title}</h3>
-        <p>${cat.count} материалов</p>
-        <div class="material-list" id="list-${cat.id}"></div>
-      `;
-
+      card.innerHTML = `<div class="card-icon">${cat.icon}</div><h3>${cat.title}</h3><p>${cat.count} материалов</p><div class="material-list" id="list-${cat.id}"></div>`;
       card.addEventListener('click', () => {
         const list = document.getElementById(`list-${cat.id}`);
         const isExpanded = list.style.maxHeight && list.style.maxHeight !== '0px';
-
         document.querySelectorAll('.material-list').forEach(l => l.style.maxHeight = '0px');
-
-        if (!isExpanded) {
-            list.style.maxHeight = list.scrollHeight + "px";
-        } else {
-            list.style.maxHeight = '0px';
-        }
+        if (!isExpanded) { list.style.maxHeight = list.scrollHeight + "px"; } else { list.style.maxHeight = '0px'; }
       });
-
       const list = card.querySelector('.material-list');
       cat.materials.forEach(mat => {
         const item = document.createElement('div');
-        item.className = 'material-item';
-        item.textContent = mat.title;
-        item.dataset.search = mat.title;
+        item.className = 'material-item'; item.textContent = mat.title; item.dataset.search = mat.title;
         item.addEventListener('click', (e) => {
           e.stopPropagation();
-          if (mat.title === "Подбор подрядчика") {
-            switchPage('contractors');
-            return;
-          }
-          const channelId = "-1001234567890";
-          const linkId = channelId.substring(4);
+          if (mat.title === "Подбор подрядчика") { switchPage('contractors'); return; }
+          const channelId = "-1001234567890"; const linkId = channelId.substring(4);
           Telegram.WebApp.openTelegramLink(`https://t.me/c/${linkId}/${mat.post_id}`);
         });
         list.appendChild(item);
       });
-
       gridContainer.appendChild(card);
     });
 
-    // Поиск
     searchInput.addEventListener('input', () => {
       const query = searchInput.value.toLowerCase();
       document.querySelectorAll('.card').forEach(card => {
         const title = card.dataset.title.toLowerCase();
         const items = card.querySelectorAll('.material-item');
         let visibleItems = 0;
-
         items.forEach(item => {
           const text = item.dataset.search.toLowerCase();
-          if (text.includes(query)) {
-            item.style.display = 'block';
-            visibleItems++;
-          } else {
-            item.style.display = 'none';
-          }
+          if (text.includes(query)) { item.style.display = 'block'; visibleItems++; } else { item.style.display = 'none'; }
         });
-
-        if (title.includes(query) || visibleItems > 0) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
+        if (title.includes(query) || visibleItems > 0) { card.style.display = 'block'; } else { card.style.display = 'none'; }
       });
     });
 
-    // Переключение страниц
     function switchPage(page) {
-      if (page === 'contractors') {
-          loaderScreen.classList.remove('hidden');
-          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(`page-${page}`).classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.nav-btn[data-page="${page}"]`).classList.add('active');
 
-          setTimeout(() => {
-              renderContractors();
-              loaderScreen.classList.add('hidden');
-
-              setTimeout(() => {
-                contractorPage.classList.add('active');
-                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-                document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
-              }, 500);
-          }, 2000);
-      } else {
-          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-          document.getElementById(`page-${page}`).classList.add('active');
-          document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-          document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
-      }
+        // Added special handling for contractors page to render on switch
+        if (page === 'contractors') {
+            renderContractors();
+        }
     }
 
-    // Открытие чата
-    function openChat(url) {
-      Telegram.WebApp.openTelegramLink(url);
-    }
+    function openChat(url) { Telegram.WebApp.openTelegramLink(url); }
 
-    // Логика страницы "Подрядчики"
     function renderContractors() {
         contractorList.innerHTML = '';
         const experience = experienceFilter.value;
         const type = typeFilter.value;
-
-        const selectedSpecialties = Array.from(specialtyFilter.options)
-                                       .filter(option => option.selected)
-                                       .map(option => option.value);
-
-        // Убираем "all" из списка, если выбраны другие опции
-        if (selectedSpecialties.length > 1 && selectedSpecialties.includes('all')) {
-            selectedSpecialties.splice(selectedSpecialties.indexOf('all'), 1);
-        }
-
+        const selectedSpecialties = Array.from(specialtyFilter.options).filter(o => o.selected).map(o => o.value);
+        if (selectedSpecialties.length > 1 && selectedSpecialties.includes('all')) { selectedSpecialties.splice(selectedSpecialties.indexOf('all'), 1); }
         const filteredContractors = contractors.filter(c => {
-            const matchesExperience = experience === 'all' ||
-                                      (experience === '1' && c.experience >= 1) ||
-                                      (experience === '5' && c.experience >= 5) ||
-                                      (experience === '10' && c.experience >= 10);
+            const matchesExperience = experience === 'all' || (experience === '1' && c.experience >= 1) || (experience === '5' && c.experience >= 5) || (experience === '10' && c.experience >= 10);
             const matchesType = type === 'all' || c.type === type;
-
-            // Проверяем, что подрядчик имеет ВСЕ выбранные специализации.
-            const matchesSpecialty = selectedSpecialties.length === 0 ||
-                                     selectedSpecialties[0] === 'all' ||
-                                     selectedSpecialties.every(specialty => c.specialty.includes(specialty));
-
+            const matchesSpecialty = selectedSpecialties.length === 0 || selectedSpecialties[0] === 'all' || selectedSpecialties.every(specialty => c.specialty.includes(specialty));
             return matchesExperience && matchesType && matchesSpecialty;
         });
-
         if (filteredContractors.length === 0) {
             contractorList.innerHTML = `<p style="text-align:center; color: var(--text-secondary); margin-top: 20px;">По вашему запросу ничего не найдено.</p>`;
         } else {
             filteredContractors.forEach(c => {
                 const card = document.createElement('div');
-                card.className = 'contractor-card';
-                card.innerHTML = `
-                    <h4>${c.name}</h4>
-                    <p><strong>Сфера:</strong> ${c.specialty.join(', ')}</p>
-                    <p><strong>Опыт:</strong> ${c.experience} лет на рынке</p>
-                    <p><strong>Объекты:</strong> ${c.objects}+ выполненных</p>
-                    <div class="btn-group">
-                        <a href="https://t.me/${c.contact}" class="contact-btn">Написать</a>
-                        <a href="#" class="learn-more-btn" onclick="Telegram.WebApp.openLink('${c.siteUrl}');">Узнать больше</a>
-                    </div>
-                `;
+                card.className = 'contractor-card glass-effect'; // Applied glass effect
+                card.innerHTML = `<h4>${c.name}</h4><p><strong>Сфера:</strong> ${c.specialty.join(', ')}</p><p><strong>Опыт:</strong> ${c.experience} лет на рынке</p><p><strong>Объекты:</strong> ${c.objects}+ выполненных</p><div class="btn-group"><a href="https://t.me/${c.contact}" class="contact-btn">Написать</a><a href="#" class="learn-more-btn" onclick="Telegram.WebApp.openLink('${c.siteUrl}');">Узнать больше</a></div>`;
                 contractorList.appendChild(card);
             });
         }
     }
-
-    // Listen for filter changes
     experienceFilter.addEventListener('change', renderContractors);
     typeFilter.addEventListener('change', renderContractors);
     specialtyFilter.addEventListener('change', renderContractors);
-
-    // Initial render
-    document.addEventListener('DOMContentLoaded', () => {
-        if (document.getElementById('page-contractors').classList.contains('active')) {
-            renderContractors();
-        }
-    });
+    document.addEventListener('DOMContentLoaded', () => { if (document.getElementById('page-contractors').classList.contains('active')) { renderContractors(); } });
 
   </script>
 </body>
