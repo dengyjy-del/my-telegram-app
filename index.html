@@ -498,6 +498,34 @@
         scroll-snap-align: start;
     }
     
+    /* Стили для кнопки "Сбросить фильтры" */
+    .filter-reset {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: white;
+        padding: 8px 12px;
+        background: var(--primary-green);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+    }
+    .filter-reset:hover {
+      background: #2b9d4a;
+      box-shadow: 0 4px 10px var(--green-shadow-color);
+    }
+    .filter-reset svg {
+        width: 18px;
+        height: 18px;
+        stroke: white;
+        stroke-width: 1.8;
+    }
+    
     /* Стили для модального окна */
     .modal-overlay {
         position: fixed;
@@ -637,6 +665,12 @@
       </div>
       
       <div class="filters-row">
+          <div class="filter-reset" onclick="resetFilters()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 2L2 21M5 5L19 19M16 8L8 16M15 15L9 9"/>
+              </svg>
+              Сбросить фильтры
+          </div>
           <div class="filter-selector" id="experienceSelector" onclick="showFilterModal('experience')">
               Опыт: <span class="filter-value-text" id="experienceValue">Все</span>
           </div>
@@ -1130,7 +1164,19 @@
         }
         
         updateFilterText();
-        updateRegionText(); // Вызываем здесь, чтобы текст обновлялся после каждого изменения
+        updateRegionText();
+    }
+
+    function resetFilters() {
+        activeFilters = {
+            region: 'all',
+            experience: 'all',
+            type: 'all',
+            specialty: 'all',
+            isFavorites: false
+        };
+        favoritesBtn.classList.remove('active');
+        renderContractors();
     }
 
     // Логика кнопки "Избранное"
@@ -1187,7 +1233,6 @@
         activeFilters[currentFilterType] = modalSelect.value;
         hideModal();
         renderContractors();
-        updateRegionText();
     }
     
     // Initial render
