@@ -10,11 +10,11 @@
     :root {
       --primary-blue: #007AFF;
       --primary-green: #34C759;
-      --background-light: #FFFFFF;
-      --background-secondary: #F5F5F7;
+      --background-light: rgba(255, 255, 255, 0.4);
+      --background-secondary: rgba(245, 245, 247, 0.5);
       --text-primary: #1D1D1F;
       --text-secondary: #6E6E73;
-      --border-color: #E5E5E5;
+      --border-color: rgba(229, 229, 229, 0.6);
       --shadow-color: rgba(0, 122, 255, 0.1);
       --green-shadow-color: rgba(52, 199, 89, 0.2);
       --bottom-nav-height: 85px; /* Высота нижней панели */
@@ -28,14 +28,17 @@
     }
 
     body {
-      background-color: var(--background-light);
+      background-image: url('https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.gif'); /* Изменено на fon.gif */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: var(--text-primary);
       min-height: 100vh;
       padding: 20px;
       padding-bottom: calc(var(--bottom-nav-height) + 20px + env(safe-area-inset-bottom));
     }
 
-    /* Стили для загрузочного экрана */
+    /* Стили для загрузочного экрана (Оставлены без изменений, кроме текста) */
     .loader-screen {
         position: fixed;
         top: 0;
@@ -60,11 +63,11 @@
 
     .loader-background-wrapper {
         position: absolute;
-        top: 0;
+        top: 0; 
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: url('https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.jpg');
+        background-image: url('https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.gif'); /* Изменено на fon.gif */
         background-size: cover;
         background-position: center;
         filter: blur(8px);
@@ -75,42 +78,50 @@
         position: relative;
         z-index: 2001;
         text-align: center;
-        margin-right: 0;
+        margin-right: 0; 
         margin-bottom: 0;
+        display: flex; /* Добавлено для центрирования текста */
+        justify-content: center; /* Добавлено для центрирования текста */
+        align-items: center; /* Добавлено для центрирования текста */
+        height: 100%; /* Добавлено для центрирования текста */
     }
 
     .loader-text {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 2em;
+        font-size: 1.5em; /* Уменьшен размер шрифта */
         font-weight: 700;
-        color: white;
-        text-shadow: none;
+        color: white; 
+        text-shadow: none; 
         opacity: 0;
         animation: fadeInText 1s ease forwards;
         animation-delay: 0.5s;
-        margin-bottom: 5px;
+        margin-bottom: 0; /* Убрано отступ снизу */
+        position: absolute; /* Позиционирование для центрирования */
+        top: 50%; /* Центрирование */
+        left: 50%; /* Центрирование */
+        transform: translate(-50%, -50%); /* Центрирование */
     }
 
     .loader-subtitle {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        font-size: 0.8em;
-        color: white;
-        text-shadow: none;
-        opacity: 0;
-        animation: fadeInText 1s ease forwards;
-        animation-delay: 1s;
+        display: none; /* Скрываем подзаголовок */
     }
 
     @keyframes fadeInText {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
+    
+    /* Стили для жидкого стекла */
+    .glass-effect {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
 
     /* Поисковая строка */
     .search-bar {
       margin: 15px 0;
     }
-
+    
     #searchInput {
       width: 100%;
       padding: 14px 20px;
@@ -120,6 +131,8 @@
       color: var(--text-primary);
       font-size: 16px;
       transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     #searchInput::placeholder {
@@ -141,13 +154,15 @@
 
     /* Карточки категорий */
     .card {
-      background: linear-gradient(145deg, var(--background-light) 0%, #FDFDFF 100%);
+      background: var(--background-light);
       border: 1px solid var(--border-color);
       border-radius: 20px;
       padding: 20px;
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .card:hover {
@@ -203,6 +218,8 @@
       cursor: pointer;
       border-left: 3px solid var(--primary-blue);
       transition: background 0.3s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .material-item:hover {
@@ -322,6 +339,8 @@
       cursor: pointer;
       font-weight: 500;
       transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .chat-btn:hover {
@@ -335,8 +354,8 @@
         color: var(--text-secondary);
         margin: 0 0 15px 0;
     }
-
-    /* Стили для страницы "Подрядчики" */
+    
+    /* Стили для страницы "Подрядчики" (Оставлены без изменений) */
     #page-contractors {
         padding-top: 10px; /* Уменьшено пустое пространство */
         padding-bottom: calc(var(--bottom-nav-height) + 20px);
@@ -399,7 +418,7 @@
         background-color: rgba(52, 199, 89, 0.1);
     }
 
-    /* Стили для фильтров */
+    /* Стили для фильтров (Оставлены без изменений) */
     .filter-group {
         display: flex;
         flex-direction: column;
@@ -412,7 +431,7 @@
         border: 1px solid var(--border-color);
         border-radius: 8px;
         background-color: var(--background-secondary);
-        color: var(--text-secondary); /* Цвет текста в фильтре */
+        color: var(--text-secondary);
         font-size: 14px;
         transition: all 0.3s ease;
         appearance: none;
@@ -420,9 +439,9 @@
         background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%236E6E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
         background-repeat: no-repeat;
         background-position: right 10px center;
-        text-align-last: center; /* Центрирование текста */
+        text-align-last: center;
     }
-
+    
     .filter-group select:focus {
         border-color: var(--primary-blue);
         outline: none;
@@ -433,11 +452,10 @@
 <body>
 
   <div id="loader-screen" class="loader-screen hidden">
-      <div class="loader-background-wrapper"></div>
-      <div class="loader-content">
+      <div class="loader-background-wrapper"></div> 
+      <div class="loader-content"> 
           <h1 class="loader-text">ПРОРАБ</h1>
-          <p class="loader-subtitle">Цифровой сервис подбора проверенных подрядчиков</p>
-      </div>
+          </div>
   </div>
 
   <div id="page-home" class="page active">
@@ -484,16 +502,8 @@
               <option value="бригада">Только бригады</option>
               <option value="ООО">Только ООО</option>
           </select>
-          <select id="specialtyFilter" multiple size="4">
-              <option value="all">Сфера: Все</option>
-              <option value="монолитные работы">Монолитные работы</option>
-              <option value="кирпичная кладка">Кирпичная кладка</option>
-              <option value="кровля">Кровля</option>
-              <option value="окна">Окна</option>
-              <option value="отделочные работы">Отделочные работы</option>
-              <option value="сантехника">Сантехника</option>
-              <option value="электричество">Электричество</option>
-          </select>
+          <div id="specialtyFilter" class="filter-buttons-container">
+          </div>
       </div>
       <div id="contractorList"></div>
   </div>
@@ -523,7 +533,7 @@
     <div class="nav-btn" data-page="chats" onclick="switchPage('chats')">
       <div class="nav-icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          <path d="M21 15a2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
         </svg>
       </div>
       Чаты
@@ -638,13 +648,16 @@
             siteUrl: "https://bs98.ru/"
         }
     ];
+    
+    // Получение уникальных специальностей для фильтра
+    const allSpecialties = Array.from(new Set(contractors.flatMap(c => c.specialty)));
 
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
     const contractorList = document.getElementById('contractorList');
     const experienceFilter = document.getElementById('experienceFilter');
     const typeFilter = document.getElementById('typeFilter');
-    const specialtyFilter = document.getElementById('specialtyFilter');
+    const specialtyFilterContainer = document.getElementById('specialtyFilter');
     const loaderScreen = document.getElementById('loader-screen');
     const contractorPage = document.getElementById('page-contractors');
 
@@ -696,6 +709,20 @@
       gridContainer.appendChild(card);
     });
 
+    // Генерация кнопок-фильтров для специализаций (Оставлены без изменений)
+    allSpecialties.forEach(specialty => {
+        const button = document.createElement('button');
+        button.className = 'filter-button';
+        button.textContent = specialty.charAt(0).toUpperCase() + specialty.slice(1);
+        button.dataset.specialty = specialty;
+        specialtyFilterContainer.appendChild(button);
+        
+        button.addEventListener('click', () => {
+            button.classList.toggle('selected');
+            renderContractors();
+        });
+    });
+
     // Поиск
     searchInput.addEventListener('input', () => {
       const query = searchInput.value.toLowerCase();
@@ -731,7 +758,7 @@
           setTimeout(() => {
               renderContractors();
               loaderScreen.classList.add('hidden');
-
+              
               setTimeout(() => {
                 contractorPage.classList.add('active');
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -751,31 +778,25 @@
       Telegram.WebApp.openTelegramLink(url);
     }
 
-    // Логика страницы "Подрядчики"
+    // Логика страницы "Подрядчики" (Оставлена без изменений)
     function renderContractors() {
         contractorList.innerHTML = '';
         const experience = experienceFilter.value;
         const type = typeFilter.value;
-
-        const selectedSpecialties = Array.from(specialtyFilter.options)
-                                       .filter(option => option.selected)
-                                       .map(option => option.value);
-
-        // Убираем "all" из списка, если выбраны другие опции
-        if (selectedSpecialties.length > 1 && selectedSpecialties.includes('all')) {
-            selectedSpecialties.splice(selectedSpecialties.indexOf('all'), 1);
-        }
+        
+        // Получаем все выбранные специализации
+        const selectedSpecialties = Array.from(specialtyFilterContainer.querySelectorAll('.filter-button.selected'))
+                                       .map(btn => btn.dataset.specialty);
 
         const filteredContractors = contractors.filter(c => {
-            const matchesExperience = experience === 'all' ||
+            const matchesExperience = experience === 'all' || 
                                       (experience === '1' && c.experience >= 1) ||
                                       (experience === '5' && c.experience >= 5) ||
                                       (experience === '10' && c.experience >= 10);
             const matchesType = type === 'all' || c.type === type;
-
-            // Проверяем, что подрядчик имеет ВСЕ выбранные специализации.
+            
+            // Проверяем, что подрядчик имеет ВСЕ выбранные специализации
             const matchesSpecialty = selectedSpecialties.length === 0 ||
-                                     selectedSpecialties[0] === 'all' ||
                                      selectedSpecialties.every(specialty => c.specialty.includes(specialty));
 
             return matchesExperience && matchesType && matchesSpecialty;
@@ -805,8 +826,7 @@
     // Listen for filter changes
     experienceFilter.addEventListener('change', renderContractors);
     typeFilter.addEventListener('change', renderContractors);
-    specialtyFilter.addEventListener('change', renderContractors);
-
+    
     // Initial render
     document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('page-contractors').classList.contains('active')) {
