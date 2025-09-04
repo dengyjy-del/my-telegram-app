@@ -340,6 +340,7 @@
     }
     #page-contractors .section-title {
         text-align: center;
+        margin-top: 0;
     }
     .contractor-card {
         background: var(--background-secondary);
@@ -348,6 +349,7 @@
         padding: 20px;
         margin-bottom: 15px;
         transition: all 0.3s ease;
+        position: relative; /* Для позиционирования иконки избранного */
     }
     .contractor-card:hover {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -395,34 +397,187 @@
     .contractor-card .learn-more-btn:hover {
         background-color: rgba(52, 199, 89, 0.1);
     }
-
-    /* Стили для фильтров */
-    .filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 20px;
+    /* Стили для иконки "Избранное" */
+    .favorite-toggle {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.3s ease, transform 0.3s ease;
     }
-    .filter-group select {
+    .favorite-toggle:hover {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    .favorite-toggle.is-favorite {
+        opacity: 1;
+        stroke: var(--primary-blue);
+        fill: var(--primary-blue);
+    }
+    .favorite-toggle svg {
         width: 100%;
-        padding: 10px;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background-color: var(--background-secondary);
-        color: var(--text-secondary); /* Цвет текста в фильтре */
+        height: 100%;
+        stroke: var(--text-secondary);
+        fill: none;
+        stroke-width: 1.8;
+    }
+    .favorite-toggle.is-favorite svg {
+        fill: var(--primary-blue);
+        stroke: var(--primary-blue);
+    }
+
+    /* Стили для верхней панели на странице подрядчиков */
+    .contractors-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+    }
+    .region-selector, .favorites-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
         font-size: 14px;
+        font-weight: 500;
+        color: var(--text-primary);
+        padding: 8px 12px;
+        background: var(--background-secondary);
+        border-radius: 10px;
         transition: all 0.3s ease;
-        appearance: none;
-        -webkit-appearance: none;
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%236E6E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        text-align-last: center; /* Центрирование текста */
+    }
+    .region-selector:hover, .favorites-btn:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    .region-selector svg, .favorites-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--text-primary);
+      stroke-width: 1.8;
+    }
+    .region-selector .dropdown-arrow svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--text-secondary);
+    }
+    .favorites-btn.active {
+      color: var(--primary-blue);
+    }
+    .favorites-btn.active svg {
+      stroke: var(--primary-blue);
+      fill: var(--primary-blue);
     }
     
-    .filter-group select:focus {
+    /* Стили для горизонтальных фильтров */
+    .filter-group-scroller {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 10px; /* Для видимости тени скроллбара */
+      -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
+      scroll-snap-type: x mandatory;
+    }
+    .filter-group-scroller::-webkit-scrollbar {
+        height: 5px;
+    }
+    .filter-group-scroller::-webkit-scrollbar-track {
+        background: var(--background-secondary);
+        border-radius: 10px;
+    }
+    .filter-group-scroller::-webkit-scrollbar-thumb {
+        background: var(--text-secondary);
+        border-radius: 10px;
+    }
+    .filter-button {
+      flex-shrink: 0;
+      padding: 10px 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background: var(--background-light);
+      color: var(--text-secondary);
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      scroll-snap-align: start;
+    }
+    .filter-button.active {
+        background: var(--primary-blue);
+        color: white;
         border-color: var(--primary-blue);
-        outline: none;
+    }
+
+    /* Стили для модального окна */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: flex-end;
+        z-index: 3000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active {
+        display: flex;
+        opacity: 1;
+    }
+    .modal-content {
+        background-color: var(--background-light);
+        border-radius: 20px 20px 0 0;
+        padding: 20px;
+        width: 100%;
+        max-width: 500px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+    .modal-overlay.active .modal-content {
+        transform: translateY(0);
+    }
+    .modal-header {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .modal-body select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        background-color: var(--background-secondary);
+        font-size: 16px;
+        appearance: none;
+        -webkit-appearance: none;
+        text-align-last: center;
+        margin-bottom: 20px;
+    }
+    .modal-footer {
+        display: flex;
+        justify-content: center;
+    }
+    .modal-apply-btn {
+        width: 100%;
+        padding: 14px;
+        border-radius: 12px;
+        background-color: var(--primary-blue);
+        color: white;
+        border: none;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .modal-apply-btn:hover {
+        background-color: #006ae6;
     }
 
   </style>
@@ -469,30 +624,71 @@
 
   <div id="page-contractors" class="page">
       <h2 class="section-title">Подбор подрядчика</h2>
-      <div class="filter-group">
-          <select id="experienceFilter">
-              <option value="all">Опыт: Все</option>
-              <option value="1">от 1 года</option>
-              <option value="5">от 5 лет</option>
-              <option value="10">от 10 лет</option>
-          </select>
-          <select id="typeFilter">
-              <option value="all">Форма: Все</option>
-              <option value="бригада">Только бригады</option>
-              <option value="ООО">Только ООО</option>
-          </select>
-          <select id="specialtyFilter" multiple size="4">
-              <option value="all">Сфера: Все</option>
-              <option value="монолитные работы">Монолитные работы</option>
-              <option value="кирпичная кладка">Кирпичная кладка</option>
-              <option value="кровля">Кровля</option>
-              <option value="окна">Окна</option>
-              <option value="отделочные работы">Отделочные работы</option>
-              <option value="сантехника">Сантехника</option>
-              <option value="электричество">Электричество</option>
-          </select>
+      <div class="contractors-header">
+          <div class="region-selector" onclick="toggleRegionModal(true)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><path d="M1 6v15m0 0l7-4V3m0 18l7-4m0 4l7-4V3m0 0l-7 4m0-4l-7 4m7 0v18"></path></svg>
+              <span id="selectedRegionText">Санкт-Петербург и Ленинг...</span>
+              <span class="dropdown-arrow">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </span>
+          </div>
+          <div class="favorites-btn" id="favoritesBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              Избранное
+          </div>
       </div>
+      
+      <div class="filter-group-scroller" id="filterScroller">
+          <div class="filter-group-item">
+              <span class="filter-label">Опыт:</span>
+              <div class="filter-options" id="experienceFilter">
+                  <button class="filter-button active" data-value="all">Все</button>
+                  <button class="filter-button" data-value="1">от 1 года</button>
+                  <button class="filter-button" data-value="5">от 5 лет</button>
+                  <button class="filter-button" data-value="10">от 10 лет</button>
+              </div>
+          </div>
+          <div class="filter-group-item">
+              <span class="filter-label">Форма:</span>
+              <div class="filter-options" id="typeFilter">
+                  <button class="filter-button active" data-value="all">Все</button>
+                  <button class="filter-button" data-value="бригада">Бригада</button>
+                  <button class="filter-button" data-value="ООО">ООО</button>
+              </div>
+          </div>
+          <div class="filter-group-item">
+              <span class="filter-label">Сфера:</span>
+              <div class="filter-options" id="specialtyFilter">
+                  <button class="filter-button active" data-value="all">Все</button>
+                  <button class="filter-button" data-value="монолитные работы">Монолитные работы</button>
+                  <button class="filter-button" data-value="кирпичная кладка">Кирпичная кладка</button>
+                  <button class="filter-button" data-value="кровля">Кровля</button>
+                  <button class="filter-button" data-value="окна">Окна</button>
+                  <button class="filter-button" data-value="отделочные работы">Отделочные работы</button>
+                  <button class="filter-button" data-value="сантехника">Сантехника</button>
+                  <button class="filter-button" data-value="электричество">Электричество</button>
+              </div>
+          </div>
+      </div>
+      
       <div id="contractorList"></div>
+  </div>
+
+  <div id="regionModal" class="modal-overlay" onclick="toggleRegionModal(false)">
+      <div class="modal-content" onclick="event.stopPropagation()">
+          <div class="modal-header">Выберите регион</div>
+          <div class="modal-body">
+              <select id="regionSelect">
+                  <option value="all">Все регионы</option>
+                  <option value="s-pb">Санкт-Петербург и Ленинградская область</option>
+                  <option value="msk">Москва и Московская область</option>
+                  <option value="krasnodar">Краснодар и Краснодарский край</option>
+              </select>
+          </div>
+          <div class="modal-footer">
+              <button class="modal-apply-btn" onclick="applyRegion()">Применить</button>
+          </div>
+      </div>
   </div>
 
   <div class="bottom-nav">
@@ -636,14 +832,37 @@
         }
     ];
 
+    const regions = {
+      'all': 'Все регионы',
+      's-pb': 'Санкт-Петербург и Ленинг...',
+      'msk': 'Москва и Московская область',
+      'krasnodar': 'Краснодар и Краснодарский край'
+    };
+
+    const filters = {
+        experience: ['all', '1', '5', '10'],
+        type: ['all', 'бригада', 'ООО'],
+        specialty: ['all', 'монолитные работы', 'кирпичная кладка', 'кровля', 'окна', 'отделочные работы', 'сантехника', 'электричество']
+    };
+
+    let activeFilters = {
+        experience: 'all',
+        type: 'all',
+        specialty: 'all',
+        isFavorites: false
+    };
+
+    let favorites = new Set(JSON.parse(localStorage.getItem('favorites')) || []);
+    
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
     const contractorList = document.getElementById('contractorList');
-    const experienceFilter = document.getElementById('experienceFilter');
-    const typeFilter = document.getElementById('typeFilter');
-    const specialtyFilter = document.getElementById('specialtyFilter');
     const loaderScreen = document.getElementById('loader-screen');
     const contractorPage = document.getElementById('page-contractors');
+    const regionModal = document.getElementById('regionModal');
+    const regionSelect = document.getElementById('regionSelect');
+    const selectedRegionText = document.getElementById('selectedRegionText');
+    const favoritesBtn = document.getElementById('favoritesBtn');
 
     // Генерация карточек
     categories.forEach(cat => {
@@ -742,7 +961,7 @@
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
                 document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
               }, 500);
-          }, 2500); 
+          }, 2000); 
       } else {
           // На других страницах видео не нужно, поэтому его можно остановить
           const video = document.querySelector('.loader-video');
@@ -765,29 +984,21 @@
     // Логика страницы "Подрядчики"
     function renderContractors() {
         contractorList.innerHTML = '';
-        const experience = experienceFilter.value;
-        const type = typeFilter.value;
+        const { experience, type, specialty, isFavorites } = activeFilters;
+        
+        let filteredContractors = contractors;
 
-        const selectedSpecialties = Array.from(specialtyFilter.options)
-                                       .filter(option => option.selected)
-                                       .map(option => option.value);
-
-        // Убираем "all" из списка, если выбраны другие опции
-        if (selectedSpecialties.length > 1 && selectedSpecialties.includes('all')) {
-            selectedSpecialties.splice(selectedSpecialties.indexOf('all'), 1);
+        if (isFavorites) {
+            filteredContractors = filteredContractors.filter(c => favorites.has(c.id));
         }
 
-        const filteredContractors = contractors.filter(c => {
+        filteredContractors = filteredContractors.filter(c => {
             const matchesExperience = experience === 'all' || 
                                       (experience === '1' && c.experience >= 1) ||
                                       (experience === '5' && c.experience >= 5) ||
                                       (experience === '10' && c.experience >= 10);
             const matchesType = type === 'all' || c.type === type;
-            
-            // Проверяем, что подрядчик имеет ВСЕ выбранные специализации.
-            const matchesSpecialty = selectedSpecialties.length === 0 || 
-                                     selectedSpecialties[0] === 'all' || 
-                                     selectedSpecialties.every(specialty => c.specialty.includes(specialty));
+            const matchesSpecialty = specialty === 'all' || c.specialty.includes(specialty);
 
             return matchesExperience && matchesType && matchesSpecialty;
         });
@@ -796,9 +1007,15 @@
             contractorList.innerHTML = `<p style="text-align:center; color: var(--text-secondary); margin-top: 20px;">По вашему запросу ничего не найдено.</p>`;
         } else {
             filteredContractors.forEach(c => {
+                const isFavorite = favorites.has(c.id);
                 const card = document.createElement('div');
                 card.className = 'contractor-card';
                 card.innerHTML = `
+                    <div class="favorite-toggle" data-id="${c.id}" ${isFavorite ? 'class="favorite-toggle is-favorite"' : ''}>
+                        <svg viewBox="0 0 24 24" fill="${isFavorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
                     <h4>${c.name}</h4>
                     <p><strong>Сфера:</strong> ${c.specialty.join(', ')}</p>
                     <p><strong>Опыт:</strong> ${c.experience} лет на рынке</p>
@@ -810,14 +1027,72 @@
                 `;
                 contractorList.appendChild(card);
             });
+
+            // Добавляем обработчики для новых кнопок избранного
+            document.querySelectorAll('.favorite-toggle').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(e.currentTarget.dataset.id);
+                    if (favorites.has(id)) {
+                        favorites.delete(id);
+                    } else {
+                        favorites.add(id);
+                    }
+                    localStorage.setItem('favorites', JSON.stringify(Array.from(favorites)));
+                    renderContractors();
+                });
+            });
         }
     }
 
-    // Listen for filter changes
-    experienceFilter.addEventListener('change', renderContractors);
-    typeFilter.addEventListener('change', renderContractors);
-    specialtyFilter.addEventListener('change', renderContractors);
+    // Логика фильтров-кнопок
+    document.querySelectorAll('.filter-options').forEach(group => {
+        group.addEventListener('click', (e) => {
+            if (e.target.classList.contains('filter-button')) {
+                const filterType = group.id.replace('Filter', '');
+                const value = e.target.dataset.value;
+                
+                // Снимаем активность со всех кнопок в группе
+                group.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+                
+                // Устанавливаем активность для нажатой кнопки
+                e.target.classList.add('active');
 
+                activeFilters[filterType] = value;
+                renderContractors();
+            }
+        });
+    });
+
+    // Логика кнопки "Избранное"
+    favoritesBtn.addEventListener('click', () => {
+        activeFilters.isFavorites = !activeFilters.isFavorites;
+        favoritesBtn.classList.toggle('active', activeFilters.isFavorites);
+        renderContractors();
+    });
+
+    // Модальное окно региона
+    function toggleRegionModal(show) {
+      if (show) {
+        regionModal.classList.add('active');
+        // Запрещаем скролл фона
+        document.body.style.overflow = 'hidden';
+      } else {
+        regionModal.classList.remove('active');
+        // Возвращаем скролл
+        document.body.style.overflow = '';
+      }
+    }
+
+    function applyRegion() {
+      const selectedValue = regionSelect.value;
+      const selectedText = regions[selectedValue];
+      selectedRegionText.textContent = selectedText.length > 25 ? selectedText.substring(0, 25) + '...' : selectedText;
+      toggleRegionModal(false);
+      // Здесь можно добавить логику фильтрации по региону, если будут данные
+      renderContractors();
+    }
+    
     // Initial render
     document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('page-contractors').classList.contains('active')) {
