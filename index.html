@@ -64,10 +64,10 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: url('https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.gif');
+        background-image: url('https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.mp4');
         background-size: cover;
         background-position: center;
-        filter: blur(8px);
+        /* filter: blur(8px); */ /* Убрано размытие */
         z-index: -1;
     }
 
@@ -737,7 +737,7 @@
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
                 document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
               }, 500);
-          }, 2000);
+          }, 500); // Изменено с 2000 мс на 500 мс
       } else {
           document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
           document.getElementById(`page-${page}`).classList.add('active');
