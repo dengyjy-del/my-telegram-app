@@ -449,6 +449,7 @@
         background: var(--background-secondary);
         border-radius: 10px;
         transition: all 0.3s ease;
+        white-space: nowrap;
     }
     .filter-selector:hover, .favorites-btn:hover {
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -474,16 +475,29 @@
     
     .filters-row {
       display: flex;
-      justify-content: space-between;
+      overflow-x: auto;
       gap: 10px;
       margin-bottom: 20px;
-      flex-wrap: wrap;
+      padding-bottom: 10px;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+    }
+    .filters-row::-webkit-scrollbar {
+        height: 5px;
+    }
+    .filters-row::-webkit-scrollbar-track {
+        background: var(--background-secondary);
+        border-radius: 10px;
+    }
+    .filters-row::-webkit-scrollbar-thumb {
+        background: var(--text-secondary);
+        border-radius: 10px;
     }
     .filter-selector {
-        flex-grow: 1;
-        justify-content: center;
+        flex-shrink: 0;
+        scroll-snap-align: start;
     }
-
+    
     /* Стили для модального окна */
     .modal-overlay {
         position: fixed;
@@ -791,17 +805,17 @@
     ];
 
     const regions = {
-      'all': 'Все регионы',
-      's-pb': 'Санкт-Петербург и Ленинградская область',
-      'msk': 'Москва и Московская область',
-      'krasnodar': 'Краснодар и Краснодарский край'
+      'all': 'Выбрать все',
+      's-pb': 'Санкт-Петербург',
+      'msk': 'Москва',
+      'krasnodar': 'Краснодар'
     };
 
     const filters = {
         experience: {
             title: 'Выберите опыт',
             options: {
-                'all': 'Все',
+                'all': 'Выбрать все',
                 '1': 'от 1 года',
                 '5': 'от 5 лет',
                 '10': 'от 10 лет'
@@ -810,7 +824,7 @@
         type: {
             title: 'Выберите форму',
             options: {
-                'all': 'Все',
+                'all': 'Выбрать все',
                 'бригада': 'Бригада',
                 'ООО': 'ООО'
             }
@@ -818,7 +832,7 @@
         specialty: {
             title: 'Выберите сферу',
             options: {
-                'all': 'Все',
+                'all': 'Выбрать все',
                 'монолитные работы': 'Монолитные работы',
                 'кирпичная кладка': 'Кирпичная кладка',
                 'кровля': 'Кровля',
@@ -834,7 +848,7 @@
         region: 's-pb',
         experience: 'all',
         type: 'all',
-        specialty: ['all'],
+        specialty: 'all',
         isFavorites: false
     };
 
@@ -978,14 +992,13 @@
     }
 
     function updateFilterText() {
-        document.getElementById('experienceValue').textContent = filters.experience.options[activeFilters.experience];
-        document.getElementById('typeValue').textContent = filters.type.options[activeFilters.type];
+        const expValue = activeFilters.experience === 'all' ? 'Все' : filters.experience.options[activeFilters.experience];
+        const typeValue = activeFilters.type === 'all' ? 'Все' : filters.type.options[activeFilters.type];
+        const specialtyValue = activeFilters.specialty === 'all' ? 'Все' : filters.specialty.options[activeFilters.specialty];
 
-        if (activeFilters.specialty.includes('all') || activeFilters.specialty.length === 0) {
-             document.getElementById('specialtyValue').textContent = 'Все';
-        } else {
-             document.getElementById('specialtyValue').textContent = activeFilters.specialty.length > 1 ? `Выбрано ${activeFilters.specialty.length}` : filters.specialty.options[activeFilters.specialty[0]];
-        }
+        document.getElementById('experienceValue').textContent = expValue;
+        document.getElementById('typeValue').textContent = typeValue;
+        document.getElementById('specialtyValue').textContent = specialtyValue;
     }
 
     // Логика страницы "Подрядчики"
@@ -1005,7 +1018,7 @@
                                       (experience === '5' && c.experience >= 5) ||
                                       (experience === '10' && c.experience >= 10);
             const matchesType = type === 'all' || c.type === type;
-            const matchesSpecialty = specialty.includes('all') || specialty.some(s => c.specialty.includes(s));
+            const matchesSpecialty = specialty === 'all' || c.specialty.includes(specialty);
 
             return matchesExperience && matchesType && matchesSpecialty;
         });
@@ -1075,22 +1088,16 @@
         if (filterType === 'region') {
             options = regions;
             headerText = 'Выберите регион';
-            modalSelect.multiple = false;
         } else {
             options = filters[filterType].options;
             headerText = filters[filterType].title;
-            if (filterType === 'specialty') {
-                modalSelect.multiple = true;
-            }
         }
 
         for (const [key, value] of Object.entries(options)) {
             const option = document.createElement('option');
             option.value = key;
             option.textContent = value;
-            if (filterType === 'region' && key === activeFilters.region) {
-                option.selected = true;
-            } else if (filterType !== 'region' && activeFilters[filterType].includes(key)) {
+            if (activeFilters[filterType] === key) {
                 option.selected = true;
             }
             modalSelect.appendChild(option);
@@ -1111,19 +1118,7 @@
 
     function applyModalSelection() {
         if (!currentFilterType) return;
-
-        if (currentFilterType === 'region') {
-            activeFilters.region = modalSelect.value;
-            updateRegionText();
-        } else if (currentFilterType === 'specialty') {
-            activeFilters.specialty = Array.from(modalSelect.selectedOptions).map(opt => opt.value);
-            if (activeFilters.specialty.length === 0) {
-                 activeFilters.specialty = ['all'];
-            }
-        } else {
-            activeFilters[currentFilterType] = modalSelect.value;
-        }
-
+        activeFilters[currentFilterType] = modalSelect.value;
         hideModal();
         renderContractors();
     }
