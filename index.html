@@ -253,6 +253,46 @@
         color: var(--text-secondary);
         margin: 0 0 15px 0;
     }
+
+    /* Стили для карточек подрядчиков */
+    .contractor-card {
+        background: var(--background-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+    }
+    .contractor-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    .contractor-card h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--primary-blue);
+    }
+    .contractor-card p {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--text-secondary);
+        margin-bottom: 5px;
+    }
+    .contractor-card .contact-btn {
+        display: inline-block;
+        background-color: var(--primary-blue);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 500;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+    .contractor-card .contact-btn:hover {
+        background-color: #0069d9;
+    }
+
   </style>
 </head>
 <body>
@@ -267,13 +307,13 @@
   <div id="page-about" class="page">
     <h2 class="section-title">О канале</h2>
     <p>
-      Меня зовут <strong>Виталий Юхневич</strong> — предприниматель с 20-летним опытом в строительной отрасли».
+      [cite_start]Меня зовут <strong>Виталий Юхневич</strong> — предприниматель с 20-летним опытом в строительной отрасли». [cite: 47]
     </p>
     <p>
-      Я — основатель проектно-строительной компании и генеральный директор компании по контролю за строительством. За карьеру реализовано более <strong>100 объектов</strong>, построено и отремонтировано свыше <strong>150 000 м?</strong>.
+      [cite_start]Я — основатель проектно-строительной компании и генеральный директор компании по контролю за строительством. [cite: 48] [cite_start]За карьеру реализовано более <strong>100 объектов</strong>, построено и отремонтировано свыше <strong>150 000 м?</strong>. [cite: 49]
     </p>
     <p>
-      В этом канале делюсь практикой, кейсами и возможностями для студентов, молодых специалистов и тех, кто хочет строить карьеру в строительстве. Здесь — только реальные знания, без воды.
+      [cite_start]В этом канале делюсь практикой, кейсами и возможностями для студентов, молодых специалистов и тех, кто хочет строить карьеру в строительстве. [cite: 50] Здесь — только реальные знания, без воды.
     </p>
   </div>
 
@@ -285,6 +325,26 @@
       <div class="chat-btn" onclick="openChat('https://t.me/')">Чат 3: Проекты и Реставрация</div>
       <div class="chat-btn" onclick="openChat('https://t.me/')">Чат 4: Карьера и Бизнес</div>
     </div>
+  </div>
+
+  <div id="page-contractors" class="page">
+      <h2 class="section-title">Подбор подрядчика</h2>
+      <div class="contractor-list">
+          <div class="contractor-card">
+              <h4>Бригада "Дом-Строй"</h4>
+              <p><strong>Сфера:</strong> Кирпичная кладка, фундамент, кровля</p>
+              <p><strong>Опыт:</strong> 12 лет на рынке</p>
+              <p><strong>Объекты:</strong> 30+ выполненных</p>
+              <a href="https://t.me/your_telegram_contact" class="contact-btn">Написать</a>
+          </div>
+          <div class="contractor-card">
+              <h4>ООО "ПроектСтрой"</h4>
+              <p><strong>Сфера:</strong> Монолитные работы, проектирование</p>
+              <p><strong>Опыт:</strong> 8 лет на рынке</p>
+              <p><strong>Объекты:</strong> 15+ выполненных</p>
+              <a href="https://t.me/your_telegram_contact" class="contact-btn">Написать</a>
+          </div>
+      </div>
   </div>
 
   <div class="bottom-nav">
@@ -339,7 +399,7 @@
         icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="1.8"/><path d="M2 17L12 22L22 17" stroke="white" stroke-width="1.8"/><path d="M2 12L12 17L22 12" stroke="white" stroke-width="1.8"/></svg>`,
         count: 8,
         materials: [
-          { id: 1, title: "Планировка дома мечты", post_id: 33 },
+           { id: 1, title: "Планировка дома мечты", post_id: 33 },
            { id: 2, title: "3D-визуализация интерьера", post_id: 39 }
         ]
       },
@@ -370,7 +430,8 @@
         count: 6,
         materials: [
           { id: 1, title: "Топ-5 строительных компаний", post_id: 80 },
-          { id: 2, title: "Как не попасться на мошенников", post_id: 83 }
+          { id: 2, title: "Как не попасться на мошенников", post_id: 83 },
+          { id: 3, title: "Подбор подрядчика", post_id: 85 }
         ]
       },
       {
@@ -384,7 +445,6 @@
         ]
       }
     ];
-
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
 
@@ -422,9 +482,11 @@
         item.dataset.search = mat.title;
         item.addEventListener('click', (e) => {
           e.stopPropagation();
-          // ВАЖНО: Замените ID на ID вашего канала. Формат: -100XXXXXXXXXX
+          if (mat.title === "Подбор подрядчика") {
+            switchPage('contractors');
+            return;
+          }
           const channelId = "-1001234567890";
-          // Преобразуем ID для ссылки
           const linkId = channelId.substring(4);
           Telegram.WebApp.openTelegramLink(`https://t.me/c/${linkId}/${mat.post_id}`);
         });
