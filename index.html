@@ -1130,6 +1130,7 @@
         }
         
         updateFilterText();
+        updateRegionText(); // Вызываем здесь, чтобы текст обновлялся после каждого изменения
     }
 
     // Логика кнопки "Избранное"
@@ -1186,6 +1187,7 @@
         activeFilters[currentFilterType] = modalSelect.value;
         hideModal();
         renderContractors();
+        updateRegionText();
     }
     
     // Initial render
