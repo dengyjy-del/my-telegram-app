@@ -5,205 +5,255 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Архитектура и Строительство</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
+<style>
+    /* Глобальные стили и переменные */
+    :root {
+      --primary-blue: #007AFF;
+      --background-light: #FFFFFF;
+      --background-secondary: #F5F5F7;
+      --text-primary: #1D1D1F;
+      --text-secondary: #6E6E73;
+      --border-color: #E5E5E5;
+      --shadow-color: rgba(0, 122, 255, 0.1);
+    }
+
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
+      margin: 0; [cite_start]/* [cite: 1] */
+      padding: 0; [cite_start]/* [cite: 2] */
+      box-sizing: border-box; [cite_start]/* [cite: 2] */
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
 
     body {
-      background-color: #ffffff;
-      background-image:
-        linear-gradient(rgba(128, 128, 128, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(128, 128, 128, 0.1) 1px, transparent 1px);
-      background-size: 20px 20px;
-      color: #000000;
-      min-height: 100vh;
-      padding: 20px 20px 20px 20px;
+      background-color: var(--background-light); [cite_start]/* [cite: 2] */
+      color: var(--text-primary); [cite_start]/* [cite: 4] */
+      min-height: 100vh; [cite_start]/* [cite: 4] */
+      padding: 20px; [cite_start]/* [cite: 4] */
     }
 
+    /* Поисковая строка */
     .search-bar {
-      margin: 15px 0;
+      margin: 15px 0; [cite_start]/* [cite: 5] */
     }
 
     #searchInput {
-      width: 90%;
-      max-width: 400px;
-      padding: 12px 16px;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      background: #f8f8f8;
-      color: #000;
-      font-size: 14px;
-    }
-
-    #searchInput::placeholder {
-      color: #888;
-    }
-
-    .grid-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 10px;
-    }
-
-    .card {
-      background: #f0f0f0;
-      border: 1px solid #ddd;
-      border-radius: 16px;
-      padding: 16px;
-      cursor: pointer;
+      width: 100%;
+      padding: 14px 20px; [cite_start]/* [cite: 6] */
+      border: 1px solid var(--border-color); [cite_start]/* [cite: 7] */
+      border-radius: 12px; [cite_start]/* [cite: 7] */
+      background: var(--background-secondary); [cite_start]/* [cite: 7] */
+      color: var(--text-primary); [cite_start]/* [cite: 7] */
+      font-size: 16px; [cite_start]/* [cite: 7] */
       transition: all 0.3s ease;
     }
 
+    #searchInput::placeholder {
+      color: var(--text-secondary); [cite_start]/* [cite: 8] */
+    }
+    #searchInput:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px var(--shadow-color);
+    }
+
+    /* Сетка карточек */
+    .grid-container {
+      display: grid; [cite_start]/* [cite: 9] */
+      grid-template-columns: 1fr 1fr; [cite_start]/* [cite: 9] */
+      gap: 16px; [cite_start]/* [cite: 9] */
+      margin-top: 20px; [cite_start]/* [cite: 9] */
+    }
+
+    /* Карточки категорий */
+    .card {
+      background: linear-gradient(145deg, var(--background-light) 0%, #FDFDFF 100%);
+      border: 1px solid var(--border-color); [cite_start]/* [cite: 10] */
+      border-radius: 20px; [cite_start]/* [cite: 10] */
+      padding: 20px; [cite_start]/* [cite: 10] */
+      cursor: pointer; [cite_start]/* [cite: 11] */
+      transition: all 0.3s ease; [cite_start]/* [cite: 11] */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
     .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px); [cite_start]/* [cite: 11] */
+      box-shadow: 0 10px 20px var(--shadow-color); [cite_start]/* [cite: 12] */
     }
 
     .card-icon {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 10px;
-      background-color: #ffd900; /* Тёмно-зелёный фон */
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      width: 48px; [cite_start]/* [cite: 12] */
+      height: 48px; [cite_start]/* [cite: 13] */
+      margin-bottom: 12px; [cite_start]/* [cite: 13] */
+      background: linear-gradient(45deg, var(--primary-blue), #00AFFF);
+      border-radius: 12px; [cite_start]/* [cite: 13] */
+      display: flex; [cite_start]/* [cite: 13] */
+      justify-content: center; [cite_start]/* [cite: 14] */
+      align-items: center; [cite_start]/* [cite: 14] */
     }
 
     .card-icon svg {
-      width: 70%;
-      height: 70%;
-      stroke: white;
-      stroke-width: 1.5;
+      width: 28px;
+      height: 28px;
+      stroke: white; [cite_start]/* [cite: 15] */
+      stroke-width: 1.8; [cite_start]/* [cite: 15] */
     }
 
     .card h3 {
-      font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
+      font-size: 15px; [cite_start]/* [cite: 15] */
+      font-weight: 600; [cite_start]/* [cite: 15] */
+      margin-bottom: 4px; [cite_start]/* [cite: 16] */
+      text-transform: none;
+      letter-spacing: 0;
     }
 
     .card p {
-      font-size: 12px;
-      color: #555;
+      font-size: 13px; [cite_start]/* [cite: 17] */
+      color: var(--text-secondary); [cite_start]/* [cite: 17] */
     }
 
+    /* Список материалов */
     .material-list {
-      margin-top: 12px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease;
+      margin-top: 16px; [cite_start]/* [cite: 18] */
+      max-height: 0; [cite_start]/* [cite: 18] */
+      overflow: hidden; [cite_start]/* [cite: 18] */
+      transition: max-height 0.5s ease-in-out; [cite_start]/* [cite: 18] */
     }
 
     .material-item {
-      padding: 10px;
-      background: #f9f9f9;
-      border-radius: 8px;
-      font-size: 13px;
-      margin-bottom: 6px;
-      cursor: pointer;
-      border-left: 3px solid #ffd900;
+      padding: 12px; [cite_start]/* [cite: 19] */
+      background: var(--background-secondary); [cite_start]/* [cite: 19] */
+      border-radius: 10px; [cite_start]/* [cite: 19] */
+      font-size: 14px; [cite_start]/* [cite: 19] */
+      margin-bottom: 8px; [cite_start]/* [cite: 19] */
+      cursor: pointer; [cite_start]/* [cite: 19] */
+      border-left: 3px solid var(--primary-blue); [cite_start]/* [cite: 19] */
+      transition: background 0.3s ease;
     }
 
     .material-item:hover {
-      background: #eee;
+      background: #e9e9ed; [cite_start]/* [cite: 21] */
+    }
+    
+    .material-item:last-child {
+        margin-bottom: 0;
     }
 
-    /* Нижняя панель — увеличена, учитывает safe area на iPhone */
+    /* Нижняя навигация */
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 80px;
-      background: #fff;
-      border-top: 1px solid #ddd;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 1000;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-      padding-bottom: env(safe-area-inset-bottom);
+      position: fixed; [cite_start]/* [cite: 22] */
+      bottom: 0; [cite_start]/* [cite: 22] */
+      left: 0; [cite_start]/* [cite: 22] */
+      width: 100%; [cite_start]/* [cite: 22] */
+      height: 85px; [cite_start]/* [cite: 22] */
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-top: 1px solid var(--border-color); [cite_start]/* [cite: 22] */
+      display: flex; [cite_start]/* [cite: 22] */
+      justify-content: space-around; [cite_start]/* [cite: 22] */
+      align-items: flex-start;
+      padding-top: 10px;
+      z-index: 1000; [cite_start]/* [cite: 23] */
+      padding-bottom: env(safe-area-inset-bottom); [cite_start]/* [cite: 24] */
     }
 
     .nav-btn {
-      text-align: center;
-      font-size: 12px;
-      color: #555;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 60px;
-      height: 60px;
+      text-align: center; [cite_start]/* [cite: 24] */
+      font-size: 12px; [cite_start]/* [cite: 24] */
+      color: var(--text-secondary); [cite_start]/* [cite: 24] */
+      cursor: pointer; [cite_start]/* [cite: 24] */
+      display: flex; [cite_start]/* [cite: 25] */
+      flex-direction: column; [cite_start]/* [cite: 25] */
+      align-items: center; [cite_start]/* [cite: 25] */
+      justify-content: center; [cite_start]/* [cite: 25] */
+      width: 70px; [cite_start]/* [cite: 25] */
+      height: 60px; [cite_start]/* [cite: 25] */
+      transition: all 0.3s ease;
     }
 
     .nav-btn.active {
-      color: #ffd900;
-      font-weight: 600;
+      color: var(--primary-blue); [cite_start]/* [cite: 27] */
+      font-weight: 600; [cite_start]/* [cite: 27] */
     }
 
     .nav-icon {
-      width: 32px;
-      height: 32px;
-      background-color: #ffd900;
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 4px;
+      width: 40px; [cite_start]/* [cite: 27] */
+      height: 40px; [cite_start]/* [cite: 28] */
+      background-color: transparent;
+      border-radius: 12px; [cite_start]/* [cite: 28] */
+      display: flex; [cite_start]/* [cite: 28] */
+      justify-content: center; [cite_start]/* [cite: 28] */
+      align-items: center; [cite_start]/* [cite: 28] */
+      margin-bottom: 4px; [cite_start]/* [cite: 28] */
+      transition: all 0.3s ease;
+    }
+    
+    .nav-btn.active .nav-icon {
+        background-color: var(--primary-blue);
     }
 
     .nav-icon svg {
-      width: 60%;
-      height: 60%;
-      stroke: white;
-      stroke-width: 1.8;
+      width: 24px;
+      height: 24px;
+      stroke: var(--text-secondary); [cite_start]/* [cite: 29] */
+      stroke-width: 1.8; [cite_start]/* [cite: 29] */
+      transition: stroke 0.3s ease;
+    }
+    .nav-btn.active .nav-icon svg {
+      stroke: white; [cite_start]/* [cite: 29] */
     }
 
     /* Страницы */
     .page {
-      display: none;
+      display: none; [cite_start]/* [cite: 30] */
     }
 
     .page.active {
-      display: block;
+      display: block; [cite_start]/* [cite: 31] */
+      animation: fadeIn 0.5s ease;
     }
 
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Стили для заголовков и кнопок чатов */
     .section-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin: 20px 0 10px 20px;
-      color: #333;
+      font-size: 24px; [cite_start]/* [cite: 32] */
+      font-weight: 700; [cite_start]/* [cite: 32] */
+      margin: 20px 0 15px 0; [cite_start]/* [cite: 32] */
+      color: var(--text-primary); [cite_start]/* [cite: 32] */
     }
 
     .chat-btn {
-      display: block;
-      width: 90%;
-      max-width: 300px;
-      margin: 10px auto;
-      padding: 12px 16px;
-      background: #f0f0f0;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      text-align: center;
-      font-size: 14px;
-      color: #333;
-      cursor: pointer;
+      display: block; [cite_start]/* [cite: 33] */
+      width: 100%; [cite_start]/* [cite: 33] */
+      margin: 10px 0; [cite_start]/* [cite: 33] */
+      padding: 16px 20px; [cite_start]/* [cite: 33] */
+      background: var(--background-secondary); [cite_start]/* [cite: 33] */
+      border: 1px solid transparent; [cite_start]/* [cite: 33] */
+      border-radius: 12px; [cite_start]/* [cite: 33] */
+      text-align: left; [cite_start]/* [cite: 34] */
+      font-size: 16px; [cite_start]/* [cite: 34] */
+      color: var(--text-primary); [cite_start]/* [cite: 34] */
+      cursor: pointer; [cite_start]/* [cite: 34] */
+      font-weight: 500;
+      transition: all 0.3s ease;
     }
 
     .chat-btn:hover {
-      background: #e0e0e0;
+      background: #e9e9ed; [cite_start]/* [cite: 35] */
+      border-color: var(--primary-blue);
     }
-  </style>
+    
+    p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-secondary);
+        margin: 0 0 15px 0;
+    }
+</style>
 </head>
 <body>
 
