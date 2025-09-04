@@ -734,7 +734,7 @@
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
                 document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
               }, 500);
-          }, 2500); // Изменено с 500 мс на 2000 мс
+          }, 2350); // Изменено с 500 мс на 2000 мс
       } else {
           document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
           document.getElementById(`page-${page}`).classList.add('active');
