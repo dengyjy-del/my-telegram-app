@@ -10,7 +10,6 @@
     :root {
       --primary-blue: #007AFF;
       --primary-green: #34C759;
-      --primary-red: #FF3B30; /* Добавлен красный цвет */
       --background-light: #FFFFFF;
       --background-secondary: #F5F5F7;
       --text-primary: #1D1D1F;
@@ -18,7 +17,6 @@
       --border-color: #E5E5E5;
       --shadow-color: rgba(0, 122, 255, 0.1);
       --green-shadow-color: rgba(52, 199, 89, 0.2);
-      --red-shadow-color: rgba(255, 59, 48, 0.2); /* Добавлена тень для красного */
       --bottom-nav-height: 85px; /* Высота нижней панели */
     }
 
@@ -51,6 +49,7 @@
         z-index: 2000;
         opacity: 1;
         visibility: visible;
+        /* transition: opacity 0.5s ease, visibility 0.5s ease; */ 
         overflow: hidden;
     }
 
@@ -335,39 +334,15 @@
     }
     
     /* Стили для страницы "Подрядчики" */
-    .contractor-page {
+    #page-contractors {
         padding-top: 10px; /* Уменьшено пустое пространство */
         padding-bottom: calc(var(--bottom-nav-height) + 20px);
     }
-    .contractor-page .section-title {
+    #page-contractors .section-title {
         text-align: center;
         margin-top: 0;
+        color: var(--primary-green);
     }
-    
-    /* Стили для зеленой темы страницы Подрядчиков */
-    #page-contractors .section-title { color: var(--primary-green); }
-    #page-contractors .contact-btn { background-color: var(--primary-green); color: white; }
-    #page-contractors .contact-btn:hover { background-color: #2b9d4a; }
-    #page-contractors .learn-more-btn { background-color: var(--background-light); color: var(--primary-green); border: 1px solid var(--primary-green); }
-    #page-contractors .learn-more-btn:hover { background-color: rgba(52, 199, 89, 0.1); }
-    #page-contractors .favorite-toggle.is-favorite { stroke: var(--primary-green); fill: var(--primary-green); }
-    #page-contractors .favorites-btn.active { color: var(--primary-green); }
-    #page-contractors .favorites-btn.active svg { stroke: var(--primary-green); fill: var(--primary-green); }
-    #page-contractors .filter-reset { background: var(--primary-green); }
-    #page-contractors .filter-reset:hover { background: #2b9d4a; box-shadow: 0 4px 10px var(--green-shadow-color); }
-    
-    /* Стили для красной темы страницы Контроля проектов */
-    #page-project-control .section-title { color: var(--primary-red); }
-    #page-project-control .contact-btn { background-color: var(--primary-red); color: white; }
-    #page-project-control .contact-btn:hover { background-color: #d83028; }
-    #page-project-control .learn-more-btn { background-color: var(--background-light); color: var(--primary-red); border: 1px solid var(--primary-red); }
-    #page-project-control .learn-more-btn:hover { background-color: rgba(255, 59, 48, 0.1); }
-    #page-project-control .favorite-toggle.is-favorite { stroke: var(--primary-red); fill: var(--primary-red); }
-    #page-project-control .favorites-btn.active { color: var(--primary-red); }
-    #page-project-control .favorites-btn.active svg { stroke: var(--primary-red); fill: var(--primary-red); }
-    #page-project-control .filter-reset { background: var(--primary-red); }
-    #page-project-control .filter-reset:hover { background: #d83028; box-shadow: 0 4px 10px var(--red-shadow-color); }
-    
     .contractor-card {
         background: var(--background-secondary);
         border: 1px solid var(--border-color);
@@ -384,7 +359,7 @@
         font-size: 18px;
         font-weight: 600;
         margin-bottom: 8px;
-        color: var(--primary-green); /* Переопределяется ниже */
+        color: var(--primary-green);
     }
     .contractor-card p {
         font-size: 14px;
@@ -408,7 +383,21 @@
         font-size: 14px;
         transition: background-color 0.3s ease;
     }
-    
+    .contractor-card .contact-btn {
+        background-color: var(--primary-green);
+        color: white;
+    }
+    .contractor-card .contact-btn:hover {
+        background-color: #2b9d4a;
+    }
+    .contractor-card .learn-more-btn {
+        background-color: var(--background-light);
+        color: var(--primary-green);
+        border: 1px solid var(--primary-green);
+    }
+    .contractor-card .learn-more-btn:hover {
+        background-color: rgba(52, 199, 89, 0.1);
+    }
     /* Стили для иконки "Избранное" */
     .favorite-toggle {
         position: absolute;
@@ -426,8 +415,8 @@
     }
     .favorite-toggle.is-favorite {
         opacity: 1;
-        stroke: var(--primary-green); /* Переопределяется ниже */
-        fill: var(--primary-green); /* Переопределяется ниже */
+        stroke: var(--primary-green);
+        fill: var(--primary-green);
     }
     .favorite-toggle svg {
         width: 100%;
@@ -435,6 +424,10 @@
         stroke: var(--text-secondary);
         fill: none;
         stroke-width: 1.8;
+    }
+    .favorite-toggle.is-favorite svg {
+        fill: var(--primary-green);
+        stroke: var(--primary-green);
     }
 
     /* Стили для верхней панели на странице подрядчиков */
@@ -473,11 +466,11 @@
       stroke: var(--text-secondary);
     }
     .favorites-btn.active {
-      color: var(--primary-green); /* Переопределяется ниже */
+      color: var(--primary-green);
     }
     .favorites-btn.active svg {
-      stroke: var(--primary-green); /* Переопределяется ниже */
-      fill: var(--primary-green); /* Переопределяется ниже */
+      stroke: var(--primary-green);
+      fill: var(--primary-green);
     }
     
     .filters-row {
@@ -515,7 +508,7 @@
         font-weight: 500;
         color: white;
         padding: 8px 12px;
-        background: var(--primary-green); /* Переопределяется ниже */
+        background: var(--primary-green);
         border-radius: 10px;
         transition: all 0.3s ease;
         white-space: nowrap;
@@ -523,8 +516,8 @@
         scroll-snap-align: start;
     }
     .filter-reset:hover {
-      background: #2b9d4a; /* Переопределяется ниже */
-      box-shadow: 0 4px 10px var(--green-shadow-color); /* Переопределяется ниже */
+      background: #2b9d4a;
+      box-shadow: 0 4px 10px var(--green-shadow-color);
     }
     .filter-reset svg {
         width: 18px;
@@ -601,6 +594,7 @@
         width: 100%;
         padding: 14px;
         border-radius: 12px;
+        background-color: var(--primary-green);
         color: white;
         border: none;
         font-size: 16px;
@@ -608,15 +602,19 @@
         cursor: pointer;
         transition: background-color 0.3s ease;
     }
+    .modal-apply-btn:hover {
+        background-color: #2b9d4a;
+    }
+
   </style>
 </head>
 <body>
 
   <div id="loader-screen" class="loader-screen hidden">
-      <video id="loaderVideo" class="loader-video" autoplay muted loop playsinline src="https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.mp4"></video>
+      <video class="loader-video" autoplay muted loop playsinline src="https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.mp4"></video>
       <div class="loader-content"> 
-          <h1 id="loaderText" class="loader-text">ПРОРАБ</h1>
-          <p id="loaderSubtitle" class="loader-subtitle">Цифровой сервис подбора проверенных подрядчиков</p>
+          <h1 class="loader-text">ПРОРАБ</h1>
+          <p class="loader-subtitle">Цифровой сервис подбора проверенных подрядчиков</p>
       </div>
   </div>
 
@@ -650,12 +648,12 @@
     </div>
   </div>
 
-  <div id="page-contractors" class="page contractor-page">
+  <div id="page-contractors" class="page">
       <h2 class="section-title">Подбор подрядчика</h2>
       <div class="contractors-header">
           <div class="filter-selector region-selector" onclick="showFilterModal('region')">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><path d="M1 6v15m0 0l7-4V3m0 18l7-4m0 4l7-4V3m0 0l-7 4m0-4l-7 4m7 0v18"></path></svg>
-              <span id="selectedRegionText">Все регионы</span>
+              <span id="selectedRegionText">Санкт-Петербург и Ленинг...</span>
               <span class="dropdown-arrow">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
               </span>
@@ -686,44 +684,6 @@
       
       <div id="contractorList"></div>
   </div>
-  
-  <div id="page-project-control" class="page contractor-page">
-      <h2 class="section-title">Контроль Ваших проектов</h2>
-      <div class="contractors-header">
-          <div class="filter-selector region-selector" onclick="showFilterModal('region')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><path d="M1 6v15m0 0l7-4V3m0 18l7-4m0 4l7-4V3m0 0l-7 4m0-4l-7 4m7 0v18"></path></svg>
-              <span id="selectedRegionText2">Все регионы</span>
-              <span class="dropdown-arrow">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </span>
-          </div>
-          <div class="favorites-btn" id="favoritesBtn2">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              Избранное
-          </div>
-      </div>
-      
-      <div class="filters-row">
-          <div class="filter-reset" onclick="resetFilters()">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 2L2 21M5 5L19 19M16 8L8 16M15 15L9 9"/>
-              </svg>
-              Сбросить фильтры
-          </div>
-          <div class="filter-selector" id="experienceSelector2" onclick="showFilterModal('experience')">
-              Опыт: <span class="filter-value-text" id="experienceValue2">Все</span>
-          </div>
-          <div class="filter-selector" id="typeSelector2" onclick="showFilterModal('type')">
-              Форма: <span class="filter-value-text" id="typeValue2">Все</span>
-          </div>
-          <div class="filter-selector" id="specialtySelector2" onclick="showFilterModal('specialty')">
-              Сфера: <span class="filter-value-text" id="specialtyValue2">Все</span>
-          </div>
-      </div>
-      
-      <div id="contractorList2"></div>
-  </div>
-
 
   <div id="mainModal" class="modal-overlay" onclick="hideModal()">
       <div class="modal-content" onclick="event.stopPropagation()">
@@ -809,8 +769,7 @@
         count: 7,
         materials: [
           { id: 1, title: "Чек-лист на стройке", post_id: 70 },
-          { id: 2, title: "Как проверить бригаду", post_id: 73 },
-          { id: 3, title: "Контроль проектов", post_id: null }
+          { id: 2, title: "Как проверить бригаду", post_id: 73 }
         ]
       },
       {
@@ -990,17 +949,16 @@
     
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
+    const contractorList = document.getElementById('contractorList');
     const loaderScreen = document.getElementById('loader-screen');
-    const loaderVideo = document.getElementById('loaderVideo');
-    const loaderText = document.getElementById('loaderText');
-    const loaderSubtitle = document.getElementById('loaderSubtitle');
     const contractorPage = document.getElementById('page-contractors');
-    const projectControlPage = document.getElementById('page-project-control');
     const mainModal = document.getElementById('mainModal');
     const modalHeader = document.getElementById('modalHeader');
     const modalSelect = document.getElementById('modalSelect');
     const modalApplyBtn = document.getElementById('modalApplyBtn');
-    
+    const selectedRegionText = document.getElementById('selectedRegionText');
+    const favoritesBtn = document.getElementById('favoritesBtn');
+
     // Генерация карточек
     categories.forEach(cat => {
       const card = document.createElement('div');
@@ -1039,10 +997,6 @@
             switchPage('contractors');
             return;
           }
-          if (mat.title === "Контроль проектов") {
-            switchPage('project-control');
-            return;
-          }
           const channelId = "-1001234567890";
           const linkId = channelId.substring(4);
           Telegram.WebApp.openTelegramLink(`https://t.me/c/${linkId}/${mat.post_id}`);
@@ -1079,42 +1033,50 @@
       });
     });
 
-    // Переключение страниц с унифицированным загрузочным экраном
+    // Переключение страниц
     function switchPage(page) {
-        loaderVideo.src = "https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.mp4";
-        loaderText.textContent = "ПРОРАБ";
-        loaderSubtitle.textContent = "Цифровой сервис подбора проверенных подрядчиков";
-        loaderSubtitle.style.display = 'block';
-        
-        loaderVideo.currentTime = 0;
-        loaderVideo.play();
-        loaderScreen.classList.remove('hidden');
-        
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      if (page === 'contractors') {
+          // Получаем элемент видео
+          const video = document.querySelector('.loader-video');
+          if (video) {
+              // Сбрасываем видео на начало и запускаем его
+              video.currentTime = 0;
+              video.play();
+          }
 
-        setTimeout(() => {
-            if (page === 'contractors' || page === 'project-control') {
-                renderContractors(page);
-            }
-            loaderScreen.classList.add('hidden');
-            
-            setTimeout(() => {
-                document.getElementById(`page-${page}`).classList.add('active');
+          loaderScreen.classList.remove('hidden');
+          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+          setTimeout(() => {
+              renderContractors();
+              loaderScreen.classList.add('hidden');
+              
+              setTimeout(() => {
+                contractorPage.classList.add('active');
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-                const navBtn = document.querySelector(`.nav-btn[data-page=\"${page}\"]`);
-                if (navBtn) {
-                    navBtn.classList.add('active');
-                }
-            }, 500);
-        }, 2500); 
+                document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
+              }, 500);
+          }, 2000); 
+      } else {
+          // На других страницах видео не нужно, поэтому его можно остановить
+          const video = document.querySelector('.loader-video');
+          if (video) {
+            video.pause();
+          }
+
+          document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+          document.getElementById(`page-${page}`).classList.add('active');
+          document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+          document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
+      }
     }
 
     // Открытие чата
     function openChat(url) {
       Telegram.WebApp.openTelegramLink(url);
     }
-    
-    function updateRegionText(page) {
+
+    function updateRegionText() {
         let text = regions[activeFilters.region];
         if (text === 'Выбрать все') {
             text = 'Все регионы';
@@ -1122,34 +1084,21 @@
         if (text.length > 25) {
             text = text.substring(0, 22) + '...';
         }
-        if (page === 'project-control') {
-            document.getElementById('selectedRegionText2').textContent = text;
-        } else {
-            document.getElementById('selectedRegionText').textContent = text;
-        }
+        selectedRegionText.textContent = text;
     }
-    
-    function updateFilterText(page) {
+
+    function updateFilterText() {
         const expValue = activeFilters.experience === 'all' ? 'Все' : filters.experience.options[activeFilters.experience];
         const typeValue = activeFilters.type === 'all' ? 'Все' : filters.type.options[activeFilters.type];
         const specialtyValue = activeFilters.specialty === 'all' ? 'Все' : filters.specialty.options[activeFilters.specialty];
 
-        if (page === 'project-control') {
-            document.getElementById('experienceValue2').textContent = expValue.replace('Выбрать все', 'Все');
-            document.getElementById('typeValue2').textContent = typeValue.replace('Выбрать все', 'Все');
-            document.getElementById('specialtyValue2').textContent = specialtyValue.replace('Выбрать все', 'Все');
-        } else {
-            document.getElementById('experienceValue').textContent = expValue.replace('Выбрать все', 'Все');
-            document.getElementById('typeValue').textContent = typeValue.replace('Выбрать все', 'Все');
-            document.getElementById('specialtyValue').textContent = specialtyValue.replace('Выбрать все', 'Все');
-        }
+        document.getElementById('experienceValue').textContent = expValue.replace('Выбрать все', 'Все');
+        document.getElementById('typeValue').textContent = typeValue.replace('Выбрать все', 'Все');
+        document.getElementById('specialtyValue').textContent = specialtyValue.replace('Выбрать все', 'Все');
     }
 
     // Логика страницы "Подрядчики"
-    function renderContractors(page) {
-        const contractorList = (page === 'project-control') ? document.getElementById('contractorList2') : document.getElementById('contractorList');
-        const favoritesBtn = (page === 'project-control') ? document.getElementById('favoritesBtn2') : document.getElementById('favoritesBtn');
-
+    function renderContractors() {
         contractorList.innerHTML = '';
         const { region, experience, type, specialty, isFavorites } = activeFilters;
         
@@ -1209,15 +1158,15 @@
                         favorites.add(id);
                     }
                     localStorage.setItem('favorites', JSON.stringify(Array.from(favorites)));
-                    renderContractors(page);
+                    renderContractors();
                 });
             });
         }
         
-        updateFilterText(page);
-        updateRegionText(page);
+        updateFilterText();
+        updateRegionText();
     }
-    
+
     function resetFilters() {
         activeFilters = {
             region: 'all',
@@ -1226,32 +1175,16 @@
             specialty: 'all',
             isFavorites: false
         };
-        document.getElementById('favoritesBtn').classList.remove('active');
-        document.getElementById('favoritesBtn2').classList.remove('active');
-        
-        const currentPage = document.querySelector('.page.active');
-        if (currentPage) {
-            if (currentPage.id === 'page-contractors') {
-                renderContractors('contractors');
-            } else if (currentPage.id === 'page-project-control') {
-                renderContractors('project-control');
-            }
-        }
+        favoritesBtn.classList.remove('active');
+        renderContractors();
     }
 
     // Логика кнопки "Избранное"
-    document.getElementById('favoritesBtn').addEventListener('click', () => {
+    favoritesBtn.addEventListener('click', () => {
         activeFilters.isFavorites = !activeFilters.isFavorites;
-        document.getElementById('favoritesBtn').classList.toggle('active', activeFilters.isFavorites);
-        renderContractors('contractors');
+        favoritesBtn.classList.toggle('active', activeFilters.isFavorites);
+        renderContractors();
     });
-
-    document.getElementById('favoritesBtn2').addEventListener('click', () => {
-        activeFilters.isFavorites = !activeFilters.isFavorites;
-        document.getElementById('favoritesBtn2').classList.toggle('active', activeFilters.isFavorites);
-        renderContractors('project-control');
-    });
-
 
     // Модальное окно для региона и фильтров
     let currentFilterType = null;
@@ -1284,16 +1217,6 @@
 
         modalHeader.textContent = headerText;
         modalApplyBtn.textContent = 'Применить';
-        
-        const currentPage = document.querySelector('.page.active');
-        if (currentPage.id === 'page-project-control') {
-            modalApplyBtn.style.backgroundColor = 'var(--primary-red)';
-            modalApplyBtn.style.boxShadow = '0 4px 10px var(--red-shadow-color)';
-        } else {
-            modalApplyBtn.style.backgroundColor = 'var(--primary-green)';
-            modalApplyBtn.style.boxShadow = '0 4px 10px var(--green-shadow-color)';
-        }
-
         modalApplyBtn.onclick = applyModalSelection;
         
         mainModal.classList.add('active');
@@ -1309,27 +1232,15 @@
         if (!currentFilterType) return;
         activeFilters[currentFilterType] = modalSelect.value;
         hideModal();
-        const currentPage = document.querySelector('.page.active');
-        if (currentPage) {
-            if (currentPage.id === 'page-contractors') {
-                renderContractors('contractors');
-            } else if (currentPage.id === 'page-project-control') {
-                renderContractors('project-control');
-            }
-        }
+        renderContractors();
     }
     
     // Initial render
     document.addEventListener('DOMContentLoaded', () => {
-        updateRegionText('contractors');
-        updateFilterText('contractors');
-        updateRegionText('project-control');
-        updateFilterText('project-control');
-
+        updateRegionText();
+        updateFilterText();
         if (document.getElementById('page-contractors').classList.contains('active')) {
-            renderContractors('contractors');
-        } else if (document.getElementById('page-project-control').classList.contains('active')) {
-            renderContractors('project-control');
+            renderContractors();
         }
     });
 
