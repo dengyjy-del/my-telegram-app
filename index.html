@@ -770,7 +770,8 @@
             experience: 12,
             objects: 30,
             contact: "your_telegram_contact",
-            siteUrl: "https://bs98.ru/"
+            siteUrl: "https://bs98.ru/",
+            region: "s-pb"
         },
         {
             id: 2,
@@ -780,7 +781,8 @@
             experience: 8,
             objects: 15,
             contact: "your_telegram_contact_2",
-            siteUrl: "https://bs98.ru/"
+            siteUrl: "https://bs98.ru/",
+            region: "msk"
         },
         {
             id: 3,
@@ -790,7 +792,8 @@
             experience: 6,
             objects: 25,
             contact: "your_telegram_contact_3",
-            siteUrl: "https://bs98.ru/"
+            siteUrl: "https://bs98.ru/",
+            region: "krasnodar"
         },
         {
             id: 4,
@@ -800,7 +803,63 @@
             experience: 9,
             objects: 18,
             contact: "your_telegram_contact_4",
-            siteUrl: "https://bs98.ru/"
+            siteUrl: "https://bs98.ru/",
+            region: "s-pb"
+        },
+        {
+            id: 5,
+            name: "СтройТех",
+            type: "ООО",
+            specialty: ["фундамент", "монолитные работы"],
+            experience: 15,
+            objects: 50,
+            contact: "your_telegram_contact_5",
+            siteUrl: "https://example.com/stroytech",
+            region: "msk"
+        },
+        {
+            id: 6,
+            name: "Кровля-Сервис",
+            type: "бригада",
+            specialty: ["кровля"],
+            experience: 7,
+            objects: 45,
+            contact: "your_telegram_contact_6",
+            siteUrl: "https://example.com/krovlya",
+            region: "s-pb"
+        },
+        {
+            id: 7,
+            name: "Электро-Мастер",
+            type: "бригада",
+            specialty: ["электричество"],
+            experience: 10,
+            objects: 60,
+            contact: "your_telegram_contact_7",
+            siteUrl: "https://example.com/elektro",
+            region: "msk"
+        },
+        {
+            id: 8,
+            name: "Фундамент-Профи",
+            type: "ООО",
+            specialty: ["фундамент"],
+            experience: 20,
+            objects: 80,
+            contact: "your_telegram_contact_8",
+            siteUrl: "https://example.com/fundament",
+            region: "krasnodar"
+        },
+        {
+            id: 9,
+            name: "Уютный Дом",
+            type: "бригада",
+            specialty: ["отделочные работы"],
+            experience: 5,
+            objects: 35,
+            contact: "your_telegram_contact_9",
+            siteUrl: "https://example.com/uyutnydom",
+            region: "s-pb"
         }
     ];
 
@@ -845,7 +904,7 @@
     };
 
     let activeFilters = {
-        region: 's-pb',
+        region: 'all',
         experience: 'all',
         type: 'all',
         specialty: 'all',
@@ -985,6 +1044,9 @@
 
     function updateRegionText() {
         let text = regions[activeFilters.region];
+        if (text === 'Выбрать все') {
+            text = 'Все регионы';
+        }
         if (text.length > 25) {
             text = text.substring(0, 22) + '...';
         }
@@ -996,9 +1058,9 @@
         const typeValue = activeFilters.type === 'all' ? 'Все' : filters.type.options[activeFilters.type];
         const specialtyValue = activeFilters.specialty === 'all' ? 'Все' : filters.specialty.options[activeFilters.specialty];
 
-        document.getElementById('experienceValue').textContent = expValue;
-        document.getElementById('typeValue').textContent = typeValue;
-        document.getElementById('specialtyValue').textContent = specialtyValue;
+        document.getElementById('experienceValue').textContent = expValue.replace('Выбрать все', 'Все');
+        document.getElementById('typeValue').textContent = typeValue.replace('Выбрать все', 'Все');
+        document.getElementById('specialtyValue').textContent = specialtyValue.replace('Выбрать все', 'Все');
     }
 
     // Логика страницы "Подрядчики"
@@ -1013,6 +1075,7 @@
         }
 
         filteredContractors = filteredContractors.filter(c => {
+            const matchesRegion = region === 'all' || c.region === region;
             const matchesExperience = experience === 'all' || 
                                       (experience === '1' && c.experience >= 1) ||
                                       (experience === '5' && c.experience >= 5) ||
@@ -1020,7 +1083,7 @@
             const matchesType = type === 'all' || c.type === type;
             const matchesSpecialty = specialty === 'all' || c.specialty.includes(specialty);
 
-            return matchesExperience && matchesType && matchesSpecialty;
+            return matchesRegion && matchesExperience && matchesType && matchesSpecialty;
         });
 
         if (filteredContractors.length === 0) {
@@ -1028,6 +1091,7 @@
         } else {
             filteredContractors.forEach(c => {
                 const isFavorite = favorites.has(c.id);
+                const locationName = regions[c.region] || 'Не указано';
                 const card = document.createElement('div');
                 card.className = 'contractor-card';
                 card.innerHTML = `
@@ -1040,6 +1104,7 @@
                     <p><strong>Сфера:</strong> ${c.specialty.join(', ')}</p>
                     <p><strong>Опыт:</strong> ${c.experience} лет на рынке</p>
                     <p><strong>Объекты:</strong> ${c.objects}+ выполненных</p>
+                    <p><strong>Расположение:</strong> ${locationName}</p>
                     <div class="btn-group">
                         <a href="https://t.me/${c.contact}" class="contact-btn">Написать</a>
                         <a href="#" class="learn-more-btn" onclick="Telegram.WebApp.openLink('${c.siteUrl}');">Узнать больше</a>
