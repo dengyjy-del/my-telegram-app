@@ -60,11 +60,11 @@
 
     .loader-background-wrapper {
         position: absolute;
-        top: 0; 
+        top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background-image: url('https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.jpg'); 
+        background-image: url('https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.jpg');
         background-size: cover;
         background-position: center;
         filter: blur(8px);
@@ -75,7 +75,7 @@
         position: relative;
         z-index: 2001;
         text-align: center;
-        margin-right: 0; 
+        margin-right: 0;
         margin-bottom: 0;
     }
 
@@ -83,22 +83,22 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         font-size: 2em;
         font-weight: 700;
-        color: white; 
-        text-shadow: none; 
+        color: white;
+        text-shadow: none;
         opacity: 0;
         animation: fadeInText 1s ease forwards;
         animation-delay: 0.5s;
-        margin-bottom: 5px; 
+        margin-bottom: 5px;
     }
 
     .loader-subtitle {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         font-size: 0.8em;
-        color: white; 
-        text-shadow: none; 
+        color: white;
+        text-shadow: none;
         opacity: 0;
         animation: fadeInText 1s ease forwards;
-        animation-delay: 1s; 
+        animation-delay: 1s;
     }
 
     @keyframes fadeInText {
@@ -335,7 +335,7 @@
         color: var(--text-secondary);
         margin: 0 0 15px 0;
     }
-    
+
     /* Стили для страницы "Подрядчики" */
     #page-contractors {
         padding-top: 10px; /* Уменьшено пустое пространство */
@@ -422,7 +422,7 @@
         background-position: right 10px center;
         text-align-last: center; /* Центрирование текста */
     }
-    
+
     .filter-group select:focus {
         border-color: var(--primary-blue);
         outline: none;
@@ -433,8 +433,8 @@
 <body>
 
   <div id="loader-screen" class="loader-screen hidden">
-      <div class="loader-background-wrapper"></div> 
-      <div class="loader-content"> 
+      <div class="loader-background-wrapper"></div>
+      <div class="loader-content">
           <h1 class="loader-text">ПРОРАБ</h1>
           <p class="loader-subtitle">Цифровой сервис подбора проверенных подрядчиков</p>
       </div>
@@ -485,7 +485,6 @@
               <option value="ООО">Только ООО</option>
           </select>
           <select id="specialtyFilter" multiple size="4">
-              <option value="all">Сфера: Все</option>
               <option value="монолитные работы">Монолитные работы</option>
               <option value="кирпичная кладка">Кирпичная кладка</option>
               <option value="кровля">Кровля</option>
@@ -731,7 +730,7 @@
           setTimeout(() => {
               renderContractors();
               loaderScreen.classList.add('hidden');
-              
+
               setTimeout(() => {
                 contractorPage.classList.add('active');
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -767,15 +766,15 @@
         }
 
         const filteredContractors = contractors.filter(c => {
-            const matchesExperience = experience === 'all' || 
+            const matchesExperience = experience === 'all' ||
                                       (experience === '1' && c.experience >= 1) ||
                                       (experience === '5' && c.experience >= 5) ||
                                       (experience === '10' && c.experience >= 10);
             const matchesType = type === 'all' || c.type === type;
-            
+
             // Проверяем, что подрядчик имеет ВСЕ выбранные специализации.
-            const matchesSpecialty = selectedSpecialties.length === 0 || 
-                                     selectedSpecialties[0] === 'all' || 
+            const matchesSpecialty = selectedSpecialties.length === 0 ||
+                                     selectedSpecialties[0] === 'all' ||
                                      selectedSpecialties.every(specialty => c.specialty.includes(specialty));
 
             return matchesExperience && matchesType && matchesSpecialty;
