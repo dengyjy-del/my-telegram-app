@@ -9,21 +9,12 @@
     /* Глобальные стили и переменные */
     :root {
       --primary-blue: #007AFF;
-      /* Light Theme Colors */
       --background-light: #FFFFFF;
       --background-secondary: #F5F5F7;
       --text-primary: #1D1D1F;
       --text-secondary: #6E6E73;
       --border-color: #E5E5E5;
       --shadow-color: rgba(0, 122, 255, 0.1);
-
-      /* Dark Theme Colors */
-      --dark-background-light: #1C1C1E;
-      --dark-background-secondary: #2C2C2E;
-      --dark-text-primary: #F2F2F7;
-      --dark-text-secondary: #AEAEB2;
-      --dark-border-color: #48484A;
-      --dark-shadow-color: rgba(255, 255, 255, 0.1);
     }
 
     * {
@@ -38,41 +29,6 @@
       color: var(--text-primary);
       min-height: 100vh;
       padding: 20px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    /* Dark Theme Styles */
-    body.dark-theme {
-      background-color: var(--dark-background-light);
-      color: var(--dark-text-primary);
-    }
-
-    body.dark-theme .search-bar #searchInput,
-    body.dark-theme .chat-btn,
-    body.dark-theme .card,
-    body.dark-theme .material-item {
-      background: var(--dark-background-secondary);
-      border-color: var(--dark-border-color);
-      color: var(--dark-text-primary);
-    }
-    
-    body.dark-theme .card,
-    body.dark-theme .bottom-nav {
-      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
-    }
-    
-    body.dark-theme .card:hover {
-        box-shadow: 0 10px 20px var(--dark-shadow-color);
-    }
-
-    body.dark-theme .bottom-nav {
-      background: rgba(28, 28, 30, 0.8);
-      border-top-color: var(--dark-border-color);
-    }
-
-    body.dark-theme .nav-btn,
-    body.dark-theme .card p {
-      color: var(--dark-text-secondary);
     }
 
     /* Поисковая строка */
@@ -199,7 +155,6 @@
       padding-top: 10px;
       z-index: 1000;
       padding-bottom: env(safe-area-inset-bottom);
-      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     .nav-btn {
@@ -298,76 +253,11 @@
         color: var(--text-secondary);
         margin: 0 0 15px 0;
     }
-    
-    /* Toggle Switch Styles */
-    .theme-switch-wrapper {
-      position: absolute;
-      top: 25px;
-      right: 20px;
-      display: flex;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .theme-switch {
-      display: inline-block;
-      height: 24px;
-      position: relative;
-      width: 44px;
-    }
-
-    .theme-switch input {
-      display: none;
-    }
-
-    .slider {
-      background-color: #ccc;
-      bottom: 0;
-      cursor: pointer;
-      left: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
-      transition: .4s;
-    }
-
-    .slider:before {
-      background-color: #fff;
-      bottom: 4px;
-      content: "";
-      height: 16px;
-      left: 4px;
-      position: absolute;
-      transition: .4s;
-      width: 16px;
-    }
-
-    input:checked + .slider {
-      background-color: var(--primary-blue);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(20px);
-    }
-
-    .slider.round {
-      border-radius: 34px;
-    }
-
-    .slider.round:before {
-      border-radius: 50%;
-    }
   </style>
 </head>
 <body>
 
   <div id="page-home" class="page active">
-    <div class="theme-switch-wrapper">
-      <label class="theme-switch" for="checkbox">
-        <input type="checkbox" id="checkbox" />
-        <div class="slider round"></div>
-      </label>
-    </div>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Поиск по темам и материалам..." />
     </div>
@@ -449,7 +339,7 @@
         icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="1.8"/><path d="M2 17L12 22L22 17" stroke="white" stroke-width="1.8"/><path d="M2 12L12 17L22 12" stroke="white" stroke-width="1.8"/></svg>`,
         count: 8,
         materials: [
-           { id: 1, title: "Планировка дома мечты", post_id: 33 },
+          { id: 1, title: "Планировка дома мечты", post_id: 33 },
            { id: 2, title: "3D-визуализация интерьера", post_id: 39 }
         ]
       },
@@ -494,6 +384,7 @@
         ]
       }
     ];
+
     const gridContainer = document.getElementById('gridContainer');
     const searchInput = document.getElementById('searchInput');
 
@@ -581,33 +472,6 @@
     function openChat(url) {
       Telegram.WebApp.openTelegramLink(url);
     }
-    
-    // Theme Switcher Logic
-    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-    const currentTheme = localStorage.getItem('theme');
-
-    // Check for saved theme preference on load
-    if (currentTheme) {
-        document.body.classList.add(currentTheme);
-        if (currentTheme === 'dark-theme') {
-            toggleSwitch.checked = true;
-        }
-    }
-
-    // Function to switch theme
-    function switchTheme(e) {
-        if (e.target.checked) {
-            document.body.classList.add('dark-theme');
-            localStorage.setItem('theme', 'dark-theme');
-        } else {
-            document.body.classList.remove('dark-theme');
-            localStorage.setItem('theme', 'light-theme');
-        }
-    }
-
-    // Listen for changes
-    toggleSwitch.addEventListener('change', switchTheme, false);
-
   </script>
 </body>
 </html>
