@@ -430,7 +430,7 @@
 <body>
 
   <div id="loader-screen" class="loader-screen hidden">
-      <video class="loader-video" autoplay muted loop playsinline src="https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.MP4"></video>
+      <video class="loader-video" autoplay muted loop playsinline src="https://raw.githubusercontent.com/dengyjy-del/my-telegram-app/main/fon.mp4"></video>
       <div class="loader-content"> 
           <h1 class="loader-text">ПРОРАБ</h1>
           <p class="loader-subtitle">Цифровой сервис подбора проверенных подрядчиков</p>
@@ -734,7 +734,7 @@
                 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
                 document.querySelector(`.nav-btn[data-page=\"${page}\"]`).classList.add('active');
               }, 500);
-          }, 500);
+          }, 2000); // Изменено с 500 мс на 2000 мс
       } else {
           document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
           document.getElementById(`page-${page}`).classList.add('active');
